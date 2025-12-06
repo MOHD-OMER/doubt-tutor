@@ -20,8 +20,15 @@ st.set_page_config(
     page_title="Doubt Tutor",
     page_icon="🤔",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
+
+# Hide default Streamlit sidebar (for custom nav in header)
+st.markdown("""
+<style>
+section[data-testid="stSidebar"] { display: none !important; }
+</style>
+""", unsafe_allow_html=True)
 
 # --------------------------------------------------
 # Load CSS
@@ -200,24 +207,6 @@ if "messages_cleaned" not in st.session_state:
 # --------------------------------------------------
 if "model_select_professional" in st.session_state:
     st.session_state.current_model = st.session_state.model_select_professional
-
-# --------------------------------------------------
-# Sidebar
-# --------------------------------------------------
-with st.sidebar:
-    st.markdown("### 🎛️ Controls")
-    
-    if st.button("🧹 Clear Chat", use_container_width=True):
-        st.session_state.messages = []
-        st.session_state.files_buffer = []
-        st.session_state.files_processed = set()
-        st.session_state.input_key += 1
-        st.session_state.uploader_key += 1
-        st.rerun()
-    
-    st.markdown("---")
-    st.markdown(f"**Messages:** {len(st.session_state.messages)}")
-    st.markdown(f"**Model:** {st.session_state.current_model}")
 
 # --------------------------------------------------
 # Export Handler
@@ -477,5 +466,14 @@ if st.session_state.messages and st.session_state.processing_response:
         # Done processing
         st.session_state.processing_response = False
         st.rerun()
+
+# Clear Chat button (moved from sidebar to input area for accessibility)
+if st.button("🧹 Clear Chat", type="secondary", use_container_width=True):
+    st.session_state.messages = []
+    st.session_state.files_buffer = []
+    st.session_state.files_processed = set()
+    st.session_state.input_key += 1
+    st.session_state.uploader_key += 1
+    st.rerun()
 
 st.markdown("</div>", unsafe_allow_html=True)
