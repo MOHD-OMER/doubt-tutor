@@ -17,7 +17,7 @@ from ui.components.chat_interface import render_chat
 # Page Config
 # --------------------------------------------------
 st.set_page_config(
-    page_title="Doubt Tutor",
+    page_title="💡 Doubt Tutor",
     page_icon="🤔",
     layout="wide",
     initial_sidebar_state="collapsed"
