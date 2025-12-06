@@ -119,10 +119,19 @@ def render_header():
             
             # Export button (last column)
             with cols[5]:
-                if st.button("Export", key="export_btn", use_container_width=True, help="Export chat history"):
-                    st.session_state.export_chat = True
-                    st.success("✅ Chat exported successfully!", icon="✅")
-                    st.rerun()
+                if "chat_history" in st.session_state and len(st.session_state.chat_history) > 0:
+                    st.download_button(
+                        label="Export",
+                        data="\n".join(st.session_state.chat_history),
+                        file_name="chat_export.txt",
+                        mime="text/plain",
+                        key="export_btn",
+                        use_container_width=True,
+                        help="Download chat history"
+                    )
+                else:
+                    st.button("Export", key="export_btn_disabled", disabled=True, use_container_width=True)
+
 
     # Clean divider
     st.markdown("""
