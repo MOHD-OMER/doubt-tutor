@@ -1,6 +1,35 @@
-__pycache__/ 
-*.pyc 
-.env 
-*.db 
-logs/ 
-uploads/ 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Environment
+.env
+*.env
+
+# Virtual Environments
+venv/
+.venv/
+env/
+conda/
+
+# Logs & Data
+logs/
+uploads/
+data/
+.streamlit/
+
+# Git
+.git
+.gitignore
+
+# IDEs / Editors
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
