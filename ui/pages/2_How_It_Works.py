@@ -1,6 +1,10 @@
 # ui/pages/2_How_It_Works.py
 import streamlit as st
-from ..components.header import render_header  # Relative import for components
+
+# Page config
+st.set_page_config(page_title="How It Works", layout="wide")
+
+from ui.components.header import render_header  # Absolute import fix
 
 # Render shared header
 render_header()
@@ -21,10 +25,9 @@ Our AI generates a clear, structured answer with explanations, examples, and fol
 
 ### Step 4: Export & Learn More
 Download your chat history or dive deeper with related resources. Repeat as needed.
-
 """)
 
-# Visual workflow diagram using Streamlit columns
+# Visual workflow diagram
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.markdown("### 1. Choose Model")
@@ -41,5 +44,5 @@ with col4:
 
 st.info("Pro Tip: Start with Llama 3.2 for quick text queries or LLaVA for visual doubts.")
 
-# Navigation links
+# Navigation
 st.markdown("[Back to Home →](/) | [Models →](/Models)")

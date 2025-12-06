@@ -1,8 +1,12 @@
 # ui/pages/3_Models.py
 import streamlit as st
-from ..components.header import render_header  # Relative import for components
 
-# Render shared header (includes hidden selector and badge)
+# Page config
+st.set_page_config(page_title="Models", layout="wide")
+
+from ui.components.header import render_header  # Absolute import fix
+
+# Render shared header
 render_header()
 
 # Models page content
@@ -12,7 +16,7 @@ Before selecting a model, here's a quick overview of each one. All are integrate
 Choose based on your doubt type—text-heavy, visual, or advanced reasoning.
 """)
 
-# Model descriptions (expanders for clean layout)
+# Model descriptions
 models_info = {
     "llama3.2": {
         "icon": "🦙",
@@ -44,27 +48,29 @@ models_info = {
 for model_key, info in models_info.items():
     with st.expander(f"{info['icon']} {info['title']}"):
         st.write(info['desc'])
-        st.caption(f"Best for: {', '.join(['text queries', 'visual analysis'][model_key == 'llava'])}")
+        best_for = "text queries" if model_key != "llava" else "visual analysis"
+        st.caption(f"Best for: {best_for}")
 
-# Model Selection Section (integrates with header's session state)
+# Model Selection
 st.subheader("Select Your Model")
 st.markdown("Choose below—the badge in the header will update instantly.")
 
-# Visible selectbox for Models page (overrides hidden one in header for UX)
 model_options = list(models_info.keys())
+default_model = st.session_state.get("model_select_professional", "llama3.2")
+index = model_options.index(default_model)
 selected_model = st.selectbox(
     "Preferred Model",
     options=model_options,
-    index=model_options.index(st.session_state.get("model_select_professional", "llama3.2")),
+    index=index,
     help="Pick a model to start tutoring."
 )
 
-if selected_model != st.session_state.get("model_select_professional", "llama3.2"):
+if selected_model != default_model:
     st.session_state["model_select_professional"] = selected_model
     st.success(f"✅ Switched to {selected_model.upper()}!")
     st.rerun()
 
 st.info("Model selected! Return to Home to start chatting.")
 
-# Navigation links
+# Navigation
 st.markdown("[How It Works →](/How_It_Works) | [About →](/About)")

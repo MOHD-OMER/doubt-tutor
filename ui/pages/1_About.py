@@ -1,6 +1,10 @@
 # ui/pages/1_About.py
 import streamlit as st
-from ..components.header import render_header  # Relative import for components
+
+# Page config (optional, for tab title)
+st.set_page_config(page_title="About Doubt Tutor", layout="wide")
+
+from ui.components.header import render_header  # Absolute import fix
 
 # Render shared header
 render_header()
@@ -21,13 +25,13 @@ personalized, and engaging through cutting-edge language models.
 - **Free & Open**: Basic access is free, with premium models for deeper analysis.
 
 ## Our Team
-Built by educators and AI enthusiasts at xAI-inspired labs. We're passionate about bridging the gap between 
+Built by educators and AI enthusiasts. We're passionate about bridging the gap between 
 curiosity and clarity.
 
 [Explore Models →](/Models) | [How It Works →](/How_It_Works)
 """)
 
-# Add an image or metric if available (e.g., from assets)
-# st.image("assets/doubt_tutor_logo.png", caption="Doubt Tutor in Action")
-st.metric("Users Helped", "10K+", delta="+20%")
-st.metric("Questions Answered", "50K+", delta="+15%")
+# Add metrics for engagement
+col1, col2 = st.columns(2)
+col1.metric("Users Helped", "10K+", delta="+20%")
+col2.metric("Questions Answered", "50K+", delta="+15%")
