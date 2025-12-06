@@ -46,10 +46,14 @@ class Config:
         "jpeg": "image/jpeg",
     }
 
-    # AI Models
+    # 🔥 AI Model Config
     DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "llama3.2")
     DEFAULT_TEMPERATURE = float(os.getenv("DEFAULT_TEMPERATURE", "0.7"))
     DEFAULT_MAX_TOKENS = int(os.getenv("DEFAULT_MAX_TOKENS", "2000"))
+
+    # 🔑 API KEYS (CRITICAL)
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
     # Logging
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")

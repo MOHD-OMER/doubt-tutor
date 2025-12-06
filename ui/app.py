@@ -280,14 +280,15 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="input-container">', unsafe_allow_html=True)
 
 # --------------------------------------------------
-# Model Compatibility Check
+# Model Compatibility Check - UPDATED FOR GEMINI FLASH
 # --------------------------------------------------
 if st.session_state.files_buffer:
     contains_image = any(f.type.startswith("image") for f in st.session_state.files_buffer)
     contains_pdf = any(f.type == "application/pdf" for f in st.session_state.files_buffer)
 
-    if (contains_image or contains_pdf) and st.session_state.current_model == "llama3.2":
-        st.warning("⚠️ LLaMA 3.2 cannot read images or scanned PDFs. Switch to LLaVA for vision support.")
+    # Updated: Check if current model supports vision
+    if (contains_image or contains_pdf) and st.session_state.current_model not in ["gemini-flash"]:
+        st.warning("⚠️ The selected model cannot read images/PDFs. Switch to Gemini Flash for vision support.")
 
 # --------------------------------------------------
 # Enhanced File Preview
@@ -451,7 +452,7 @@ if st.session_state.files_buffer:
     st.markdown(f"""
     <div class='file-preview-header'>
         <div class='file-preview-title'>
-            📁 Attached Files
+            📎 Attached Files
             <span class='file-count-badge'>{len(st.session_state.files_buffer)}</span>
         </div>
     </div>
@@ -582,7 +583,7 @@ if send and not st.session_state.processing_response:
         for file in st.session_state.files_buffer:
             prepared_files.append({
                 "name": file.name,
-                "type": file.type,
+                "mime_type": file.type,  # Using mime_type for Gemini compatibility
                 "data": encode_file(file)
             })
 

@@ -279,12 +279,12 @@ models_info = {
         "specs": ["8B parameters", "Fast inference", "Text-optimized"],
         "best_for": "Quick text queries, math problems, and conceptual explanations"
     },
-    "llava": {
+    "gemini-flash": {
         "icon": "🖼️",
-        "title": "LLaVA",
-        "desc": "Multimodal powerhouse for visual doubts—upload diagrams, charts, or photos, and get step-by-step breakdowns. Perfect for biology sketches or physics graphs.",
-        "specs": ["Vision-Language model", "Image analysis", "Multimodal"],
-        "best_for": "Visual content, diagrams, charts, and image-based questions"
+        "title": "Gemini 1.5 Flash (Vision)",
+        "desc": "Google's multimodal model for diagrams, screenshots, and image-based doubts.",
+        "specs": ["Vision-language", "Free tier", "Fast"],
+        "best_for": "Diagrams, charts, screenshots, visual questions"
     },
     "mistral": {
         "icon": "🌬️",
@@ -345,7 +345,7 @@ index = model_options.index(default_model) if default_model in model_options els
 # Create a more descriptive display for the selectbox
 model_display_names = {
     "llama3.2": "🦙 Llama 3.2 - Fast text responses",
-    "llava": "🖼️ LLaVA - Visual analysis",
+    "gemini-flash": "🖼️ Gemini Flash - Visual & Text",
     "mistral": "🌬️ Mistral - Creative & interdisciplinary",
     "deepseek-r1": "🔍 DeepSeek R1 - Advanced reasoning"
 }
@@ -358,7 +358,7 @@ selected_display = st.selectbox(
     help="Select a model based on your learning needs"
 )
 
-if selected_display != default_model:
+if selected_display != st.session_state.get("model_select_professional", "llama3.2"):
     st.session_state["model_select_professional"] = selected_display
     st.success(f"✅ Successfully switched to **{models_info[selected_display]['title']}**!")
     st.balloons()
@@ -383,14 +383,14 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown("#### ⚡ Speed")
-    st.write("**Fastest:** Llama 3.2")
-    st.write("**Moderate:** Mistral, LLaVA")
+    st.write("**Fastest:** Llama 3.2, Gemini Flash")
+    st.write("**Moderate:** Mistral")
     st.write("**Thoughtful:** DeepSeek R1")
 
 with col2:
     st.markdown("#### 🎯 Specialization")
     st.write("**Text:** Llama 3.2, Mistral")
-    st.write("**Visual:** LLaVA")
+    st.write("**Visual:** Gemini Flash")
     st.write("**Code:** DeepSeek R1")
 
 with col3:

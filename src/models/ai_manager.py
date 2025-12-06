@@ -1,161 +1,179 @@
-"""
-AI Manager — Handles communication with Ollama Local LLM (Vision + Text SAFE)
-"""
-
 import requests
 import re
+import base64
+import os
 from src.utils.logger import setup_logger
 
 
 class AIManager:
     def __init__(self):
         self.logger = setup_logger()
-        self.ollama_url = "http://localhost:11434/api/generate"
 
+        # API endpoints
+        self.groq_url = "https://api.groq.com/openai/v1/chat/completions"
+        self.gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+
+        # API keys (Set these in your environment)
+        self.groq_key = os.getenv("GROQ_API_KEY", "")
+        self.gemini_key = os.getenv("GEMINI_API_KEY", "")
+
+    # ------------------------------------------------------
+    # Ultra HTML Sanitizer (Safe for UI renderer)
+    # ------------------------------------------------------
     def _strip_all_html(self, text):
-        """Aggressively strip ALL HTML tags and entities from text"""
         if not text:
             return ""
-        
-        # Convert to string if not already
+
         text = str(text)
-        
-        # Remove ALL HTML tags (including malformed ones)
-        text = re.sub(r'<[^>]*>', '', text)
-        text = re.sub(r'<[^>]*$', '', text)  # Remove incomplete tags
-        text = re.sub(r'^[^<]*>', '', text)  # Remove closing tags at start
-        
+
+        # Remove HTML tags
+        text = re.sub(r"<[^>]*>", "", text)
+
         # Remove HTML entities
         html_entities = {
-            '&lt;': '<',
-            '&gt;': '>',
-            '&amp;': '&',
-            '&quot;': '"',
-            '&apos;': "'",
-            '&nbsp;': ' ',
-            '&#39;': "'",
-            '&#34;': '"',
+            "&lt;": "<", "&gt;": ">", "&amp;": "&",
+            "&quot;": '"', "&apos;": "'", "&nbsp;": " ",
+            "&#39;": "'", "&#34;": '"',
         }
-        for entity, char in html_entities.items():
-            text = text.replace(entity, char)
-        
-        # Remove any remaining HTML entity patterns
-        text = re.sub(r'&[a-zA-Z0-9#]+;', '', text)
-        
-        # Remove common CSS class patterns that might appear
-        text = re.sub(r'class\s*=\s*["\'][^"\']*["\']', '', text)
-        text = re.sub(r'style\s*=\s*["\'][^"\']*["\']', '', text)
-        
-        # Remove div, span, and other container references
-        unwanted_terms = [
-            'bubble-user-bubble', 'bubble-content', 'message-meta', 
-            'user-meta', 'ai-bubble', 'message-wrapper', 'timestamp',
-            'user-bubble', 'ai-message', 'user-message'
+        for ent, val in html_entities.items():
+            text = text.replace(ent, val)
+
+        # Remove leftover entities
+        text = re.sub(r"&[a-zA-Z0-9#]+;", "", text)
+
+        # Remove CSS/UI classes accidentally injected
+        ui_terms = [
+            "bubble", "message", "wrapper", "timestamp",
+            "meta", "ai-bubble", "user-bubble"
         ]
-        for term in unwanted_terms:
-            text = text.replace(term, '')
-        
-        # Clean up excessive whitespace
-        text = re.sub(r'\s+', ' ', text)
-        text = re.sub(r'\n\s*\n\s*\n+', '\n\n', text)
-        
+        for term in ui_terms:
+            text = text.replace(term, "")
+
+        # Clean whitespace
+        text = re.sub(r"\s+", " ", text)
+
         return text.strip()
 
-    def generate_response(self, question: str, model: str, temperature: float = 0.7, files=None):
-        """
-        Send prompt + optional files to Ollama and return response safely.
+    # ------------------------------------------------------
+    # Gemini (Vision + Text)
+    # ------------------------------------------------------
+    def _call_gemini(self, prompt, files):
+        try:
+            contents = [{"role": "user", "parts": []}]
 
-        Supports:
-        - Text-only models (LLaMA, Mistral, DeepSeek)
-        - Vision models (LLaVA)
-        """
+            # Add text prompt
+            contents[0]["parts"].append({"text": prompt})
 
+            # Add image/pdf files
+            for f in files:
+                # FIX #1: Changed from "mime_type" to "type" to match Streamlit uploader
+                mime = f.get("type", "")
+                data = f.get("data", "")
+
+                contents[0]["parts"].append({
+                    "inline_data": {
+                        "mime_type": mime,
+                        "data": data
+                    }
+                })
+
+            url = f"{self.gemini_url}?key={self.gemini_key}"
+
+            response = requests.post(
+                url,
+                json={"contents": contents},
+                timeout=60
+            )
+
+            if response.status_code != 200:
+                self.logger.error(response.text)
+                return f"❌ Gemini Error: {response.text}"
+
+            data = response.json()
+
+            # Extract text
+            try:
+                reply = data["candidates"][0]["content"]["parts"][0]["text"]
+            except:
+                reply = "⚠️ Gemini returned an unexpected response."
+
+            return reply
+
+        except Exception as e:
+            self.logger.error(str(e))
+            return f"❌ Gemini Error: {str(e)}"
+
+    # ------------------------------------------------------
+    # Groq (Text-only)
+    # ------------------------------------------------------
+    def _call_groq(self, prompt, model):
+        try:
+            headers = {
+                "Authorization": f"Bearer {self.groq_key}",
+                "Content-Type": "application/json"
+            }
+
+            payload = {
+                "model": model,
+                "messages": [
+                    {"role": "user", "content": prompt}
+                ],
+                "temperature": 0.7
+            }
+
+            response = requests.post(
+                self.groq_url,
+                json=payload,
+                headers=headers,
+                timeout=60
+            )
+
+            if response.status_code != 200:
+                self.logger.error(response.text)
+                return f"❌ Groq Error: {response.text}"
+
+            data = response.json()
+            reply = data["choices"][0]["message"]["content"]
+
+            return reply
+
+        except Exception as e:
+            self.logger.error(str(e))
+            return f"❌ Groq Error: {str(e)}"
+
+    # ------------------------------------------------------
+    # Public method -> auto-selects model
+    # ------------------------------------------------------
+    def generate_response(self, question, model, temperature=0.7, files=None):
         try:
             prompt = question.strip()
             files = files or []
 
-            has_images = any("image" in f.get("type", "") for f in files)
-            has_files = len(files) > 0
+            # FIX #3: Add API key validation
+            if model != "gemini-flash" and not self.groq_key:
+                return "❌ Missing GROQ_API_KEY in your .env"
 
-            # -------------------------
-            # MODEL CAPABILITIES
-            # -------------------------
-            vision_model = "llava" in model.lower()
+            if model == "gemini-flash" and not self.gemini_key:
+                return "❌ Missing GEMINI_API_KEY in your .env"
 
-            # ❌ text-only model received files
-            if has_files and not vision_model:
-                prompt = (
-                    "The user uploaded files but this model cannot read them.\n"
-                    "Answer only the text question.\n\n"
-                    + prompt
-                )
+            # Choose provider
+            if model == "gemini-flash":
+                reply = self._call_gemini(prompt, files)
 
-            # -------------------------
-            # BUILD PAYLOAD
-            # -------------------------
-            payload = {
-                "model": model,
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "temperature": temperature
-                }
-            }
+            else:
+                # Groq models cannot view images → warn user
+                if files:
+                    prompt = (
+                        "Note: This model cannot see uploaded files. "
+                        "Only answer using the text below:\n\n" + prompt
+                    )
+                reply = self._call_groq(prompt, model)
 
-            # -------------------------
-            # ATTACH IMAGES (VISION)
-            # -------------------------
-            if vision_model and has_images:
-                payload["images"] = [
-                    f["data"] for f in files if "image" in f.get("type", "")
-                ]
-
-                payload["prompt"] = (
-                    "Analyze the image(s) carefully and answer the question.\n\n"
-                    + prompt
-                )
-
-            # -------------------------
-            # SEND REQUEST
-            # -------------------------
-            response = requests.post(
-                self.ollama_url,
-                json=payload,
-                timeout=300
-            )
-
-            # -------------------------
-            # ERROR HANDLING
-            # -------------------------
-            if response.status_code != 200:
-                self.logger.error(response.text)
-                raise Exception("Ollama returned non-200 response")
-
-            data = response.json()
-            reply = data.get("response", "").strip()
-
-            if not reply:
-                return "⚠️ AI returned an empty reply."
-
-            # -------------------------
-            # ✅ ULTRA-AGGRESSIVE HTML STRIPPING
-            # -------------------------
+            # Final sanitize
             reply = self._strip_all_html(reply)
-            
-            # Final safety check - if still contains HTML tags, strip them again
-            if '<' in reply and '>' in reply:
-                reply = re.sub(r'<[^>]*>', '', reply)
-            
-            return reply.strip() if reply.strip() else "⚠️ AI response was empty after sanitization."
 
-        except requests.exceptions.ConnectionError:
-            self.logger.error("Ollama not running")
-            return "❌ Ollama server is not running. Please start Ollama."
-
-        except requests.exceptions.Timeout:
-            self.logger.error("Timeout")
-            return "⏳ AI took too long to respond. Try again."
+            return reply or "⚠️ AI returned an empty response."
 
         except Exception as e:
-            self.logger.error(f"Ollama Error: {str(e)}")
+            self.logger.error(str(e))
             return f"❌ AI Error: {str(e)}"
