@@ -1,0 +1,24 @@
+# Core Framework
+streamlit==1.29.0
+python-dotenv==1.0.0
+
+# AI / Networking
+ollama==0.1.6
+requests==2.31.0
+httpx==0.25.2
+
+# File & Document Handling
+pillow==10.1.0
+PyPDF2==3.0.1
+
+# Markdown Rendering & Code Highlighting
+markdown==3.5.1
+pygments==2.16.1
+
+# Utility Libraries
+pyyaml==6.0.1
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Exporting
+reportlab==4.0.7

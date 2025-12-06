@@ -1,0 +1,1036 @@
+/* ============================= */
+/* DOUBT TUTOR - PROFESSIONAL UI */
+/* ============================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ================= CSS VARIABLES ================= */
+:root {
+    /* Primary Colors */
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #818cf8;
+    --primary-glow: rgba(99, 102, 241, 0.5);
+    --secondary: #8b5cf6;
+    --accent: #ec4899;
+    --success: #10b981;
+    
+    /* Background */
+    --bg-primary: #0a0a1a;
+    --bg-secondary: #0f0f1e;
+    --bg-card: rgba(20, 20, 40, 0.85);
+    --bg-elevated: rgba(30, 30, 60, 0.95);
+    --bg-input: rgba(15, 15, 30, 0.98);
+    
+    /* Text */
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    
+    /* Borders */
+    --border-subtle: rgba(99, 102, 241, 0.1);
+    --border-default: rgba(99, 102, 241, 0.2);
+    --border-strong: rgba(99, 102, 241, 0.4);
+    --border-bright: rgba(99, 102, 241, 0.6);
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.25);
+    --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.35);
+    --shadow-glow: 0 0 32px rgba(99, 102, 241, 0.4);
+    --shadow-inner: inset 0 2px 8px rgba(0, 0, 0, 0.25);
+    
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Spacing */
+    --header-height: 72px;
+    --input-height: 56px;
+    --spacing-section: 3rem;
+    --spacing-content: 2rem;
+}
+
+/* ================= BASE STYLES ================= */
+* {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Hide Streamlit UI */
+#MainMenu, footer, header {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+section[data-testid="stSidebar"] > div {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%) !important;
+    border-right: 1px solid var(--border-default) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+.stApp {
+    background: 
+        radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0a1a 0%, #0f0f1e 50%, #0a0a1a 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+.block-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+}
+
+/* ================= PROFESSIONAL HEADER ================= */
+.top-nav {
+    background: linear-gradient(
+        180deg, 
+        rgba(15, 15, 30, 0.95) 0%, 
+        rgba(10, 10, 25, 0.92) 100%
+    );
+    backdrop-filter: blur(20px) saturate(180%);
+    padding: 1.125rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-default);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    height: var(--header-height);
+    min-height: var(--header-height);
+}
+
+.top-nav::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg, 
+        transparent 0%, 
+        var(--primary) 50%, 
+        transparent 100%
+    );
+    opacity: 0.5;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 60%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    letter-spacing: -0.02em;
+    transition: var(--transition-base);
+    line-height: 1;
+}
+
+.brand:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+/* Nav Controls */
+.nav-controls {
+    display: flex;
+    gap: 0.875rem;
+    align-items: center;
+}
+
+.nav-controls button {
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%) !important;
+    border: 1px solid var(--border-default) !important;
+    color: var(--text-secondary) !important;
+    padding: 0 1.25rem !important;
+    border-radius: var(--radius-lg) !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: var(--transition-base) !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    line-height: 1 !important;
+}
+
+.nav-controls button:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.12) 100%) !important;
+    border-color: var(--border-strong) !important;
+    color: var(--text-primary) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+}
+
+/* Select Box */
+div[data-baseweb="select"] {
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%) !important;
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid var(--border-default) !important;
+    transition: var(--transition-base) !important;
+    min-width: 140px !important;
+    height: 44px !important;
+}
+
+div[data-baseweb="select"]:hover {
+    border-color: var(--border-strong) !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+div[data-baseweb="select"] > div {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: 0.625rem 1rem !important;
+    font-size: 0.875rem !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* ================= CONTENT AREA ================= */
+.content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem var(--spacing-content) 1rem;
+}
+
+/* ================= WELCOME SECTION ================= */
+.welcome {
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: fadeInDown 0.6s ease-out;
+}
+
+.welcome h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(
+        135deg, 
+        #ffffff 0%, 
+        var(--primary-light) 40%, 
+        var(--secondary) 80%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.welcome p {
+    color: var(--text-muted);
+    font-size: 1.125rem;
+    font-weight: 400;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ================= FEATURE CARDS ================= */
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background: linear-gradient(
+        135deg, 
+        rgba(30, 30, 60, 0.6) 0%, 
+        rgba(20, 20, 40, 0.75) 100%
+    );
+    backdrop-filter: blur(20px) saturate(180%);
+    padding: 2rem 1.75rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-subtle);
+    text-align: center;
+    transition: var(--transition-base);
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    opacity: 0;
+    transition: var(--transition-base);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-default);
+    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.25);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.125rem;
+    margin-bottom: 0.625rem;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+}
+
+.card-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ================= CHAT CONTAINER ================= */
+.chat {
+    background: rgba(15, 15, 30, 0.55);
+    backdrop-filter: blur(26px) saturate(180%);
+    border-radius: 20px;
+    padding: 2.5rem;
+    
+    /* Calculated height: viewport - header - input area - minimal spacing */
+    height: calc(100vh - var(--header-height) - var(--input-height) - 140px);
+    min-height: 500px;
+    
+    /* Full width from edge to edge */
+    width: calc(100% - 4rem);
+    max-width: none;
+    margin: 0 2rem 1.5rem;
+    
+    /* Modern border + subtle shadow */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+.chat::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: var(--radius-full);
+    margin: 6px;
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: var(--radius-full);
+}
+
+.chat::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--primary-light) 0%, var(--secondary) 100%);
+}
+
+/* ================= CHAT MESSAGES ================= */
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    animation: fadeInDown 0.3s ease-out;
+}
+
+.message-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.message-row.user-message {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.message-row.user-message .message-avatar {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+}
+
+.message-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 70%;
+    min-width: 0;
+}
+
+.message-bubble {
+    background: linear-gradient(135deg, rgba(30, 30, 60, 0.7) 0%, rgba(20, 20, 40, 0.85) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    word-wrap: break-word;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-base);
+}
+
+.message-row.user-message .message-bubble {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.message-bubble:hover {
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-md);
+}
+
+.message-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    padding: 0 0.25rem;
+}
+
+.message-row.user-message .message-meta {
+    flex-direction: row-reverse;
+}
+
+.message-timestamp {
+    opacity: 0.7;
+}
+
+.message-model {
+    padding: 0.125rem 0.5rem;
+    background: rgba(99, 102, 241, 0.15);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    color: var(--primary-light);
+}
+
+/* Message with files */
+.message-files {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.message-file-item {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Code blocks in messages */
+.message-bubble pre {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    margin: 0.75rem 0;
+}
+
+.message-bubble code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+}
+
+.message-bubble p {
+    margin: 0.5rem 0;
+}
+
+.message-bubble p:first-child {
+    margin-top: 0;
+}
+
+.message-bubble p:last-child {
+    margin-bottom: 0;
+}
+
+/* ================= INPUT CONTAINER ================= */
+.input-container {
+    max-width: none;
+    width: calc(100% - 4rem);
+    margin: 0 2rem;
+    padding: 0 0 var(--spacing-content);
+    position: relative;
+    z-index: 10;
+}
+
+/* Hide status messages and duplicate inputs */
+div[data-testid="stStatusWidget"],
+div[data-testid="stStatus"],
+.stSpinner,
+div[data-testid="stToast"],
+div[data-testid="stChatInput"],
+div[data-testid="stChatMessage"],
+.stChatInput,
+.stChatMessage {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Hide text/markdown elements that appear AFTER input container closes */
+.input-container + div[data-testid="stMarkdown"]:not(:has(input)):not(:has(button)),
+.input-container + div[data-testid="element-container"]:not(:has(input)):not(:has(button)) > div[data-testid="stMarkdown"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Hide empty paragraphs and divs after submission */
+.input-container + p:empty,
+.input-container + div:empty:not([data-testid]) {
+    display: none !important;
+}
+
+/* Input row layout */
+.input-container div[data-testid="stHorizontalBlock"],
+.input-container .stHorizontalBlock {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+}
+
+.input-container div[data-testid="column"] {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+}
+
+.input-container div[data-testid="column"] > div {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+}
+
+/* Column layout */
+.input-container div[data-testid="column"]:nth-child(1) {
+    width: var(--input-height) !important;
+    flex: 0 0 var(--input-height) !important;
+}
+
+.input-container div[data-testid="column"]:nth-child(2) {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.input-container div[data-testid="column"]:nth-child(3) {
+    width: var(--input-height) !important;
+    flex: 0 0 var(--input-height) !important;
+}
+
+/* ================= TEXT INPUT ================= */
+.input-container div[data-testid="stTextInput"] {
+    flex: 1 !important;
+    width: 100% !important;
+}
+
+.input-container input[type="text"] {
+    background: linear-gradient(135deg, var(--bg-input) 0%, var(--bg-elevated) 100%) !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--radius-xl) !important;
+    border: 1px solid var(--border-default) !important;
+    padding: 0 1.25rem !important;
+    font-size: 0.9375rem !important;
+    font-weight: 400 !important;
+    transition: var(--transition-base) !important;
+    backdrop-filter: blur(20px) !important;
+    height: var(--input-height) !important;
+    min-height: var(--input-height) !important;
+    width: 100% !important;
+    box-shadow: var(--shadow-sm), var(--shadow-inner);
+    line-height: 1.5 !important;
+}
+
+.input-container input[type="text"]:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12), var(--shadow-md) !important;
+    outline: none !important;
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%) !important;
+}
+
+.input-container input[type="text"]::placeholder {
+    color: var(--text-dim) !important;
+    font-weight: 400;
+}
+
+.input-container div[data-testid="stTextInput"] > label,
+.input-container div[data-testid="stTextInput"] > div > label {
+    display: none !important;
+}
+
+/* ================= FILE UPLOAD BUTTON ================= */
+.input-container div[data-testid="stFileUploader"] {
+    width: var(--input-height) !important;
+    height: var(--input-height) !important;
+    min-width: var(--input-height) !important;
+    max-width: var(--input-height) !important;
+    min-height: var(--input-height) !important;
+    max-height: var(--input-height) !important;
+    background: linear-gradient(135deg, var(--bg-input) 0%, var(--bg-elevated) 100%) !important;
+    border: 1px solid var(--border-default) !important;
+    border-radius: var(--radius-xl) !important;
+    transition: var(--transition-base) !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+    box-shadow: var(--shadow-sm), var(--shadow-inner);
+}
+
+.input-container div[data-testid="stFileUploader"]:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%) !important;
+    border-color: var(--primary) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3) !important;
+}
+
+.input-container div[data-testid="stFileUploader"]::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 22px;
+    height: 22px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 2;
+    transition: var(--transition-base);
+}
+
+.input-container div[data-testid="stFileUploader"]:hover::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%23c7d2fe' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48'/%3E%3C/svg%3E");
+    transform: translate(-50%, -50%) rotate(12deg) scale(1.08);
+}
+
+.input-container div[data-testid="stFileUploader"] > section {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0 !important;
+    cursor: pointer !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+.input-container div[data-testid="stFileUploader"] > label {
+    display: none !important;
+}
+
+/* ================= SEND BUTTON ================= */
+.input-container button[kind="primary"], 
+.input-container button[type="primary"],
+.input-container button[key="send_btn"] {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+    color: white !important;
+    border: none !important;
+    height: var(--input-height) !important;
+    min-height: var(--input-height) !important;
+    min-width: var(--input-height) !important;
+    width: var(--input-height) !important;
+    border-radius: var(--radius-xl) !important;
+    font-weight: 600 !important;
+    font-size: 1.25rem !important;
+    transition: var(--transition-base) !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+}
+
+.input-container button[kind="primary"]:hover, 
+.input-container button[type="primary"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45) !important;
+}
+
+.input-container button[kind="primary"]:active, 
+.input-container button[type="primary"]:active {
+    transform: translateY(0) !important;
+}
+
+.input-container button[kind="primary"]:disabled,
+.input-container button[type="primary"]:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+/* ================= HIDE FILE PREVIEW IN INPUT AREA ================= */
+.input-container .file-preview-wrapper,
+.input-container .file-preview-card,
+.input-container + .file-preview-wrapper,
+.input-container ~ .file-preview-wrapper {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Hide file preview elements inside input container */
+.input-container div[class*="file-preview"],
+.input-container .stExpander {
+    display: none !important;
+}
+
+/* ================= SECONDARY BUTTONS ================= */
+button[kind="secondary"] {
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-default) !important;
+    height: 44px !important;
+    border-radius: var(--radius-md) !important;
+    font-weight: 500 !important;
+    transition: var(--transition-base) !important;
+    padding: 0 1.25rem !important;
+}
+
+button[kind="secondary"]:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%) !important;
+    border-color: var(--border-strong) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ================= FILE PREVIEW (Outside Input Container) ================= */
+.file-preview-wrapper {
+    background: linear-gradient(135deg, var(--bg-input) 0%, var(--bg-elevated) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-md), var(--shadow-inner);
+    animation: slideInUp 0.3s ease-out;
+}
+
+.file-preview-card {
+    background: rgba(30, 30, 60, 0.5);
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1.125rem;
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition-base);
+    margin-bottom: 0.75rem;
+}
+
+.file-preview-card:last-child {
+    margin-bottom: 0;
+}
+
+.file-preview-card:hover {
+    border-color: var(--border-default);
+    background: rgba(30, 30, 60, 0.7);
+    transform: translateX(4px);
+}
+
+.file-preview-icon {
+    font-size: 20px;
+}
+
+.file-preview-name {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    flex: 1;
+}
+
+/* Expander styling */
+.streamlit-expanderHeader {
+    background: rgba(99, 102, 241, 0.08) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 0.75rem 1rem !important;
+    color: var(--text-secondary) !important;
+    font-weight: 500 !important;
+    transition: var(--transition-base) !important;
+}
+
+.streamlit-expanderHeader:hover {
+    background: rgba(99, 102, 241, 0.15) !important;
+}
+
+/* ================= ALERTS & MESSAGES ================= */
+.stAlert {
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%) !important;
+    border-radius: var(--radius-lg) !important;
+    border-left: 3px solid var(--primary) !important;
+    padding: 1rem 1.25rem !important;
+    color: var(--text-secondary) !important;
+    backdrop-filter: blur(16px);
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+@media (max-width: 1440px) {
+    .content, .input-container, .chat {
+        max-width: 1200px;
+    }
+}
+
+@media (max-width: 1024px) {
+    :root {
+        --spacing-section: 2.5rem;
+        --spacing-content: 1.5rem;
+    }
+    
+    .content {
+        padding: var(--spacing-section) var(--spacing-content) var(--spacing-content);
+    }
+    
+    .welcome h1 {
+        font-size: 2.5rem;
+    }
+    
+    .features {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.25rem;
+    }
+    
+    .message-content {
+        max-width: 80%;
+    }
+    
+    .chat {
+        height: calc(100vh - var(--header-height) - var(--input-height) - 120px);
+        min-height: 450px;
+        padding: 2rem;
+        width: calc(100% - 3rem);
+        margin: 0 1.5rem 1.5rem;
+    }
+    
+    .input-container {
+        width: calc(100% - 3rem);
+        margin: 0 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 120px;
+        --spacing-section: 2rem;
+        --spacing-content: 1rem;
+    }
+    
+    .top-nav {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
+        height: auto;
+        min-height: var(--header-height);
+    }
+    
+    .brand {
+        font-size: 1.375rem;
+    }
+    
+    .welcome h1 {
+        font-size: 2rem;
+    }
+    
+    .welcome p {
+        font-size: 1rem;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .card {
+        padding: 1.5rem 1.25rem;
+        min-height: 140px;
+    }
+
+    .chat {
+        padding: 1.5rem;
+        border-radius: 16px;
+        height: calc(100vh - var(--header-height) - var(--input-height) - 100px);
+        min-height: 350px;
+        width: calc(100% - 2rem);
+        margin: 0 1rem 1.5rem;
+    }
+    
+    .input-container {
+        width: calc(100% - 2rem);
+        margin: 0 1rem;
+        padding: 0 0 1.5rem;
+    }
+    
+    .message-content {
+        max-width: 85%;
+    }
+    
+    .message-avatar {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
+        font-size: 1.125rem;
+    }
+    
+    .message-bubble {
+        padding: 0.875rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --input-height: 48px;
+    }
+    
+    .top-nav {
+        padding: 0.875rem 1rem;
+    }
+    
+    .brand {
+        font-size: 1.25rem;
+    }
+    
+    .welcome h1 {
+        font-size: 1.75rem;
+    }
+    
+    .card {
+        padding: 1.25rem 1rem;
+        min-height: 120px;
+    }
+    
+    .chat {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .message-content {
+        max-width: 90%;
+    }
+    
+    .message-avatar {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        min-height: 32px;
+    }
+}
+
+/* ================= ACCESSIBILITY ================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* ================= UTILITY CLASSES ================= */
+.fade-in {
+    animation: fadeInDown 0.5s ease-out;
+}
+
+.glass-effect {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--border-subtle);
+}

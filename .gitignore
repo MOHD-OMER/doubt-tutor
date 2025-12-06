@@ -1,0 +1,51 @@
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.egg
+
+# ---- Environment ----
+.env
+*.env
+.env.* 
+
+# ---- Virtual Environments ----
+venv/
+.venv/
+ENV/
+env/
+conda/
+
+# ---- VSCode / Editors ----
+.vscode/
+.idea/
+*.swp
+
+# ---- Logs ----
+logs/
+*.log
+
+# ---- Streamlit ----
+.streamlit/
+
+# ---- Build / Dist ----
+build/
+dist/
+
+# ---- OS generated files ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- User Uploads ----
+uploads/
+data/uploads/
+data/processed/
+data/exports/
+
+# ---- Cache ----
+.cache/
+*.cache
