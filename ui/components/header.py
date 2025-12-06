@@ -8,6 +8,7 @@ def render_header():
     Features:
     - Gradient brand title
     - Model badge display (selection handled on Models page)
+    - Custom horizontal navigation bar (Home, About, How It Works, Models)
     - Styled export button
     - Subtle gradient divider
     """
@@ -18,6 +19,13 @@ def render_header():
         st.session_state[model_key] = "llama3.2"
     
     selected_model = st.session_state[model_key]
+    
+    # Hide default Streamlit sidebar (for custom nav)
+    st.markdown("""
+    <style>
+    section[data-testid="stSidebar"] { display: none !important; }
+    </style>
+    """, unsafe_allow_html=True)
     
     # Header layout with professional spacing
     header_container = st.container()
@@ -43,7 +51,7 @@ def render_header():
             """, unsafe_allow_html=True)
         
         with col_right:
-            # Professional model badge (no selector here; handled on Models page)
+            # Professional model badge
             model_display = selected_model.upper().replace("-", " ").replace("LLAVA", "LLaVA").replace("DEEPSEEK R1", "DeepSeek")
             model_icons = {
                 "llama3.2": "🦙",
@@ -54,42 +62,55 @@ def render_header():
             }
             icon = model_icons.get(selected_model, "🤖")
             
-            col_model, col_export = st.columns([2, 1])
-            with col_model:
-                st.markdown(f"""
-                <div class="model-badge" style="
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                    padding: 10px 18px;
-                    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
-                    border: 1px solid rgba(99, 102, 241, 0.2);
-                    border-radius: 20px;
-                    font-weight: 600;
-                    font-size: 0.95rem;
-                    color: var(--text-primary);
-                    backdrop-filter: blur(12px);
-                    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-                    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
-                    cursor: default;
-                    white-space: nowrap;
-                "
-                title="Current AI Model: {selected_model}. Change on Models page.">
-                    {icon} {model_display}
-                </div>
-                """, unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class="model-badge" style="
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 18px;
+                background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+                border: 1px solid rgba(99, 102, 241, 0.2);
+                border-radius: 20px;
+                font-weight: 600;
+                font-size: 0.95rem;
+                color: var(--text-primary);
+                backdrop-filter: blur(12px);
+                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+                cursor: default;
+                white-space: nowrap;
+                margin-right: 1rem;
+            "
+            title="Current AI Model: {selected_model}. Change on Models page.">
+                {icon} {model_display}
+            </div>
+            """, unsafe_allow_html=True)
             
-            with col_export:
-                # Professional export button
-                if st.button(
-                    "💾 Export",
-                    key="export_professional",
-                    use_container_width=False,
-                    help="Export chat history"
-                ):
-                    st.session_state.export_chat = True
-                    st.success("✅ Chat exported successfully!", icon="✅")
-                    st.rerun()
+            # Custom Horizontal Navigation Bar
+            nav_pages = [
+                ("🏠 Home", "app.py"),
+                ("ℹ️ About", "pages/1_About.py"),
+                ("🔄 How It Works", "pages/2_How_It_Works.py"),
+                ("🤖 Models", "pages/3_Models.py")
+            ]
+            
+            # Create small columns for nav buttons
+            nav_cols = st.columns(len(nav_pages))
+            for i, (label, page_path) in enumerate(nav_pages):
+                with nav_cols[i]:
+                    if st.button(label, key=f"nav_{i}", use_container_width=True, help=f"Go to {label}"):
+                        st.switch_page(page_path)
+            
+            # Professional export button (beside nav)
+            if st.button(
+                "💾 Export",
+                key="export_professional",
+                use_container_width=False,
+                help="Export chat history"
+            ):
+                st.session_state.export_chat = True
+                st.success("✅ Chat exported successfully!", icon="✅")
+                st.rerun()
     
     # Subtle professional divider
     st.markdown("""
