@@ -16,14 +16,19 @@ from ui.components.chat_interface import render_chat
 # --------------------------------------------------
 # Page Config
 # --------------------------------------------------
-st.set_page_config("Doubt Tutor", "🎓", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(
+    page_title="Doubt Tutor",
+    page_icon="🤔",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # --------------------------------------------------
 # Load CSS
 # --------------------------------------------------
 css_path = Path("ui/styles/style.css")
 if css_path.exists():
-    st.markdown(f"<style>{css_path.read_text()}</style>", unsafe_allow_html=True)
+    st.markdown(f"<style>{css_path.read_text(encoding='utf-8')}</style>", unsafe_allow_html=True)
 
 # Additional inline CSS for file upload
 st.markdown("""
@@ -193,8 +198,8 @@ if "messages_cleaned" not in st.session_state:
 # --------------------------------------------------
 # Sync Model from Header
 # --------------------------------------------------
-if "model_select_top" in st.session_state:
-    st.session_state.current_model = st.session_state.model_select_top
+if "model_select_professional" in st.session_state:
+    st.session_state.current_model = st.session_state.model_select_professional
 
 # --------------------------------------------------
 # Sidebar

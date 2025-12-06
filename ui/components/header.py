@@ -2,68 +2,107 @@
 import streamlit as st
 
 def render_header():
-    """Render enhanced professional header with better UI"""
+    """
+    Render a professional, clean header for Doubt Tutor.
     
-    # Header container
-    st.markdown('<div class="top-nav">', unsafe_allow_html=True)
+    Features:
+    - Gradient brand title
+    - Model badge display (selection handled on Models page)
+    - Styled export button
+    - Subtle gradient divider
+    """
     
-    # Create columns for layout
-    col1, col2 = st.columns([2, 3])
+    # Initialize model if not set (default for new sessions)
+    model_key = "model_select_professional"
+    if model_key not in st.session_state:
+        st.session_state[model_key] = "llama3.2"
     
-    with col1:
-        # Brand with gradient text
-        st.markdown("""
-        <div class="brand">
-            <span style="font-size: 1.8rem;">🎓</span>
-            <span>Doubt Tutor</span>
-        </div>
-        """, unsafe_allow_html=True)
+    selected_model = st.session_state[model_key]
     
-    with col2:
-        # Navigation controls
-        st.markdown('<div class="nav-controls">', unsafe_allow_html=True)
+    # Header layout with professional spacing
+    header_container = st.container()
+    with header_container:
+        col_left, col_right = st.columns([1, 3])
         
-        # Model selector with better styling
-        subcol1, subcol2 = st.columns([3, 1])
+        with col_left:
+            # Professional brand with gradient text and subtle shadow
+            st.markdown("""
+            <div class="brand" style="
+                font-size: 2.25rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, #ffffff 0%, #818cf8 40%, #8b5cf6 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                letter-spacing: -0.025em;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 0;
+            ">
+                Doubt Tutor
+            </div>
+            """, unsafe_allow_html=True)
         
-        with subcol1:
-            model = st.selectbox(
-                "AI Model",
-                ["llama3.2", "llava", "mistral", "deepseek-r1"],
-                key="model_select_top",
-                label_visibility="collapsed",
-                help="Select AI model for processing"
-            )
-            
-            # Model badge
-            model_colors = {
-                "llama3.2": "🔵",
-                "llava": "🟢",
-                "mistral": "🟣",
-                "deepseek-r1": "🔴"
+        with col_right:
+            # Professional model badge (no selector here; handled on Models page)
+            model_display = selected_model.upper().replace("-", " ").replace("LLAVA", "LLaVA").replace("DEEPSEEK R1", "DeepSeek")
+            model_icons = {
+                "llama3.2": "🦙",
+                "llava": "🖼️",
+                "mistral": "🌬️",
+                "deepseek-r1": "🔍",
+                "gpt-4o-mini": "⚡"
             }
-            st.markdown(
-                f'<span style="font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem;">'
-                f'{model_colors.get(model, "⚪")} {model.upper()}</span>',
-                unsafe_allow_html=True
-            )
-        
-        with subcol2:
-            # Export button
-            if st.button("💾 Export", help="Export chat history", key="export_toggle", use_container_width=True):
-                st.session_state.export_chat = True
-                st.rerun()
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+            icon = model_icons.get(selected_model, "🤖")
+            
+            col_model, col_export = st.columns([2, 1])
+            with col_model:
+                st.markdown(f"""
+                <div class="model-badge" style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 10px 18px;
+                    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+                    border: 1px solid rgba(99, 102, 241, 0.2);
+                    border-radius: 20px;
+                    font-weight: 600;
+                    font-size: 0.95rem;
+                    color: var(--text-primary);
+                    backdrop-filter: blur(12px);
+                    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+                    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+                    cursor: default;
+                    white-space: nowrap;
+                "
+                title="Current AI Model: {selected_model}. Change on Models page.">
+                    {icon} {model_display}
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col_export:
+                # Professional export button
+                if st.button(
+                    "💾 Export",
+                    key="export_professional",
+                    use_container_width=False,
+                    help="Export chat history"
+                ):
+                    st.session_state.export_chat = True
+                    st.success("✅ Chat exported successfully!", icon="✅")
+                    st.rerun()
     
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Divider with gradient
+    # Subtle professional divider
     st.markdown("""
-    <div style="height: 2px; background: linear-gradient(90deg, 
-        transparent 0%, 
-        rgba(99, 102, 241, 0.5) 50%, 
-        transparent 100%); 
-        margin-bottom: 0;">
-    </div>
+    <div class="header-divider" style="
+        height: 1px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(99, 102, 241, 0.4) 25%, 
+            rgba(139, 92, 246, 0.2) 50%, 
+            rgba(99, 102, 241, 0.4) 75%, 
+            transparent 100%);
+        margin: 1.5rem 0 2rem;
+        border-radius: 1px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    "></div>
     """, unsafe_allow_html=True)
