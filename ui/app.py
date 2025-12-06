@@ -290,56 +290,230 @@ if st.session_state.files_buffer:
         st.warning("⚠️ LLaMA 3.2 cannot read images or scanned PDFs. Switch to LLaVA for vision support.")
 
 # --------------------------------------------------
-# File Preview
+# Enhanced File Preview
 # --------------------------------------------------
 if st.session_state.files_buffer:
-    st.markdown("<div class='file-preview-wrapper'>", unsafe_allow_html=True)
-    st.markdown("<div style='margin-bottom: 1rem;'>", unsafe_allow_html=True)
+    # Enhanced CSS for file preview
+    st.markdown("""
+    <style>
+    .file-preview-container {
+        background: linear-gradient(135deg, rgba(30, 30, 60, 0.6), rgba(20, 20, 50, 0.8));
+        border-radius: 16px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    .file-preview-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+    }
+    
+    .file-preview-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #a5b4fc;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .file-count-badge {
+        background: rgba(99, 102, 241, 0.3);
+        color: #c7d2fe;
+        padding: 0.125rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+    
+    .file-item {
+        background: rgba(17, 24, 39, 0.6);
+        border-radius: 12px;
+        padding: 0.875rem;
+        margin-bottom: 0.625rem;
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .file-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background: linear-gradient(180deg, #6366f1, #8b5cf6);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .file-item:hover {
+        background: rgba(30, 41, 59, 0.8);
+        border-color: rgba(99, 102, 241, 0.4);
+        transform: translateX(4px);
+        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+    }
+    
+    .file-item:hover::before {
+        opacity: 1;
+    }
+    
+    .file-icon {
+        font-size: 28px;
+        min-width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+    
+    .file-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .file-name {
+        color: #e2e8f0;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .file-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.75rem;
+        color: #94a3b8;
+    }
+    
+    .file-size {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .file-type-badge {
+        background: rgba(99, 102, 241, 0.2);
+        color: #a5b4fc;
+        padding: 0.125rem 0.5rem;
+        border-radius: 6px;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 0.65rem;
+        letter-spacing: 0.05em;
+    }
+    
+    .clear-all-section {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(99, 102, 241, 0.15);
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .file-item {
+        animation: slideIn 0.3s ease-out;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Container start
+    st.markdown("<div class='file-preview-container'>", unsafe_allow_html=True)
+    
+    # Header with file count
+    st.markdown(f"""
+    <div class='file-preview-header'>
+        <div class='file-preview-title'>
+            📁 Attached Files
+            <span class='file-count-badge'>{len(st.session_state.files_buffer)}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
+    # File items
     for i, f in enumerate(st.session_state.files_buffer):
         file_type = f.type.lower()
-
+        
+        # Enhanced icon selection
         icon = "📎"
+        type_label = "FILE"
         if "pdf" in file_type:
             icon = "📄"
-        elif "image" in file_type:
+            type_label = "PDF"
+        elif "image" in file_type or "png" in file_type or "jpg" in file_type or "jpeg" in file_type:
             icon = "🖼️"
+            type_label = "IMAGE"
+        elif "text" in file_type or "txt" in file_type:
+            icon = "📝"
+            type_label = "TEXT"
+        
+        # Calculate file size with better formatting
+        size_mb = f.size / (1024 * 1024)
+        if size_mb < 0.1:
+            size_display = f"{round(f.size / 1024, 1)} KB"
+        else:
+            size_display = f"{round(size_mb, 2)} MB"
 
-        cols_file = st.columns([0.05, 0.8, 0.15])
+        # Create columns for layout
+        cols_file = st.columns([0.08, 0.75, 0.17])
 
         with cols_file[0]:
-            st.markdown(f"<div style='font-size: 22px;'>{icon}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='file-icon'>{icon}</div>", unsafe_allow_html=True)
 
         with cols_file[1]:
             st.markdown(f"""
-            <div style='
-                background: rgba(30, 30, 60, 0.95);
-                border-radius: 12px;
-                padding: 0.75rem 1rem;
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                color: #e2e8f0;
-                font-size: 0.875rem;
-                font-weight: 500;
-            '>
-                {f.name} ({round(f.size / (1024 * 1024), 2)} MB)
+            <div class='file-info'>
+                <div class='file-name' title='{f.name}'>{f.name}</div>
+                <div class='file-meta'>
+                    <span class='file-size'>💾 {size_display}</span>
+                    <span class='file-type-badge'>{type_label}</span>
+                </div>
             </div>
             """, unsafe_allow_html=True)
 
         with cols_file[2]:
-            if st.button("❌", key=f"rm-file-{i}", help="Remove file"):
+            if st.button("🗑️", key=f"rm-file-{i}", help=f"Remove {f.name}", use_container_width=True):
                 st.session_state.files_buffer.pop(i)
                 st.session_state.files_processed.discard((f.name, f.size))
                 st.rerun()
 
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    if st.button("🗑️ Clear All Files", type="secondary", use_container_width=True):
+    # Clear all button section
+    st.markdown("<div class='clear-all-section'>", unsafe_allow_html=True)
+    if st.button("🗑️ Clear All Files", type="secondary", use_container_width=True, key="clear_all_files"):
         st.session_state.files_buffer = []
         st.session_state.files_processed = set()
         st.rerun()
-
     st.markdown("</div>", unsafe_allow_html=True)
-
+    
+    # Container end
+    st.markdown("</div>", unsafe_allow_html=True)
 # --------------------------------------------------
 # Input Row
 # --------------------------------------------------
