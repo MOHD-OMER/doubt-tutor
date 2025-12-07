@@ -12,11 +12,11 @@ class AIManager:
 
         # API endpoints
         self.groq_url = "https://api.groq.com/openai/v1/chat/completions"
-        self.hf_url = "https://api-inference.huggingface.co/models/Qwen/Qwen2-VL-7B-Instruct"
+        self.hf_url = "https://router.huggingface.co/models/Qwen/Qwen2-VL-Instruct"
 
         # API keys
         self.groq_key = os.getenv("GROQ_API_KEY", "")
-        self.hf_token = os.getenv("HF_TOKEN", "")  # Optional, HF works without token
+        self.hf_token = os.getenv("HF_TOKEN", "")  # Now required for Router API
 
     # ------------------------------------------------------
     # Ultra HTML Sanitizer
@@ -78,28 +78,27 @@ class AIManager:
     # ------------------------------------------------------
     def _call_hf_vision(self, prompt, files):
         try:
-            headers = (
-                {"Authorization": f"Bearer {self.hf_token}"}
-                if self.hf_token else {}
-            )
+            if not self.hf_token:
+                raise ValueError("HF_TOKEN missing in .env")
+
+            headers = {
+                "Authorization": f"Bearer {self.hf_token}",
+                "Content-Type": "application/json"
+            }
 
             # Expecting only 1 file at a time
             f = files[0]
+            image_b64 = f["data"]  # Base64 image string
 
             payload = {
-                "inputs": {
-                    "prompt": prompt,
-                    "image": f["data"]  # Base64 image string
-                }
+                "inputs": prompt,
+                "image": image_b64
             }
 
-            res = requests.post(self.hf_url, headers=headers, json=payload, timeout=60)
+            res = requests.post(self.hf_url, headers=headers, json=payload, timeout=40)
             out = res.json()
 
-            try:
-                return out[0]["generated_text"]
-            except:
-                return str(out)
+            return out.get("generated_text", f"❌ HF Error: {str(out)}")
 
         except Exception as e:
             return f"❌ HuggingFace Vision Error: {str(e)}"
@@ -126,7 +125,7 @@ class AIManager:
 
             real_model = model_map.get(model)
 
-            # --------------------------
+            # -------------------------- 
             # VISION MODEL (HF)
             # --------------------------
             if model == "hf-vision":
@@ -136,7 +135,7 @@ class AIManager:
                 reply = self._call_hf_vision(prompt, files)
                 return self._strip_all_html(reply)
 
-            # --------------------------
+            # -------------------------- 
             # TEXT MODELS (GROQ)
             # --------------------------
             if files:
