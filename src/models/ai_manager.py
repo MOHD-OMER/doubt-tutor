@@ -12,11 +12,11 @@ class AIManager:
 
         # API endpoints
         self.groq_url = "https://api.groq.com/openai/v1/chat/completions"
-        self.hf_url = "https://router.huggingface.co/models/Qwen/Qwen2-VL-Instruct"
+        self.hf_url = "https://router.huggingface.co/v1/chat/completions"
 
         # API keys
         self.groq_key = os.getenv("GROQ_API_KEY", "")
-        self.hf_token = os.getenv("HF_TOKEN", "")  # Now required for Router API
+        self.hf_token = os.getenv("HF_TOKEN", "")  # Required for Router API
 
     # ------------------------------------------------------
     # Ultra HTML Sanitizer
@@ -74,9 +74,9 @@ class AIManager:
             return f"❌ Groq Error: {str(e)}"
 
     # ------------------------------------------------------
-    # HuggingFace Vision (Qwen2-VL)
+    # HuggingFace Vision (Qwen2.5-VL via Router API)
     # ------------------------------------------------------
-    def _call_hf_vision(self, prompt, files):
+    def _call_hf_vision(self, prompt, files, temperature=0.7, max_tokens=1024):
         try:
             if not self.hf_token:
                 raise ValueError("HF_TOKEN missing in .env")
@@ -90,15 +90,39 @@ class AIManager:
             f = files[0]
             image_b64 = f["data"]  # Base64 image string
 
+            # Use data URI for base64 image (assuming JPEG; adjust mime type if needed)
+            image_data_uri = f"data:image/jpeg;base64,{image_b64}"
+
             payload = {
-                "inputs": prompt,
-                "image": image_b64
+                "model": "Qwen/Qwen2.5-VL-7B-Instruct:hyperbolic",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": prompt
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": image_data_uri
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "max_tokens": max_tokens,
+                "temperature": temperature
             }
 
-            res = requests.post(self.hf_url, headers=headers, json=payload, timeout=40)
-            out = res.json()
+            res = requests.post(self.hf_url, headers=headers, json=payload, timeout=60)
+            
+            if res.status_code != 200:
+                return f"❌ HF Response Error: {res.status_code} - {res.text}"
 
-            return out.get("generated_text", f"❌ HF Error: {str(out)}")
+            out = res.json()
+            return out["choices"][0]["message"]["content"]
 
         except Exception as e:
             return f"❌ HuggingFace Vision Error: {str(e)}"
@@ -125,17 +149,17 @@ class AIManager:
 
             real_model = model_map.get(model)
 
-            # -------------------------- 
+            # --------------------------
             # VISION MODEL (HF)
             # --------------------------
             if model == "hf-vision":
                 if not files:
                     return "⚠️ Please upload an image for the vision model."
 
-                reply = self._call_hf_vision(prompt, files)
+                reply = self._call_hf_vision(prompt, files, temperature, max_tokens)
                 return self._strip_all_html(reply)
 
-            # -------------------------- 
+            # --------------------------
             # TEXT MODELS (GROQ)
             # --------------------------
             if files:
