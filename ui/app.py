@@ -564,6 +564,16 @@ if st.session_state.theme == "light":
 # --------------------------------------------------
 render_header()
 
+# Fix header spacing to match other pages
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.markdown('<div class="content">', unsafe_allow_html=True)
 
 # --------------------------------------------------
