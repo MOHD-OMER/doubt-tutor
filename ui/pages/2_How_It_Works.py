@@ -131,6 +131,18 @@ st.markdown("""
     animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
+.section-heading {
+    text-align: center;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
 .step-card {
     background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
     backdrop-filter: blur(20px);
@@ -405,7 +417,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Workflow Steps
-st.markdown('<h3 style="text-align: center; color: var(--text-primary); font-size: 1.5rem; margin-bottom: 2rem;">🔄 Simple 4-Step Process</h3>')
+st.markdown('<div class="section-heading">🔄 Simple 4-Step Process</div>', unsafe_allow_html=True)
 
 cols = st.columns([3, 0.5, 3, 0.5, 3, 0.5, 3])
 
@@ -473,7 +485,7 @@ with cols[6]:
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # Detailed Breakdown
-st.markdown('<h3 style="text-align: center; color: var(--text-primary); font-size: 1.5rem; margin-bottom: 2rem;">🔍 Detailed Breakdown</h3>')
+st.markdown('<div class="section-heading">🔍 Detailed Breakdown</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="detail-card">
@@ -536,7 +548,7 @@ st.markdown("""
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # Pro Tips
-st.markdown('<h3 style="text-align: center; color: var(--text-primary); font-size: 1.5rem; margin-bottom: 2rem;">💡 Pro Tips for Best Results</h3>')
+st.markdown('<div class="section-heading">💡 Pro Tips for Best Results</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="pro-tip">

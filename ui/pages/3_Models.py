@@ -127,6 +127,18 @@ st.markdown("""
     animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
+.section-heading {
+    text-align: center;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
 .model-card {
     background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
     backdrop-filter: blur(20px);
@@ -440,7 +452,7 @@ st.markdown("""
 models_info = {
     "llama-3.1-8b-instant": {
         "icon": "🦙",
-        "title": "Llama 3.1 (8B) – Instant",
+        "title": "Llama 3.1 (8B) — Instant",
         "desc": "Meta's fast, reliable lightweight model. Excellent for math, language, science, and quick explanations.",
         "specs": ["8B parameters", "Very fast", "Text-only"],
         "best_for": "Quick text queries, math steps, grammar, and concept explanations"
@@ -453,15 +465,15 @@ models_info = {
         "best_for": "Creative writing, history, essays, and brainstorming"
     },
     "deepseek-r1": {
-        "icon": "🔍",
-        "title": "DeepSeek R1 – Reasoning",
+        "icon": "🔬",
+        "title": "DeepSeek R1 — Reasoning",
         "desc": "Advanced reasoning model designed for logic, code explanations, and step-by-step STEM problems.",
         "specs": ["Deep reasoning", "STEM-focused", "Chain-of-thought"],
         "best_for": "Coding help, algorithm debugging, complex math & physics"
     },
     "hf-vision": {
         "icon": "🖼️",
-        "title": "Qwen2-VL (Vision) – HuggingFace",
+        "title": "Qwen2-VL (Vision) — HuggingFace",
         "desc": "A multimodal model capable of understanding images, charts, diagrams, and screenshots. Uses the free HuggingFace Inference API.",
         "specs": ["Vision + Text", "Diagram analysis", "Screenshot understanding"],
         "best_for": "Image-based questions: diagrams, handwritten notes, screenshots"
@@ -469,7 +481,7 @@ models_info = {
 }
 
 # Display model cards
-st.markdown('<h3 style="text-align: center; color: var(--text-primary); font-size: 1.5rem; margin-bottom: 2rem;">🤖 Available Models</h3>')
+st.markdown('<div class="section-heading">🤖 Available Models</div>', unsafe_allow_html=True)
 
 for model_key, info in models_info.items():
     st.markdown(f"""
@@ -506,10 +518,10 @@ default_model = st.session_state.get("model_select_professional", "llama-3.1-8b-
 index = model_options.index(default_model) if default_model in model_options else 0
 
 model_display_names = {
-    "llama-3.1-8b-instant": "🦙 Llama 3.1 (8B) – Fast text responses",
-    "mistral": "🌬️ Mistral – Creative & balanced",
-    "deepseek-r1": "🔍 DeepSeek R1 – Advanced reasoning",
-    "hf-vision": "🖼️ Qwen2-VL Vision – Image understanding"
+    "llama-3.1-8b-instant": "🦙 Llama 3.1 (8B) — Fast text responses",
+    "mistral": "🌬️ Mistral — Creative & balanced",
+    "deepseek-r1": "🔬 DeepSeek R1 — Advanced reasoning",
+    "hf-vision": "🖼️ Qwen2-VL Vision — Image understanding"
 }
 
 selected_display = st.selectbox(
@@ -541,21 +553,40 @@ st.markdown(f"""
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # Quick Comparison
-st.markdown('<h3 style="text-align: center; color: var(--text-primary); font-size: 1.5rem; margin-bottom: 2rem;">📊 Quick Comparison</h3>')
+st.markdown('<div class="section-heading">📊 Quick Comparison</div>', unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown('<h4 style="color: var(--primary); font-size: 1.125rem;">⚡ Speed</h4>')
-    st.markdown('<div style="color: var(--text-secondary); line-height: 1.8;"><strong>Fastest:</strong> Llama 3.1 Instant<br><strong>Moderate:</strong> Mistral<br><strong>Thoughtful:</strong> DeepSeek R1<br><strong>Vision:</strong> Qwen2-VL (HF)</div>', unsafe_allow_html=True)
+    st.markdown('''
+    <div style="color: var(--text-secondary); line-height: 1.8;">
+        <div style="color: var(--primary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">⚡ Speed</div>
+        <strong>Fastest:</strong> Llama 3.1 Instant<br>
+        <strong>Moderate:</strong> Mistral<br>
+        <strong>Thoughtful:</strong> DeepSeek R1<br>
+        <strong>Vision:</strong> Qwen2-VL (HF)
+    </div>
+    ''', unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<h4 style="color: var(--secondary); font-size: 1.125rem;">🎯 Specialization</h4>')
-    st.markdown('<div style="color: var(--text-secondary); line-height: 1.8;"><strong>Text:</strong> Llama 3.1, Mistral<br><strong>Vision:</strong> HF Qwen2-VL<br><strong>Code/Logic:</strong> DeepSeek R1</div>', unsafe_allow_html=True)
+    st.markdown('''
+    <div style="color: var(--text-secondary); line-height: 1.8;">
+        <div style="color: var(--secondary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">🎯 Specialization</div>
+        <strong>Text:</strong> Llama 3.1, Mistral<br>
+        <strong>Vision:</strong> HF Qwen2-VL<br>
+        <strong>Code/Logic:</strong> DeepSeek R1
+    </div>
+    ''', unsafe_allow_html=True)
 
 with col3:
-    st.markdown('<h4 style="color: var(--accent); font-size: 1.125rem;">💡 Use Case</h4>')
-    st.markdown('<div style="color: var(--text-secondary); line-height: 1.8;"><strong>Quick Answers:</strong> Llama 3.1<br><strong>Deep Learning:</strong> DeepSeek R1<br><strong>Creative:</strong> Mistral</div>', unsafe_allow_html=True)
+    st.markdown('''
+    <div style="color: var(--text-secondary); line-height: 1.8;">
+        <div style="color: var(--accent); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">💡 Use Case</div>
+        <strong>Quick Answers:</strong> Llama 3.1<br>
+        <strong>Deep Learning:</strong> DeepSeek R1<br>
+        <strong>Creative:</strong> Mistral
+    </div>
+    ''', unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
