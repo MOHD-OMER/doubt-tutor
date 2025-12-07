@@ -12,10 +12,22 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Hide default Streamlit sidebar
+# Immediately hide sidebar to prevent any flash
 st.markdown("""
 <style>
-section[data-testid="stSidebar"] { display: none !important; }
+section[data-testid="stSidebar"] {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    opacity: 0 !important;
+    transform: translateX(-100%) !important;
+    transition: all 0s !important;
+}
+[role="complementary"], .css-1d391kg, .css-1v3f6k1 {
+    display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -27,58 +39,132 @@ if css_path.exists():
     with open(css_path, "r", encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Professional styling for Models page
+# Enhanced professional styling for Models page (integrated with global vars)
 st.markdown("""
 <style>
+/* Use global CSS variables for consistency */
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #818cf8;
+    --secondary: #8b5cf6;
+    --accent: #ec4899;
+    --success: #10b981;
+    --bg-primary: #0a0a1a;
+    --bg-secondary: #0f0f1e;
+    --bg-card: rgba(20, 20, 40, 0.85);
+    --bg-elevated: rgba(30, 30, 60, 0.95);
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --text-link: #a5b4fc;
+    --border-subtle: rgba(99, 102, 241, 0.1);
+    --border-default: rgba(99, 102, 241, 0.2);
+    --border-strong: rgba(99, 102, 241, 0.4);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.25);
+    --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.35);
+    --shadow-glow: 0 0 32px rgba(99, 102, 241, 0.4);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 0.9375rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --font-size-4xl: 3rem;
+    --header-height: 72px;
+}
+
 /* Global improvements */
 .block-container {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-    max-width: 1200px;
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-section);
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.08));
-    border-radius: 24px;
-    padding: 4rem 3rem;
-    margin: 2rem 0 3rem 0;
-    border: 1px solid rgba(99, 102, 241, 0.15);
+    background: linear-gradient(135deg, var(--border-subtle), rgba(168, 85, 247, 0.08));
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-section) var(--spacing-xl);
+    margin: var(--spacing-xl) 0 var(--spacing-section) 0;
+    border: 1px solid var(--border-default);
     text-align: center;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInDown 0.6s ease-out;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    opacity: 0.7;
 }
 
 .hero-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    font-size: var(--font-size-4xl);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
+    margin-bottom: var(--spacing-lg);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
-    color: #94a3b8;
+    font-size: var(--font-size-lg);
+    color: var(--text-muted);
     line-height: 1.8;
     max-width: 900px;
     margin: 0 auto;
     font-weight: 400;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
 /* Model Cards */
 .model-card {
-    background: rgba(30, 30, 60, 0.5);
-    border-radius: 20px;
-    padding: 2.5rem;
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    transition: all 0.3s ease;
-    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-default);
+    transition: var(--transition-base);
+    margin-bottom: var(--spacing-lg);
     position: relative;
     overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+    opacity: 0;
+    transform: translateY(20px);
+    animation-fill-mode: forwards;
 }
+
+.model-card:nth-child(1) { animation-delay: 0.1s; }
+.model-card:nth-child(2) { animation-delay: 0.2s; }
+.model-card:nth-child(3) { animation-delay: 0.3s; }
+.model-card:nth-child(4) { animation-delay: 0.4s; }
 
 .model-card::before {
     content: '';
@@ -87,16 +173,16 @@ st.markdown("""
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #6366f1, #a855f7);
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: var(--transition-base);
 }
 
 .model-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(99, 102, 241, 0.4);
-    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
-    background: rgba(30, 30, 60, 0.6);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-xl);
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
 }
 
 .model-card:hover::before {
@@ -106,142 +192,319 @@ st.markdown("""
 .model-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
 }
 
 .model-icon {
     font-size: 3rem;
-    width: 70px;
-    height: 70px;
+    width: 72px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
-    border-radius: 16px;
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    flex-shrink: 0;
+    transition: var(--transition-base);
+}
+
+.model-card:hover .model-icon {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
 }
 
 .model-title {
-    font-size: 1.75rem;
+    font-size: var(--font-size-2xl);
     font-weight: 700;
-    color: #e2e8f0;
+    color: var(--text-primary);
+    line-height: 1.2;
 }
 
 .model-description {
-    font-size: 1.05rem;
-    color: #94a3b8;
+    font-size: var(--font-size-base);
+    color: var(--text-muted);
     line-height: 1.8;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
 }
 
 .model-specs {
     display: flex;
-    gap: 1rem;
+    gap: var(--spacing-sm);
     flex-wrap: wrap;
-    margin-top: 1rem;
+    margin-top: var(--spacing-md);
 }
 
 .spec-badge {
     background: rgba(99, 102, 241, 0.15);
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    color: #a5b4fc;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    color: var(--primary-light);
     font-weight: 500;
+    transition: var(--transition-base);
+}
+
+.model-card:hover .spec-badge {
+    background: rgba(99, 102, 241, 0.25);
 }
 
 .best-for {
     background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
     border: 1px solid rgba(16, 185, 129, 0.3);
-    border-radius: 12px;
-    padding: 0.75rem 1.25rem;
-    margin-top: 1rem;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-top: var(--spacing-md);
     display: inline-block;
+    transition: var(--transition-base);
+}
+
+.model-card:hover .best-for {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 
 .best-for-text {
-    color: #10b981;
+    color: var(--success);
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: var(--font-size-sm);
 }
 
 /* Selection Section */
 .selection-card {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.05));
-    border-radius: 20px;
-    padding: 2.5rem;
-    border: 1px solid rgba(99, 102, 241, 0.25);
-    margin: 2rem 0;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, var(--border-subtle), rgba(168, 85, 247, 0.05));
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-strong);
+    margin: var(--spacing-lg) 0;
+    box-shadow: var(--shadow-md);
+    animation: fadeInUp 0.6s ease-out;
 }
 
 .selection-title {
-    font-size: 1.75rem;
+    font-size: var(--font-size-2xl);
     font-weight: 700;
-    color: #e2e8f0;
-    margin-bottom: 1rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 
-/* Comparison Table */
+/* Selectbox styling */
+.stSelectbox {
+    margin-top: var(--spacing-md);
+}
+
+.stSelectbox div[data-baseweb="select"] {
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%) !important;
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid var(--border-default) !important;
+    transition: var(--transition-base) !important;
+}
+
+.stSelectbox div[data-baseweb="select"]:hover {
+    border-color: var(--border-strong) !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
+}
+
+.stSelectbox div[data-baseweb="select"] > div {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: var(--spacing-md) var(--spacing-lg) !important;
+    font-size: var(--font-size-base) !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Comparison Section */
 .comparison-section {
-    background: rgba(30, 30, 60, 0.4);
-    border-radius: 16px;
-    padding: 2rem;
-    border: 1px solid rgba(99, 102, 241, 0.15);
-    margin: 2rem 0;
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-subtle);
+    margin: var(--spacing-lg) 0;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.comparison-section h4 {
+    color: var(--text-primary);
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.comparison-section .stMarkdown {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-xs);
 }
 
 /* CTA Section */
 .cta-section {
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
-    border-radius: 24px;
-    padding: 3rem 2rem;
-    margin: 3rem 0 2rem 0;
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-section) var(--spacing-lg);
+    margin: var(--spacing-section) 0 var(--spacing-xl) 0;
     text-align: center;
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 0.6s ease-out 0.4s both;
 }
 
 .cta-title {
-    font-size: 2rem;
+    font-size: var(--font-size-2xl);
     font-weight: 700;
-    color: #e2e8f0;
-    margin-bottom: 1rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
 }
 
 .cta-description {
-    font-size: 1.125rem;
-    color: #94a3b8;
-    margin-bottom: 2rem;
+    font-size: var(--font-size-lg);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-xl);
 }
 
 /* Button Improvements */
 .stButton > button {
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    padding: var(--spacing-md) var(--spacing-lg);
+    transition: var(--transition-base);
+    border: 1px solid var(--border-default);
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+    color: var(--text-secondary);
+    position: relative;
+    overflow: hidden;
+}
+
+.stButton > button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+}
+
+.stButton > button:hover::before {
+    left: 100%;
 }
 
 .stButton > button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+    box-shadow: var(--shadow-glow);
+    border-color: var(--primary);
+    color: var(--text-primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 }
 
-/* Selectbox styling */
-.stSelectbox {
-    margin-top: 1rem;
+.stButton > button[type="primary"] {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.stButton > button[type="primary"]:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%) !important;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+}
+
+/* Override st.info and st.success for better integration */
+.stAlert {
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%) !important;
+    border-radius: var(--radius-xl) !important;
+    border: 1px solid var(--border-default) !important;
+    color: var(--text-secondary) !important;
+    padding: var(--spacing-lg) !important;
+    margin: var(--spacing-lg) 0 !important;
+    box-shadow: var(--shadow-sm) !important;
+    backdrop-filter: blur(16px) !important;
+}
+
+.stAlert[data-testid="stAlert"] {
+    border-left: 4px solid var(--primary) !important;
+}
+
+.stAlert[role="status"] {
+    border-left: 4px solid var(--success) !important;
 }
 
 /* Divider */
 hr {
-    margin: 3rem 0;
+    margin: var(--spacing-section) 0;
     border: none;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, var(--border-default), transparent);
+    position: relative;
+}
+
+hr::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, var(--primary) 20%, transparent 70%);
+    opacity: 0.3;
+    border-radius: 50%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .hero-section, .cta-section {
+        padding: var(--spacing-lg) var(--spacing-md);
+        margin: var(--spacing-lg) 0;
+    }
+    
+    .hero-title {
+        font-size: var(--font-size-3xl);
+    }
+    
+    .model-card {
+        padding: var(--spacing-lg);
+    }
+    
+    .model-specs {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .block-container {
+        padding: var(--spacing-lg) var(--spacing-sm);
+    }
+    
+    .model-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .model-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+    
+    .model-title {
+        font-size: var(--font-size-xl);
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -275,7 +538,7 @@ models_info = {
     "llama-3.1-8b-instant": {
         "icon": "🦙",
         "title": "Llama 3.1 (8B) — Instant",
-        "desc": "Meta’s fast, reliable lightweight model. Excellent for math, language, science, and quick explanations.",
+        "desc": "Meta's fast, reliable lightweight model. Excellent for math, language, science, and quick explanations.",
         "specs": ["8B parameters", "Very fast", "Text-only"],
         "best_for": "Quick text queries, math steps, grammar, and concept explanations"
     },
@@ -306,7 +569,7 @@ models_info = {
 }
 
 # Display model cards
-st.markdown("### 🤖 Available Models")
+st.markdown('<h3 style="text-align: center; color: var(--text-primary); font-size: var(--font-size-2xl); margin-bottom: var(--spacing-xl);">🤖 Available Models</h3>')
 st.markdown("<br>", unsafe_allow_html=True)
 
 for model_key, info in models_info.items():
@@ -368,40 +631,48 @@ if selected_display != st.session_state.get("model_select_professional", "llama-
     st.rerun()
 
 # Show current model info
-st.info(f"""
-**Current Model:** {models_info[default_model]['title']}  
-**Best for:** {models_info[default_model]['best_for']}  
-
-Ready to start learning! Head back to the home page to begin chatting with your selected model.
-""")
+st.markdown(f"""
+<div class="detail-card">
+    <div class="detail-title">📋 Current Model: {models_info[default_model]['title']}</div>
+    <div class="detail-content">
+        **Best for:** {models_info[default_model]['best_for']}  
+        <br><br>
+        Ready to start learning! Head back to the home page to begin chatting with your selected model.
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # --------------------------------------------------
 # Quick Comparison
 # --------------------------------------------------
-st.markdown("### 📊 Quick Comparison")
+st.markdown("""
+<div class="comparison-section">
+    <h4 style="color: var(--text-primary); font-size: var(--font-size-xl);">📊 Quick Comparison</h4>
+</div>
+""", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown("#### ⚡ Speed")
-    st.write("**Fastest:** Llama 3.1 Instant")
-    st.write("**Moderate:** Mistral")
-    st.write("**Thoughtful:** DeepSeek R1")
-    st.write("**Vision:** Qwen2-VL (HF Vision)")
+    st.markdown('<h4 style="color: var(--primary); font-size: var(--font-size-lg);">⚡ Speed</h4>')
+    st.markdown(f'<div class="detail-content"><strong>Fastest:</strong> Llama 3.1 Instant</div>', unsafe_allow_html=True)
+    st.markdown('<div class="detail-content"><strong>Moderate:</strong> Mistral</div>', unsafe_allow_html=True)
+    st.markdown('<div class="detail-content"><strong>Thoughtful:</strong> DeepSeek R1</div>', unsafe_allow_html=True)
+    st.markdown('<div class="detail-content"><strong>Vision:</strong> Qwen2-VL (HF Vision)</div>', unsafe_allow_html=True)
 
 with col2:
-    st.markdown("#### 🎯 Specialization")
-    st.write("**Text:** Llama 3.1, Mistral")
-    st.write("**Vision:** HF Qwen2-VL")
-    st.write("**Code/Logic:** DeepSeek R1")
+    st.markdown('<h4 style="color: var(--secondary); font-size: var(--font-size-lg);">🎯 Specialization</h4>')
+    st.markdown('<div class="detail-content"><strong>Text:</strong> Llama 3.1, Mistral</div>', unsafe_allow_html=True)
+    st.markdown('<div class="detail-content"><strong>Vision:</strong> HF Qwen2-VL</div>', unsafe_allow_html=True)
+    st.markdown('<div class="detail-content"><strong>Code/Logic:</strong> DeepSeek R1</div>', unsafe_allow_html=True)
 
 with col3:
-    st.markdown("#### 💡 Use Case")
-    st.write("**Quick Answers:** Llama 3.1 Instant")
-    st.write("**Deep Learning:** DeepSeek R1")
-    st.write("**Creative:** Mistral")
+    st.markdown('<h4 style="color: var(--accent); font-size: var(--font-size-lg);">💡 Use Case</h4>')
+    st.markdown('<div class="detail-content"><strong>Quick Answers:</strong> Llama 3.1 Instant</div>', unsafe_allow_html=True)
+    st.markdown('<div class="detail-content"><strong>Deep Learning:</strong> DeepSeek R1</div>', unsafe_allow_html=True)
+    st.markdown('<div class="detail-content"><strong>Creative:</strong> Mistral</div>', unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
