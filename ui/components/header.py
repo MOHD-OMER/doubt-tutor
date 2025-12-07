@@ -128,10 +128,11 @@ def render_header():
     .model-badge {
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
         border: 1px solid var(--border-subtle);
-        border-radius: var(--radius-xl);
-        padding: 0.5rem 1rem;
+        border-radius: 12px;
+        padding: 0.65rem 1rem;
         font-weight: 600;
         font-size: 0.875rem;
+        color: var(--text-secondary);
         backdrop-filter: blur(10px);
         box-shadow: var(--shadow-sm);
         display: inline-flex;
@@ -140,9 +141,6 @@ def render_header():
         white-space: nowrap;
         line-height: 1.2;
         transition: var(--transition);
-        max-width: 220px;
-        overflow: hidden;
-        text-overflow: ellipsis;
         cursor: help;
         position: relative;
     }
@@ -286,8 +284,7 @@ def render_header():
         }
         .model-badge {
             font-size: 0.75rem;
-            padding: 0.375rem 0.75rem;
-            max-width: 180px;
+            padding: 0.5rem 0.75rem;
         }
         .nav-button {
             font-size: 0.75rem !important;
@@ -298,9 +295,6 @@ def render_header():
     @media (max-width: 768px) {
         .brand-title {
             font-size: 1.25rem;
-        }
-        .model-badge {
-            max-width: 150px;
         }
     }
     </style>
@@ -325,29 +319,18 @@ def render_header():
             
             # Model Badge with icon
             model_display_names = {
-                "llama-3.1-8b-instant": "LLaMA 3.1 • 8B Instant",
-                "mistral": "Mistral 7B Instruct",
-                "deepseek-r1": "DeepSeek R1 • Reasoning",
-                "hf-vision": "Qwen2-VL • Vision"
+                "llama-3.1-8b-instant": "🦙 LLaMA 3.1 • 8B Instant",
+                "mistral": "🌬️ Mistral 7B Instruct",
+                "deepseek-r1": "🔬 DeepSeek R1 • Reasoning",
+                "hf-vision": "🖼️ Qwen2-VL • Vision"
             }
 
             model_display = model_display_names.get(selected_model, selected_model)
 
-            # Icon selection
-            model_icons = {
-                "llama-3.1-8b-instant": "🦙",
-                "mistral": "🌬️",
-                "deepseek-r1": "🔍",
-                "hf-vision": "🖼️"
-            }
-            
-            icon = model_icons.get(selected_model, "🤖")
-
             with cols[0]:
                 st.markdown(f"""
                 <div class="model-badge" title="Current AI Model: {selected_model}&#10;Change model on the Models page">
-                    <span class="model-icon">{icon}</span>
-                    <span>{model_display}</span>
+                    {model_display}
                 </div>
                 """, unsafe_allow_html=True)
 
