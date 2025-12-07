@@ -261,7 +261,7 @@ st.markdown("""
 <div class="hero-section">
     <div class="hero-title">AI Models</div>
     <div class="hero-subtitle">
-        Explore our curated collection of AI models, each optimized for different types 
+        Explore our curated collection of AI models powered by Groq, each optimized for different types 
         of learning challenges. Choose the perfect model for your doubt—whether it's 
         text-heavy, visual, or requires advanced reasoning.
     </div>
@@ -272,33 +272,36 @@ st.markdown("""
 # Models Information
 # --------------------------------------------------
 models_info = {
-    "llama3.2": {
+    "llama-3.1-8b-instant": {
         "icon": "🦙",
-        "title": "Llama 3.2",
-        "desc": "Meta's efficient, open-source model excels at concise explanations for math, science, and language arts. Ideal for quick, accurate doubt resolution without fluff.",
-        "specs": ["8B parameters", "Fast inference", "Text-optimized"],
-        "best_for": "Quick text queries, math problems, and conceptual explanations"
+        "title": "Llama 3.1 (8B) — Instant",
+        "desc": "Meta’s fast, reliable lightweight model. Excellent for math, language, science, and quick explanations.",
+        "specs": ["8B parameters", "Very fast", "Text-only"],
+        "best_for": "Quick text queries, math steps, grammar, and concept explanations"
     },
-    "gemini-flash": {
-        "icon": "🖼️",
-        "title": "Gemini 1.5 Flash (Vision)",
-        "desc": "Google's multimodal model for diagrams, screenshots, and image-based doubts.",
-        "specs": ["Vision-language", "Free tier", "Fast"],
-        "best_for": "Diagrams, charts, screenshots, visual questions"
-    },
+
     "mistral": {
         "icon": "🌬️",
-        "title": "Mistral",
-        "desc": "Lightweight yet powerful for creative and interdisciplinary queries, like history timelines or literature analysis. Balances speed and depth for exploratory learning.",
-        "specs": ["7B parameters", "Balanced performance", "Versatile"],
-        "best_for": "Creative writing, history analysis, and interdisciplinary topics"
+        "title": "Mistral 7B",
+        "desc": "Balanced open-source model. Great for creative writing, summaries, and interdisciplinary topics.",
+        "specs": ["7B parameters", "Balanced output", "Stable reasoning"],
+        "best_for": "Creative writing, history, essays, and brainstorming"
     },
+
     "deepseek-r1": {
         "icon": "🔍",
-        "title": "DeepSeek R1",
-        "desc": "Specialized for deep reasoning in coding, logic, and advanced STEM. Great for debugging algorithms or deriving proofs—thinks like a tutor with multiple angles.",
-        "specs": ["Advanced reasoning", "Code-focused", "Logic solver"],
-        "best_for": "Coding problems, algorithm debugging, and complex proofs"
+        "title": "DeepSeek R1 — Reasoning",
+        "desc": "Advanced reasoning model designed for logic, code explanations, and step-by-step STEM problems.",
+        "specs": ["Deep reasoning", "STEM-focused", "Chain-of-thought"],
+        "best_for": "Coding help, algorithm debugging, complex math & physics"
+    },
+
+    "hf-vision": {
+        "icon": "🖼️",
+        "title": "Qwen2-VL (Vision) — HuggingFace",
+        "desc": "A multimodal model capable of understanding images, charts, diagrams, and screenshots. Uses the free HuggingFace Inference API.",
+        "specs": ["Vision + Text", "Diagram analysis", "Screenshot understanding"],
+        "best_for": "Image-based questions: diagrams, handwritten notes, screenshots"
     }
 }
 
@@ -339,15 +342,15 @@ st.markdown("""
 st.markdown("Choose your preferred model below. The selection will be saved and the badge in the header will update instantly.")
 
 model_options = list(models_info.keys())
-default_model = st.session_state.get("model_select_professional", "llama3.2")
+default_model = st.session_state.get("model_select_professional", "llama-3.1-8b-instant")
 index = model_options.index(default_model) if default_model in model_options else 0
 
 # Create a more descriptive display for the selectbox
 model_display_names = {
-    "llama3.2": "🦙 Llama 3.2 - Fast text responses",
-    "gemini-flash": "🖼️ Gemini Flash - Visual & Text",
-    "mistral": "🌬️ Mistral - Creative & interdisciplinary",
-    "deepseek-r1": "🔍 DeepSeek R1 - Advanced reasoning"
+    "llama-3.1-8b-instant": "🦙 Llama 3.1 (8B) — Fast text responses",
+    "mistral": "🌬️ Mistral — Creative & balanced",
+    "deepseek-r1": "🔍 DeepSeek R1 — Advanced reasoning",
+    "hf-vision": "🖼️ Qwen2-VL Vision — Image understanding"
 }
 
 selected_display = st.selectbox(
@@ -358,7 +361,7 @@ selected_display = st.selectbox(
     help="Select a model based on your learning needs"
 )
 
-if selected_display != st.session_state.get("model_select_professional", "llama3.2"):
+if selected_display != st.session_state.get("model_select_professional", "llama-3.1-8b-instant"):
     st.session_state["model_select_professional"] = selected_display
     st.success(f"✅ Successfully switched to **{models_info[selected_display]['title']}**!")
     st.balloons()
@@ -383,19 +386,20 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown("#### ⚡ Speed")
-    st.write("**Fastest:** Llama 3.2, Gemini Flash")
+    st.write("**Fastest:** Llama 3.1 Instant")
     st.write("**Moderate:** Mistral")
     st.write("**Thoughtful:** DeepSeek R1")
+    st.write("**Vision:** Qwen2-VL (HF Vision)")
 
 with col2:
     st.markdown("#### 🎯 Specialization")
-    st.write("**Text:** Llama 3.2, Mistral")
-    st.write("**Visual:** Gemini Flash")
-    st.write("**Code:** DeepSeek R1")
+    st.write("**Text:** Llama 3.1, Mistral")
+    st.write("**Vision:** HF Qwen2-VL")
+    st.write("**Code/Logic:** DeepSeek R1")
 
 with col3:
     st.markdown("#### 💡 Use Case")
-    st.write("**Quick Answers:** Llama 3.2")
+    st.write("**Quick Answers:** Llama 3.1 Instant")
     st.write("**Deep Learning:** DeepSeek R1")
     st.write("**Creative:** Mistral")
 

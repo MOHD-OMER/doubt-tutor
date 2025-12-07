@@ -2,6 +2,7 @@ import requests
 import re
 import base64
 import os
+import html
 from src.utils.logger import setup_logger
 
 
@@ -11,14 +12,14 @@ class AIManager:
 
         # API endpoints
         self.groq_url = "https://api.groq.com/openai/v1/chat/completions"
-        self.gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+        self.hf_url = "https://api-inference.huggingface.co/models/Qwen/Qwen2-VL-7B-Instruct"
 
-        # API keys (Set these in your environment)
+        # API keys
         self.groq_key = os.getenv("GROQ_API_KEY", "")
-        self.gemini_key = os.getenv("GEMINI_API_KEY", "")
+        self.hf_token = os.getenv("HF_TOKEN", "")  # Optional, HF works without token
 
     # ------------------------------------------------------
-    # Ultra HTML Sanitizer (Safe for UI renderer)
+    # Ultra HTML Sanitizer
     # ------------------------------------------------------
     def _strip_all_html(self, text):
         if not text:
@@ -29,25 +30,8 @@ class AIManager:
         # Remove HTML tags
         text = re.sub(r"<[^>]*>", "", text)
 
-        # Remove HTML entities
-        html_entities = {
-            "&lt;": "<", "&gt;": ">", "&amp;": "&",
-            "&quot;": '"', "&apos;": "'", "&nbsp;": " ",
-            "&#39;": "'", "&#34;": '"',
-        }
-        for ent, val in html_entities.items():
-            text = text.replace(ent, val)
-
-        # Remove leftover entities
-        text = re.sub(r"&[a-zA-Z0-9#]+;", "", text)
-
-        # Remove CSS/UI classes accidentally injected
-        ui_terms = [
-            "bubble", "message", "wrapper", "timestamp",
-            "meta", "ai-bubble", "user-bubble"
-        ]
-        for term in ui_terms:
-            text = text.replace(term, "")
+        # Decode safe HTML entities
+        text = html.unescape(text)
 
         # Clean whitespace
         text = re.sub(r"\s+", " ", text)
@@ -55,58 +39,9 @@ class AIManager:
         return text.strip()
 
     # ------------------------------------------------------
-    # Gemini (Vision + Text)
+    # Groq Text-only Models
     # ------------------------------------------------------
-    def _call_gemini(self, prompt, files):
-        try:
-            contents = [{"role": "user", "parts": []}]
-
-            # Add text prompt
-            contents[0]["parts"].append({"text": prompt})
-
-            # Add image/pdf files
-            for f in files:
-                # FIX #1: Changed from "mime_type" to "type" to match Streamlit uploader
-                mime = f.get("type", "")
-                data = f.get("data", "")
-
-                contents[0]["parts"].append({
-                    "inline_data": {
-                        "mime_type": mime,
-                        "data": data
-                    }
-                })
-
-            url = f"{self.gemini_url}?key={self.gemini_key}"
-
-            response = requests.post(
-                url,
-                json={"contents": contents},
-                timeout=60
-            )
-
-            if response.status_code != 200:
-                self.logger.error(response.text)
-                return f"❌ Gemini Error: {response.text}"
-
-            data = response.json()
-
-            # Extract text
-            try:
-                reply = data["candidates"][0]["content"]["parts"][0]["text"]
-            except:
-                reply = "⚠️ Gemini returned an unexpected response."
-
-            return reply
-
-        except Exception as e:
-            self.logger.error(str(e))
-            return f"❌ Gemini Error: {str(e)}"
-
-    # ------------------------------------------------------
-    # Groq (Text-only)
-    # ------------------------------------------------------
-    def _call_groq(self, prompt, model):
+    def _call_groq_text(self, prompt, model, temperature=0.7, max_tokens=2048):
         try:
             headers = {
                 "Authorization": f"Bearer {self.groq_key}",
@@ -118,7 +53,8 @@ class AIManager:
                 "messages": [
                     {"role": "user", "content": prompt}
                 ],
-                "temperature": 0.7
+                "temperature": temperature,
+                "max_tokens": max_tokens
             }
 
             response = requests.post(
@@ -129,51 +65,88 @@ class AIManager:
             )
 
             if response.status_code != 200:
-                self.logger.error(response.text)
                 return f"❌ Groq Error: {response.text}"
 
             data = response.json()
-            reply = data["choices"][0]["message"]["content"]
-
-            return reply
+            return data["choices"][0]["message"]["content"]
 
         except Exception as e:
-            self.logger.error(str(e))
             return f"❌ Groq Error: {str(e)}"
 
     # ------------------------------------------------------
-    # Public method -> auto-selects model
+    # HuggingFace Vision (Qwen2-VL)
     # ------------------------------------------------------
-    def generate_response(self, question, model, temperature=0.7, files=None):
+    def _call_hf_vision(self, prompt, files):
+        try:
+            headers = (
+                {"Authorization": f"Bearer {self.hf_token}"}
+                if self.hf_token else {}
+            )
+
+            # Expecting only 1 file at a time
+            f = files[0]
+
+            payload = {
+                "inputs": {
+                    "prompt": prompt,
+                    "image": f["data"]  # Base64 image string
+                }
+            }
+
+            res = requests.post(self.hf_url, headers=headers, json=payload, timeout=60)
+            out = res.json()
+
+            try:
+                return out[0]["generated_text"]
+            except:
+                return str(out)
+
+        except Exception as e:
+            return f"❌ HuggingFace Vision Error: {str(e)}"
+
+    # ------------------------------------------------------
+    # Public method: Auto-select model
+    # ------------------------------------------------------
+    def generate_response(self, question, model, temperature=0.7, max_tokens=2048, files=None):
         try:
             prompt = question.strip()
             files = files or []
 
-            # FIX #3: Add API key validation
-            if model != "gemini-flash" and not self.groq_key:
+            # UI → model resolver
+            model_map = {
+                "llama-3.1-8b-instant": "llama-3.1-8b-instant",
+                "mistral": "mistral-7b-instruct",
+                "deepseek-r1": "deepseek-r1-distill-qwen-32b",
+                "hf-vision": "hf-vision",  # Custom mode
+            }
+
+            # Validate keys
+            if not self.groq_key:
                 return "❌ Missing GROQ_API_KEY in your .env"
 
-            if model == "gemini-flash" and not self.gemini_key:
-                return "❌ Missing GEMINI_API_KEY in your .env"
+            real_model = model_map.get(model)
 
-            # Choose provider
-            if model == "gemini-flash":
-                reply = self._call_gemini(prompt, files)
+            # --------------------------
+            # VISION MODEL (HF)
+            # --------------------------
+            if model == "hf-vision":
+                if not files:
+                    return "⚠️ Please upload an image for the vision model."
 
-            else:
-                # Groq models cannot view images → warn user
-                if files:
-                    prompt = (
-                        "Note: This model cannot see uploaded files. "
-                        "Only answer using the text below:\n\n" + prompt
-                    )
-                reply = self._call_groq(prompt, model)
+                reply = self._call_hf_vision(prompt, files)
+                return self._strip_all_html(reply)
 
-            # Final sanitize
-            reply = self._strip_all_html(reply)
+            # --------------------------
+            # TEXT MODELS (GROQ)
+            # --------------------------
+            if files:
+                prompt = (
+                    "⚠️ Note: This model cannot see uploaded files.\n"
+                    "Only answering based on text:\n\n" + prompt
+                )
 
-            return reply or "⚠️ AI returned an empty response."
+            reply = self._call_groq_text(prompt, real_model, temperature, max_tokens)
+            return self._strip_all_html(reply)
 
         except Exception as e:
-            self.logger.error(str(e))
             return f"❌ AI Error: {str(e)}"

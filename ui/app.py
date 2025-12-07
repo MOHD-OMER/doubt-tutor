@@ -1,6 +1,17 @@
-import streamlit as st
 import sys
 from pathlib import Path
+
+# Determine correct project root (folder containing src/)
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR))
+
+print("PROJECT ROOT:", ROOT_DIR)
+print("EXPECTS src AT:", ROOT_DIR / "src")
+
+# Load .env from project root
+import src.load_env
+
+import streamlit as st
 import base64
 import json
 from datetime import datetime
@@ -172,7 +183,7 @@ def init_session_state():
     """Initialize all session state variables"""
     defaults = {
         "messages": [],
-        "current_model": "llama3.2",
+        "current_model": "llama-3.1-8b-instant",
         "theme": "dark",
         "pdf_fullscreen": None,
         "files_buffer": [],
@@ -280,15 +291,15 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="input-container">', unsafe_allow_html=True)
 
 # --------------------------------------------------
-# Model Compatibility Check - UPDATED FOR GEMINI FLASH
+# Model Compatibility Check (Updated for HF Vision Model)
 # --------------------------------------------------
 if st.session_state.files_buffer:
     contains_image = any(f.type.startswith("image") for f in st.session_state.files_buffer)
     contains_pdf = any(f.type == "application/pdf" for f in st.session_state.files_buffer)
 
-    # Updated: Check if current model supports vision
-    if (contains_image or contains_pdf) and st.session_state.current_model not in ["gemini-flash"]:
-        st.warning("⚠️ The selected model cannot read images/PDFs. Switch to Gemini Flash for vision support.")
+    # Only Qwen2-VL Vision supports file reading
+    if (contains_image or contains_pdf) and st.session_state.current_model != "hf-vision":
+        st.warning("⚠️ This model cannot process files. Please switch to **Qwen2-VL (Vision)**.")
 
 # --------------------------------------------------
 # Enhanced File Preview
@@ -515,6 +526,7 @@ if st.session_state.files_buffer:
     
     # Container end
     st.markdown("</div>", unsafe_allow_html=True)
+
 # --------------------------------------------------
 # Input Row
 # --------------------------------------------------
@@ -583,7 +595,7 @@ if send and not st.session_state.processing_response:
         for file in st.session_state.files_buffer:
             prepared_files.append({
                 "name": file.name,
-                "mime_type": file.type,  # Using mime_type for Gemini compatibility
+                "type": file.type, 
                 "data": encode_file(file)
             })
 

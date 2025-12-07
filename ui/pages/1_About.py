@@ -252,7 +252,7 @@ st.markdown("""
 <div class="hero-section">
     <div class="hero-title">About Doubt Tutor</div>
     <div class="hero-subtitle">
-        Empowering learners worldwide with instant, AI-powered academic support.
+        Empowering learners worldwide with instant, AI-powered academic support powered by Groq.
         No question is too small, every curiosity deserves a thoughtful answer.
     </div>
 </div>
@@ -267,7 +267,7 @@ st.markdown("""
 <div class="mission-card">
     <div class="mission-text">
         Doubt Tutor is an innovative AI-driven platform designed to make education accessible, 
-        personalized, and engaging through cutting-edge language models. Founded in 2025, 
+        personalized, and engaging through cutting-edge language models powered by Groq. Founded in 2025, 
         we believe in bridging the gap between curiosity and clarity by providing instant, 
         accurate resolutions to academic doubts. Our goal is to democratize education and 
         ensure that every learner has access to quality explanations, regardless of their 
@@ -336,8 +336,7 @@ with col3:
         <span class="feature-icon">🌍</span>
         <div class="feature-title">Free & Open</div>
         <div class="feature-description">
-            Basic access is free for all learners, with premium models 
-            available for deeper analysis and advanced topics.
+            Completely free access for all learners, powered by Groq's fast AI infrastructure.
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -347,8 +346,8 @@ with col3:
         <span class="feature-icon">🤖</span>
         <div class="feature-title">Smart AI Models</div>
         <div class="feature-description">
-            Choose from multiple AI models optimized for different tasks—
-            from quick answers to in-depth analysis.
+            Powered by Groq, choose from multiple AI models optimized for different tasks—
+            from quick answers to in-depth analysis and vision support.
         </div>
     </div>
     """, unsafe_allow_html=True)

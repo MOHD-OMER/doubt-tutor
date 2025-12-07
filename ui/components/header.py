@@ -5,7 +5,7 @@ def render_header():
     # Initialize model
     model_key = "model_select_professional"
     if model_key not in st.session_state:
-        st.session_state[model_key] = "llama3.2"
+        st.session_state[model_key] = "llama-3.1-8b-instant"
     
     selected_model = st.session_state[model_key]
 
@@ -82,20 +82,31 @@ def render_header():
         with nav_container:
             cols = st.columns([2.5, 0.8, 0.8, 1.5, 0.8, 0.8])  # Adjusted for longer model text: model, Home, About, How It Works, Models, Export
             
-            # Model Badge with full text (clean & professional)
-            model_display = selected_model.upper().replace("LLAMA", "LLaMA").replace("-", " ").replace("LLAVA", "LLaVA").replace("DEEPSEEK R1", "DeepSeek")
+            # Model Badge (clean & professional)
+
+            # Proper model name mapping
+            model_display_names = {
+                "llama-3.1-8b-instant": "LLaMA 3.1 • 8B Instant",
+                "mistral": "Mistral 7B Instruct",
+                "deepseek-r1": "DeepSeek R1 • 32B Distill",
+                "gemini-flash": "Gemini Flash (Vision)"
+            }
+
+            # Use mapped name or fall back to raw value
+            model_display = model_display_names.get(selected_model, selected_model)
+
+            # Icon selection
             if "llama" in selected_model.lower():
                 icon = "🦙"
-            elif "llava" in selected_model.lower():
-                icon = "🖼️"
             elif "mistral" in selected_model.lower():
                 icon = "🌬️"
             elif "deepseek" in selected_model.lower():
                 icon = "🔍"
-            elif "gpt" in selected_model.lower():
-                icon = "⚡"
+            elif "gemini" in selected_model.lower():
+                icon = "🖼️"
             else:
                 icon = "🤖"
+
 
             with cols[0]:
                 st.markdown(f"""
