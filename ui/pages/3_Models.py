@@ -366,38 +366,21 @@ st.markdown("""
 }
 
 .stButton > button {
-    border-radius: 16px;
-    font-weight: 600;
-    padding: 1rem 1.5rem;
-    transition: var(--transition);
-    border: 1px solid var(--border-default);
-    background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
-    color: var(--text-secondary);
-    position: relative;
-    overflow: hidden;
-}
-
-.stButton > button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    transition: left 0.5s;
-}
-
-.stButton > button:hover::before {
-    left: 100%;
+    background: transparent !important;
+    border: 1px solid var(--border-default) !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 1.5rem !important;
+    color: var(--text-secondary) !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+    font-size: 1rem !important;
 }
 
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
-    border-color: var(--primary);
-    color: var(--text-primary);
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: var(--bg-elevated) !important;
+    border-color: var(--border-strong) !important;
+    color: var(--text-primary) !important;
+    transform: translateY(-1px) !important;
 }
 
 .stAlert {
