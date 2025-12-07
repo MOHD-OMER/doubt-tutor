@@ -118,13 +118,31 @@ global_css = """
     background: var(--primary-hover);
 }
 
-/* Container enhancements */
+/* Container enhancements - MATCH OTHER PAGES */
+.block-container {
+    padding: 2rem 1rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 .stMarkdown {
     font-size: 1rem;
     line-height: 1.6;
 }
+
+/* CRITICAL FIX: Remove extra padding from first element */
+.element-container:first-child {
+    padding-top: 0 !important;
+}
+
 .element-container {
-    padding-top: 1rem;
+    padding-top: 0 !important;
+}
+
+/* Remove padding from content wrapper */
+.content {
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 /* Button enhancements */
@@ -564,18 +582,6 @@ if st.session_state.theme == "light":
 # --------------------------------------------------
 render_header()
 
-# Fix header spacing to match other pages
-st.markdown("""
-<style>
-.block-container {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown('<div class="content">', unsafe_allow_html=True)
-
 # --------------------------------------------------
 # Welcome Section (Enhanced with better layout and animations)
 # --------------------------------------------------
@@ -702,8 +708,6 @@ if not st.session_state.messages:
 # Chat Area
 # --------------------------------------------------
 render_chat(st.session_state.messages)
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # --------------------------------------------------
 # Input Bar Container
