@@ -57,7 +57,7 @@ section[data-testid="stSidebar"] {
 st.markdown(hide_sidebar_css, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# Global Styles - Enhanced Modern UI
+# Global Styles - Enhanced Modern UI with Responsive Design
 # --------------------------------------------------
 global_css = """
 <style>
@@ -78,7 +78,22 @@ global_css = """
     --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-heavy: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     --border-radius: 12px;
+    --radius-sm: 6px;
     --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --font-size-base: 0.9375rem;
+    --font-size-sm: 0.875rem;
+    --font-size-xs: 0.75rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --header-height: 72px;
+    --input-height: 56px;
 }
 
 /* App-wide background gradient */
@@ -119,6 +134,8 @@ global_css = """
     font-weight: 600;
     transition: var(--transition);
     box-shadow: var(--shadow-light);
+    min-height: var(--input-height);
+    padding: 0.75rem 1rem;
 }
 .stButton > button:hover {
     box-shadow: var(--shadow-medium);
@@ -138,6 +155,8 @@ global_css = """
     color: var(--text-primary);
     padding: 0.75rem 1rem;
     transition: var(--transition);
+    min-height: var(--input-height);
+    font-size: 16px; /* Prevent zoom on iOS */
 }
 .stTextInput > div > div > input:focus {
     border-color: var(--primary-color);
@@ -149,6 +168,148 @@ global_css = """
     border-radius: var(--border-radius);
     border: none;
     box-shadow: var(--shadow-heavy);
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+/* Desktop: Wider layout, more space */
+@media (min-width: 1441px) {
+    .stApp {
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+}
+
+/* Tablet/Desktop */
+@media (max-width: 1024px) {
+    .stApp {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .welcome h1 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .features {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--spacing-md);
+    }
+}
+
+/* Mobile Enhancements: Stacked layouts, larger touch targets */
+@media (max-width: 768px) {
+    :root {
+        --header-height: 120px;
+        --input-height: 52px;
+        --spacing-md: 0.75rem;
+        --spacing-lg: 1rem;
+    }
+    
+    .stApp {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .welcome {
+        padding: 2rem 1rem;
+    }
+    
+    .welcome h1 {
+        font-size: var(--font-size-xl);
+        line-height: 1.2;
+    }
+    
+    .welcome p {
+        font-size: var(--font-size-base);
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .card {
+        padding: var(--spacing-md);
+        min-height: 120px;
+    }
+    
+    /* Stack input row vertically */
+    div[data-testid="stHorizontalBlock"] {
+        flex-direction: column !important;
+        gap: var(--spacing-sm) !important;
+    }
+    
+    div[data-testid="column"]:nth-child(1),
+    div[data-testid="column"]:nth-child(2),
+    div[data-testid="column"]:nth-child(3) {
+        width: 100% !important;
+        flex: 1 !important;
+    }
+    
+    /* Buttons full width on mobile */
+    div[data-testid="stFileUploader"],
+    .stButton > button[kind="primary"],
+    .stButton > button {
+        width: 100% !important;
+        height: var(--input-height) !important;
+        min-height: var(--input-height) !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 16px !important; /* Prevent zoom */
+    }
+    
+    .input-container {
+        padding: var(--spacing-md) !important;
+        margin: 0 !important;
+    }
+    
+    .file-preview-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .file-item {
+        padding: var(--spacing-sm);
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-xs);
+    }
+    
+    .file-info {
+        text-align: left;
+        width: 100%;
+    }
+    
+    .file-name {
+        white-space: normal;
+        word-break: break-word;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome h1 {
+        font-size: var(--font-size-lg);
+    }
+    
+    .card {
+        padding: var(--spacing-sm);
+    }
+    
+    /* Extra small: Prevent zoom and ensure touch-friendly */
+    input[type="text"] {
+        font-size: 16px !important;
+    }
+    
+    .stButton > button {
+        min-height: 44px !important;
+    }
+}
+
+/* ================= ACCESSIBILITY ================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 </style>
 """
@@ -162,7 +323,7 @@ if css_path.exists():
 # Additional inline CSS for file upload (enhanced with theme vars)
 file_uploader_css = """
 <style>
-/* File uploader paperclip - Enhanced */
+/* File uploader paperclip - Enhanced and Responsive */
 div[data-testid="stFileUploader"] {
     width: 42px !important;
     height: 42px !important;
@@ -240,6 +401,19 @@ div[data-testid="stFileUploader"] input[type="file"] {
     opacity: 0 !important;
     cursor: pointer !important;
     z-index: 10 !important;
+}
+
+/* Mobile: Larger touch target */
+@media (max-width: 768px) {
+    div[data-testid="stFileUploader"] {
+        width: 100% !important;
+        height: var(--input-height) !important;
+        min-width: auto !important;
+    }
+    
+    div[data-testid="stFileUploader"]::after {
+        font-size: 24px !important;
+    }
 }
 </style>
 """
@@ -399,10 +573,10 @@ welcome_css = """
 <style>
 .welcome {
     text-align: center;
-    padding: 3rem 2rem;
+    padding: var(--spacing-xl) var(--spacing-lg);
     background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1));
     border-radius: var(--border-radius);
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
     box-shadow: var(--shadow-medium);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border-color);
@@ -413,16 +587,16 @@ welcome_css = """
     to { opacity: 1; transform: translateY(0); }
 }
 .welcome h1 {
-    font-size: 2.5rem;
+    font-size: var(--font-size-3xl);
     font-weight: 800;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-sm);
     letter-spacing: -0.025em;
 }
 .welcome p {
-    font-size: 1.125rem;
+    font-size: var(--font-size-lg);
     color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
@@ -430,20 +604,24 @@ welcome_css = """
 
 .features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
 }
 .card {
     background: var(--bg-secondary);
     border-radius: var(--border-radius);
-    padding: 1.5rem;
+    padding: var(--spacing-lg);
     text-align: center;
     border: 1px solid var(--border-color);
     transition: var(--transition);
     box-shadow: var(--shadow-light);
     position: relative;
     overflow: hidden;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .card::before {
     content: '';
@@ -457,7 +635,7 @@ welcome_css = """
     transition: var(--transition);
 }
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     box-shadow: var(--shadow-heavy);
     background: var(--bg-tertiary);
 }
@@ -465,15 +643,32 @@ welcome_css = """
     opacity: 1;
 }
 .card-title {
-    font-size: 1.25rem;
+    font-size: var(--font-size-lg);
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-sm);
     color: var(--text-primary);
 }
 .card-desc {
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: var(--font-size-base);
     line-height: 1.5;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .welcome {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .card {
+        padding: var(--spacing-md);
+        min-height: 140px;
+    }
 }
 </style>
 """
@@ -508,10 +703,19 @@ input_container_css = """
 .input-container {
     background: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
-    padding: 1.5rem;
+    padding: var(--spacing-lg);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
     margin: 0 -1rem -1rem;
     box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+}
+
+/* Mobile: Full width, no margins */
+@media (max-width: 768px) {
+    .input-container {
+        padding: var(--spacing-md) !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
 }
 </style>
 """
@@ -530,7 +734,7 @@ if st.session_state.files_buffer:
         st.warning("⚠️ This model cannot process files. Please switch to **Qwen2-VL (Vision)**.")
 
 # --------------------------------------------------
-# Enhanced File Preview (Further polished)
+# Enhanced File Preview (Further polished and Responsive)
 # --------------------------------------------------
 if st.session_state.files_buffer:
     # Enhanced CSS for file preview with vars
@@ -539,12 +743,15 @@ if st.session_state.files_buffer:
     .file-preview-container {
         background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
         border-radius: var(--border-radius);
-        padding: 1.25rem;
-        margin-bottom: 1rem;
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
         border: 1px solid var(--border-color);
         box-shadow: var(--shadow-medium);
         backdrop-filter: blur(10px);
         animation: slideInRight 0.4s ease-out;
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
     }
     @keyframes slideInRight {
         from { opacity: 0; transform: translateX(-20px); }
@@ -555,28 +762,28 @@ if st.session_state.files_buffer:
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
+        margin-bottom: var(--spacing-sm);
+        padding-bottom: var(--spacing-xs);
         border-bottom: 1px solid var(--border-color);
     }
     
     .file-preview-title {
-        font-size: 0.875rem;
+        font-size: var(--font-size-sm);
         font-weight: 600;
         color: var(--primary-color);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: var(--spacing-sm);
     }
     
     .file-count-badge {
         background: rgba(99, 102, 241, 0.2);
         color: var(--text-secondary);
-        padding: 0.125rem 0.5rem;
-        border-radius: 12px;
-        font-size: 0.75rem;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--radius-sm);
+        font-size: var(--font-size-xs);
         font-weight: 700;
         border: 1px solid var(--primary-color);
     }
@@ -584,13 +791,13 @@ if st.session_state.files_buffer:
     .file-item {
         background: rgba(255,255,255,0.05);
         border-radius: var(--border-radius);
-        padding: 0.875rem;
-        margin-bottom: 0.625rem;
+        padding: var(--spacing-sm);
+        margin-bottom: var(--spacing-xs);
         border: 1px solid var(--border-color);
         transition: var(--transition);
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        gap: var(--spacing-sm);
         position: relative;
         overflow: hidden;
     }
@@ -619,8 +826,8 @@ if st.session_state.files_buffer:
     }
     
     .file-icon {
-        font-size: 28px;
-        min-width: 40px;
+        font-size: 1.75rem;
+        min-width: 2.5rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -634,9 +841,9 @@ if st.session_state.files_buffer:
     
     .file-name {
         color: var(--text-primary);
-        font-size: 0.9rem;
+        font-size: var(--font-size-base);
         font-weight: 600;
-        margin-bottom: 0.25rem;
+        margin-bottom: var(--spacing-xs);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -645,32 +852,32 @@ if st.session_state.files_buffer:
     .file-meta {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        font-size: 0.75rem;
+        gap: var(--spacing-sm);
+        font-size: var(--font-size-sm);
         color: var(--text-muted);
     }
     
     .file-size {
         display: flex;
         align-items: center;
-        gap: 0.25rem;
+        gap: var(--spacing-xs);
     }
     
     .file-type-badge {
         background: rgba(99, 102, 241, 0.15);
         color: var(--primary-color);
-        padding: 0.125rem 0.5rem;
-        border-radius: 6px;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--radius-sm);
         text-transform: uppercase;
         font-weight: 600;
-        font-size: 0.65rem;
+        font-size: var(--font-size-xs);
         letter-spacing: 0.05em;
         border: 1px solid var(--primary-color);
     }
     
     .clear-all-section {
-        margin-top: 0.75rem;
-        padding-top: 0.75rem;
+        margin-top: var(--spacing-sm);
+        padding-top: var(--spacing-sm);
         border-top: 1px solid var(--border-color);
     }
     
@@ -687,6 +894,43 @@ if st.session_state.files_buffer:
     
     .file-item {
         animation: slideIn 0.3s ease-out;
+    }
+    
+    /* Mobile: Stacked file items */
+    @media (max-width: 768px) {
+        .file-preview-container {
+            padding: var(--spacing-sm);
+            margin: 0;
+        }
+        
+        .file-preview-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--spacing-xs);
+        }
+        
+        .file-item {
+            flex-direction: column;
+            text-align: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+        }
+        
+        .file-info {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .file-name {
+            white-space: normal;
+            word-break: break-word;
+            text-align: center;
+        }
+        
+        .file-meta {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
     }
     </style>
     """
@@ -729,7 +973,7 @@ if st.session_state.files_buffer:
         else:
             size_display = f"{round(size_mb, 2)} MB"
 
-        # Create columns for layout
+        # Create columns for layout (responsive via CSS)
         cols_file = st.columns([0.08, 0.75, 0.17])
 
         with cols_file[0]:
@@ -764,8 +1008,9 @@ if st.session_state.files_buffer:
     st.markdown("</div>", unsafe_allow_html=True)
 
 # --------------------------------------------------
-# Input Row (Enhanced spacing)
+# Input Row (Enhanced spacing and Responsive Columns)
 # --------------------------------------------------
+# Use responsive columns: Adjust ratios for mobile stacking via CSS
 cols = st.columns([0.6, 8.5, 0.9])
 
 with cols[0]:

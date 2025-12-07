@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Immediately hide sidebar to prevent any flash
+# Immediately hide sidebar
 st.markdown("""
 <style>
 section[data-testid="stSidebar"] {
@@ -23,10 +23,6 @@ section[data-testid="stSidebar"] {
     max-width: 0 !important;
     opacity: 0 !important;
     transform: translateX(-100%) !important;
-    transition: all 0s !important;
-}
-[role="complementary"], .css-1d391kg, .css-1v3f6k1 {
-    display: none !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -39,74 +35,59 @@ if css_path.exists():
     with open(css_path, "r", encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Enhanced professional styling for About page (integrated with global vars)
+# Enhanced styling
 st.markdown("""
 <style>
-/* Use global CSS variables for consistency */
 :root {
     --primary: #6366f1;
     --primary-dark: #4f46e5;
-    --primary-light: #818cf8;
     --secondary: #8b5cf6;
     --accent: #ec4899;
-    --bg-primary: #0a0a1a;
-    --bg-secondary: #0f0f1e;
+    --success: #10b981;
     --bg-card: rgba(20, 20, 40, 0.85);
     --bg-elevated: rgba(30, 30, 60, 0.95);
     --text-primary: #ffffff;
     --text-secondary: #e2e8f0;
     --text-muted: #94a3b8;
-    --text-dim: #64748b;
-    --text-link: #a5b4fc;
     --border-subtle: rgba(99, 102, 241, 0.1);
     --border-default: rgba(99, 102, 241, 0.2);
     --border-strong: rgba(99, 102, 241, 0.4);
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.25);
     --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.35);
     --shadow-glow: 0 0 32px rgba(99, 102, 241, 0.4);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
     --radius-xl: 20px;
     --radius-2xl: 24px;
-    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 0.9375rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 2rem;
-    --font-size-4xl: 3rem;
-    --header-height: 72px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Global improvements */
 .block-container {
-    padding-top: var(--spacing-xl);
-    padding-bottom: var(--spacing-section);
+    padding: 2rem 1rem 3rem;
     max-width: 1400px;
     margin: 0 auto;
 }
 
-/* Hero Section */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .hero-section {
     background: linear-gradient(135deg, var(--border-subtle), rgba(168, 85, 247, 0.08));
     backdrop-filter: blur(20px);
     border-radius: var(--radius-2xl);
-    padding: var(--spacing-section) var(--spacing-xl);
-    margin: var(--spacing-xl) 0 var(--spacing-section) 0;
+    padding: 3rem 2rem;
+    margin: 1.5rem 0 3rem;
     border: 1px solid var(--border-default);
     text-align: center;
     box-shadow: var(--shadow-lg);
     position: relative;
     overflow: hidden;
+    animation: fadeInDown 0.6s ease-out;
 }
 
 .hero-section::before {
@@ -121,60 +102,34 @@ st.markdown("""
 }
 
 .hero-title {
-    font-size: var(--font-size-4xl);
+    font-size: 3rem;
     font-weight: 900;
     background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 1.5rem;
     letter-spacing: -0.025em;
     line-height: 1.1;
-    animation: fadeInDown 0.6s ease-out;
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .hero-subtitle {
-    font-size: var(--font-size-lg);
+    font-size: 1.125rem;
     color: var(--text-muted);
     line-height: 1.8;
     max-width: 900px;
     margin: 0 auto;
-    font-weight: 400;
     animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Section Headers */
 .section-header {
-    font-size: var(--font-size-3xl);
+    font-size: 2rem;
     font-weight: 800;
     color: var(--text-primary);
-    margin: var(--spacing-section) 0 var(--spacing-lg) 0;
+    margin: 3rem 0 1.5rem;
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    position: relative;
+    gap: 0.5rem;
 }
 
 .section-header::before {
@@ -183,58 +138,17 @@ st.markdown("""
     height: 36px;
     background: linear-gradient(180deg, var(--primary), var(--secondary));
     border-radius: 2px;
-    flex-shrink: 0;
 }
 
-/* Content Cards */
-.content-card {
-    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
-    backdrop-filter: blur(20px);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-xl);
-    border: 1px solid var(--border-subtle);
-    margin-bottom: var(--spacing-lg);
-    transition: var(--transition-base);
-    position: relative;
-    overflow: hidden;
-}
-
-.content-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    opacity: 0;
-    transition: var(--transition-base);
-}
-
-.content-card:hover {
-    border-color: var(--border-strong);
-    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-xl);
-}
-
-.content-card:hover::before {
-    opacity: 1;
-}
-
-/* Feature Cards */
 .feature-card {
-    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
     backdrop-filter: blur(20px);
     border-radius: var(--radius-xl);
-    padding: var(--spacing-xl) var(--spacing-lg);
+    padding: 2rem 1.5rem;
     border: 1px solid var(--border-default);
     height: 100%;
-    transition: var(--transition-base);
-    margin-bottom: var(--spacing-lg);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    transition: var(--transition);
+    margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
 }
@@ -248,7 +162,7 @@ st.markdown("""
     height: 2px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     opacity: 0;
-    transition: var(--transition-base);
+    transition: var(--transition);
 }
 
 .feature-card:hover {
@@ -263,40 +177,38 @@ st.markdown("""
 
 .feature-icon {
     font-size: 3rem;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 1.5rem;
     display: block;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    transition: var(--transition-base);
+    transition: var(--transition);
 }
 
 .feature-card:hover .feature-icon {
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(5deg);
 }
 
 .feature-title {
-    font-size: var(--font-size-xl);
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 1rem;
     line-height: 1.3;
 }
 
 .feature-description {
-    font-size: var(--font-size-base);
+    font-size: 0.9375rem;
     color: var(--text-muted);
     line-height: 1.8;
-    flex-grow: 1;
 }
 
-/* Mission Card */
 .mission-card {
     background: linear-gradient(135deg, var(--border-subtle), rgba(168, 85, 247, 0.05));
     backdrop-filter: blur(20px);
     border-radius: var(--radius-2xl);
-    padding: var(--spacing-xl);
+    padding: 2rem;
     border: 1px solid var(--border-default);
-    margin: var(--spacing-lg) 0;
-    box-shadow: var(--shadow-md);
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-lg);
     position: relative;
     overflow: hidden;
     animation: fadeInUp 0.6s ease-out;
@@ -314,37 +226,34 @@ st.markdown("""
 }
 
 .mission-text {
-    font-size: var(--font-size-lg);
+    font-size: 1.125rem;
     color: var(--text-secondary);
     line-height: 1.9;
     text-align: justify;
 }
 
-/* Team Card */
 .team-card {
-    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+    background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
     backdrop-filter: blur(20px);
     border-radius: var(--radius-xl);
-    padding: var(--spacing-xl);
+    padding: 2rem;
     border: 1px solid var(--border-subtle);
-    margin: var(--spacing-lg) 0;
-    box-shadow: var(--shadow-sm);
+    margin: 1.5rem 0;
     animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
 .team-text {
-    font-size: var(--font-size-base);
+    font-size: 0.9375rem;
     color: var(--text-secondary);
     line-height: 1.8;
 }
 
-/* CTA Section */
 .cta-section {
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
     backdrop-filter: blur(20px);
     border-radius: var(--radius-2xl);
-    padding: var(--spacing-section) var(--spacing-lg);
-    margin: var(--spacing-section) 0 var(--spacing-xl) 0;
+    padding: 3rem 1.5rem;
+    margin: 3rem 0 2rem;
     text-align: center;
     border: 1px solid var(--border-strong);
     box-shadow: var(--shadow-lg);
@@ -352,26 +261,25 @@ st.markdown("""
 }
 
 .cta-title {
-    font-size: var(--font-size-2xl);
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 1rem;
 }
 
 .cta-description {
-    font-size: var(--font-size-lg);
+    font-size: 1.125rem;
     color: var(--text-muted);
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: 2rem;
 }
 
-/* Button Improvements */
 .stButton > button {
-    border-radius: var(--radius-lg);
+    border-radius: 16px;
     font-weight: 600;
-    padding: var(--spacing-md) var(--spacing-lg);
-    transition: var(--transition-base);
+    padding: 1rem 1.5rem;
+    transition: var(--transition);
     border: 1px solid var(--border-default);
-    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+    background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
     color: var(--text-secondary);
     position: relative;
     overflow: hidden;
@@ -397,89 +305,24 @@ st.markdown("""
     box-shadow: var(--shadow-glow);
     border-color: var(--primary);
     color: var(--text-primary);
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
 }
 
-.stButton > button[type="primary"] {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
-    color: var(--text-primary) !important;
-    border-color: var(--primary) !important;
-}
-
-.stButton > button[type="primary"]:hover {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%) !important;
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
-}
-
-/* Divider styling */
 hr {
-    margin: var(--spacing-section) 0;
+    margin: 3rem 0;
     border: none;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border-default), transparent);
-    position: relative;
 }
 
-hr::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(circle, var(--primary) 20%, transparent 70%);
-    opacity: 0.3;
-    border-radius: 50%;
-}
-
-/* Column spacing */
 [data-testid="column"] {
-    padding: 0 var(--spacing-sm);
-}
-
-/* Additional spacing for feature grid */
-.stColumn {
-    padding: 0 var(--spacing-sm) !important;
-}
-
-/* Section spacing */
-.section-wrapper {
-    margin: var(--spacing-section) 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-    .hero-section, .cta-section {
-        padding: var(--spacing-lg) var(--spacing-md);
-        margin: var(--spacing-lg) 0;
-    }
-    
-    .hero-title {
-        font-size: var(--font-size-3xl);
-    }
-    
-    .feature-card {
-        padding: var(--spacing-lg);
-    }
+    padding: 0 0.5rem;
 }
 
 @media (max-width: 768px) {
-    .block-container {
-        padding: var(--spacing-lg) var(--spacing-sm);
-    }
-    
-    .section-header {
-        font-size: var(--font-size-2xl);
-    }
-    
-    .content-card, .mission-card, .team-card {
-        padding: var(--spacing-lg);
-    }
-    
-    [data-testid="column"] {
-        padding: 0 var(--spacing-xs);
-    }
+    .hero-title { font-size: 2rem; }
+    .section-header { font-size: 1.5rem; }
+    .feature-card { padding: 1.5rem; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -487,14 +330,10 @@ hr::before {
 # Import header
 from ui.components.header import render_header
 
-# --------------------------------------------------
 # Render Header
-# --------------------------------------------------
 render_header()
 
-# --------------------------------------------------
 # Hero Section
-# --------------------------------------------------
 st.markdown("""
 <div class="hero-section">
     <div class="hero-title">About Doubt Tutor</div>
@@ -505,9 +344,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --------------------------------------------------
 # Mission Section
-# --------------------------------------------------
 st.markdown('<div class="section-header">🎯 Our Mission</div>', unsafe_allow_html=True)
 
 st.markdown("""
@@ -523,9 +360,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --------------------------------------------------
 # Why Choose Section
-# --------------------------------------------------
 st.markdown('<div class="section-header">⭐ Why Choose Doubt Tutor?</div>', unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -601,9 +436,7 @@ with col3:
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# --------------------------------------------------
 # Team Section
-# --------------------------------------------------
 st.markdown('<div class="section-header">👥 Our Team</div>', unsafe_allow_html=True)
 
 st.markdown("""
@@ -622,9 +455,7 @@ st.markdown("""
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# --------------------------------------------------
 # CTA Section
-# --------------------------------------------------
 st.markdown("""
 <div class="cta-section">
     <div class="cta-title">🚀 Ready to Get Started?</div>
@@ -648,5 +479,4 @@ with col3:
     if st.button("📖 How It Works", use_container_width=True):
         st.switch_page("pages/2_How_It_Works.py")
 
-# Add some bottom spacing
 st.markdown("<br><br>", unsafe_allow_html=True)

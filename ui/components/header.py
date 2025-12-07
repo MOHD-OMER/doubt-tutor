@@ -20,21 +20,20 @@ def render_header():
         max-width: 0 !important;
         opacity: 0 !important;
         transform: translateX(-100%) !important;
-        transition: all 0s !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Enhanced header CSS with global vars
+    # Enhanced header CSS
     st.markdown("""
     <style>
-    /* Use global CSS variables for consistency */
     :root {
         --primary: #6366f1;
         --primary-dark: #4f46e5;
         --primary-light: #818cf8;
         --secondary: #8b5cf6;
         --accent: #ec4899;
+        --success: #10b981;
         --bg-primary: #0a0a1a;
         --bg-secondary: #0f0f1e;
         --bg-elevated: rgba(30, 30, 60, 0.95);
@@ -45,21 +44,33 @@ def render_header():
         --border-default: rgba(99, 102, 241, 0.2);
         --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15);
         --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+        --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.25);
+        --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
         --radius-lg: 16px;
         --radius-xl: 20px;
-        --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        --spacing-sm: 0.5rem;
-        --spacing-md: 1rem;
-        --spacing-lg: 1.5rem;
-        --font-size-xl: 1.25rem;
-        --font-size-2xl: 1.5rem;
-        --font-size-3xl: 2rem;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         --header-height: 72px;
     }
     
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+    
     .header-container { 
-        padding: var(--spacing-md) 0; 
-        margin-bottom: var(--spacing-lg);
+        padding: 1rem 0; 
+        margin-bottom: 1.5rem;
         background: linear-gradient(180deg, rgba(15, 15, 30, 0.95) 0%, rgba(10, 10, 25, 0.92) 100%);
         backdrop-filter: blur(20px) saturate(180%);
         border-bottom: 1px solid var(--border-default);
@@ -67,6 +78,7 @@ def render_header():
         top: 0;
         z-index: 1000;
         box-shadow: var(--shadow-md);
+        animation: slideDown 0.4s ease-out;
     }
     
     .nav-button {
@@ -75,15 +87,15 @@ def render_header():
         border-radius: var(--radius-lg) !important;
         color: var(--text-secondary) !important;
         font-weight: 600 !important;
-        padding: var(--spacing-sm) var(--spacing-md) !important;
-        margin: 0 var(--spacing-xs) !important;
-        transition: var(--transition-base) !important;
+        padding: 0.5rem 1rem !important;
+        margin: 0 0.25rem !important;
+        transition: var(--transition) !important;
         height: 44px !important;
         min-height: 44px !important;
         line-height: 1 !important;
         position: relative !important;
         overflow: hidden !important;
-        font-size: var(--font-size-sm) !important;
+        font-size: 0.875rem !important;
     }
     
     .nav-button::before {
@@ -102,37 +114,70 @@ def render_header():
     }
     
     .nav-button:hover {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.12) 100%) !important;
-        border-color: var(--border-default) !important;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%) !important;
+        border-color: var(--primary) !important;
         color: var(--text-primary) !important;
-        transform: translateY(-1px) !important;
-        box-shadow: var(--shadow-md) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: var(--shadow-lg) !important;
+    }
+    
+    .nav-button:active {
+        transform: translateY(0) !important;
     }
     
     .model-badge {
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
         border: 1px solid var(--border-subtle);
         border-radius: var(--radius-xl);
-        padding: var(--spacing-sm) var(--spacing-md);
+        padding: 0.5rem 1rem;
         font-weight: 600;
-        font-size: var(--font-size-sm);
+        font-size: 0.875rem;
         backdrop-filter: blur(10px);
         box-shadow: var(--shadow-sm);
         display: inline-flex;
         align-items: center;
-        gap: var(--spacing-xs);
+        gap: 0.5rem;
         white-space: nowrap;
         line-height: 1.2;
-        transition: var(--transition-base);
-        max-width: 200px;
+        transition: var(--transition);
+        max-width: 220px;
         overflow: hidden;
         text-overflow: ellipsis;
+        cursor: help;
+        position: relative;
+    }
+    
+    .model-badge::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+        opacity: 0;
+        transition: var(--transition);
     }
     
     .model-badge:hover {
-        border-color: var(--border-default);
-        box-shadow: var(--shadow-md);
-        transform: translateY(-1px);
+        border-color: var(--primary);
+        box-shadow: var(--shadow-glow);
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
+    }
+    
+    .model-badge:hover::after {
+        opacity: 1;
+    }
+    
+    .model-icon {
+        font-size: 1.125rem;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        transition: var(--transition);
+    }
+    
+    .model-badge:hover .model-icon {
+        transform: scale(1.1) rotate(5deg);
     }
     
     .export-button {
@@ -143,18 +188,19 @@ def render_header():
     
     .export-button:hover {
         background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(16, 185, 129, 0.15)) !important;
-        border-color: rgba(34, 197, 94, 0.4) !important;
+        border-color: rgba(34, 197, 94, 0.5) !important;
         color: var(--text-primary) !important;
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3) !important;
     }
     
     .export-button:disabled {
-        opacity: 0.5 !important;
+        opacity: 0.4 !important;
         cursor: not-allowed !important;
+        transform: none !important;
     }
     
-    /* Brand styling */
     .brand-title {
-        font-size: var(--font-size-3xl);
+        font-size: 2rem;
         font-weight: 800;
         background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-light) 60%, var(--secondary) 100%);
         -webkit-background-clip: text;
@@ -164,26 +210,98 @@ def render_header():
         padding: 0;
         letter-spacing: -0.025em;
         line-height: 1;
-        transition: var(--transition-base);
+        transition: var(--transition);
         display: flex;
         align-items: center;
-        gap: var(--spacing-xs);
+        gap: 0.5rem;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .brand-title::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .brand-title:hover::after {
+        transform: scaleX(1);
     }
     
     .brand-title:hover {
         transform: translateY(-1px);
-        filter: brightness(1.05);
+        filter: brightness(1.1);
     }
     
     .brand-icon {
-        font-size: var(--font-size-2xl);
+        font-size: 1.5rem;
+        filter: drop-shadow(0 2px 6px rgba(99, 102, 241, 0.4));
+        transition: var(--transition);
     }
     
-    /* Divider */
+    .brand-title:hover .brand-icon {
+        transform: rotate(10deg) scale(1.1);
+    }
+    
     .header-divider {
         height: 1px;
         background: linear-gradient(90deg, transparent, var(--border-default), transparent);
-        margin: var(--spacing-lg) 0 var(--spacing-md);
+        margin: 1.5rem 0 1rem;
+        position: relative;
+    }
+    
+    .header-divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        background: radial-gradient(circle, var(--primary) 10%, transparent 70%);
+        opacity: 0.2;
+        border-radius: 50%;
+    }
+    
+    /* Button container alignment */
+    [data-testid="column"] > div {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        .brand-title {
+            font-size: 1.5rem;
+        }
+        .brand-icon {
+            font-size: 1.25rem;
+        }
+        .model-badge {
+            font-size: 0.75rem;
+            padding: 0.375rem 0.75rem;
+            max-width: 180px;
+        }
+        .nav-button {
+            font-size: 0.75rem !important;
+            padding: 0.375rem 0.75rem !important;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .brand-title {
+            font-size: 1.25rem;
+        }
+        .model-badge {
+            max-width: 150px;
+        }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -192,7 +310,7 @@ def render_header():
     col1, col2 = st.columns([1.2, 4])
     
     with col1:
-        st.markdown(f"""
+        st.markdown("""
         <div class="brand-title">
             <span class="brand-icon">🤔</span>
             Doubt Tutor
@@ -200,14 +318,12 @@ def render_header():
         """, unsafe_allow_html=True)
 
     with col2:
-        # Create perfectly aligned horizontal bar
+        # Create perfectly aligned horizontal navigation bar
         nav_container = st.container()
         with nav_container:
-            cols = st.columns([2.5, 0.8, 0.8, 1.5, 0.8, 0.8])  # Adjusted for longer model text: model, Home, About, How It Works, Models, Export
+            cols = st.columns([2.5, 0.8, 0.8, 1.5, 0.8, 0.8])
             
-            # Model Badge (clean & professional)
-
-            # Proper model name mapping (aligned with models.py)
+            # Model Badge with icon
             model_display_names = {
                 "llama-3.1-8b-instant": "LLaMA 3.1 • 8B Instant",
                 "mistral": "Mistral 7B Instruct",
@@ -215,29 +331,27 @@ def render_header():
                 "hf-vision": "Qwen2-VL • Vision"
             }
 
-            # Use mapped name or fall back to raw value
             model_display = model_display_names.get(selected_model, selected_model)
 
-            # Icon selection (aligned with models.py)
-            if "llama" in selected_model.lower():
-                icon = "🦙"
-            elif "mistral" in selected_model.lower():
-                icon = "🌬️"
-            elif "deepseek" in selected_model.lower():
-                icon = "🔍"
-            elif "hf-vision" in selected_model or "vision" in selected_model.lower():
-                icon = "🖼️"
-            else:
-                icon = "🤖"
+            # Icon selection
+            model_icons = {
+                "llama-3.1-8b-instant": "🦙",
+                "mistral": "🌬️",
+                "deepseek-r1": "🔍",
+                "hf-vision": "🖼️"
+            }
+            
+            icon = model_icons.get(selected_model, "🤖")
 
             with cols[0]:
                 st.markdown(f"""
-                <div class="model-badge" title="Current AI Model: {selected_model}. Change on Models page.">
-                    {icon} {model_display}
+                <div class="model-badge" title="Current AI Model: {selected_model}&#10;Change model on the Models page">
+                    <span class="model-icon">{icon}</span>
+                    <span>{model_display}</span>
                 </div>
                 """, unsafe_allow_html=True)
 
-            # Navigation Buttons (including Home)
+            # Navigation Buttons
             nav_items = [
                 ("Home", "app.py"),
                 ("About", "pages/1_About.py"),
@@ -247,20 +361,19 @@ def render_header():
 
             for i, (label, path) in enumerate(nav_items, 1):
                 with cols[i]:
-                    if st.button(label, key=f"nav_{label}", use_container_width=True, help=f"Go to {label}"):
+                    if st.button(label, key=f"nav_{label}", use_container_width=True, help=f"Navigate to {label}"):
                         st.switch_page(path)
             
-            # Export button (last column) - Fixed to use 'messages' for consistency
+            # Export button with conditional styling
             with cols[5]:
-                if "messages" in st.session_state and st.session_state.messages:
-                    # Trigger export in main app
-                    if st.button("💾 Export", key="export_btn", use_container_width=True, help="Export chat history"):
+                has_messages = "messages" in st.session_state and st.session_state.messages
+                
+                if has_messages:
+                    if st.button("💾 Export", key="export_btn", use_container_width=True, help="Export chat history as JSON"):
                         st.session_state["export_chat"] = True
                         st.rerun()
                 else:
-                    st.button("💾 Export", key="export_btn_disabled", disabled=True, use_container_width=True, help="No chat history to export")
+                    st.button("💾 Export", key="export_btn_disabled", disabled=True, use_container_width=True, help="No chat history to export yet")
 
-    # Clean divider
-    st.markdown("""
-    <div class="header-divider"></div>
-    """, unsafe_allow_html=True)
+    # Elegant divider
+    st.markdown('<div class="header-divider"></div>', unsafe_allow_html=True)
