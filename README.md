@@ -4,6 +4,8 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B.svg)](https://streamlit.io)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Groq](https://img.shields.io/badge/Powered%20by-Groq-orange.svg)](https://groq.com)
+[![Hugging Face](https://img.shields.io/badge/HuggingFace-🤗-yellow.svg)](https://huggingface.co)
+
 
 An innovative AI-driven educational platform that provides instant, personalized academic support through cutting-edge language models. Built with Streamlit and powered by Groq's lightning-fast AI infrastructure.
 
