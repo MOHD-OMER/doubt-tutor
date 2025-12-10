@@ -440,7 +440,7 @@ st.markdown("""
 <div class="hero-section">
     <div class="hero-title">AI Models</div>
     <div class="hero-subtitle">
-        Explore our curated collection of AI models powered by Groq, each optimized for different types 
+        Explore our curated collection of AI models powered by Groq and HuggingFace, each optimized for different types 
         of learning challenges. Choose the perfect model for your doubt—whether it's 
         text-heavy, visual, or requires advanced reasoning.
     </div>
@@ -456,12 +456,12 @@ models_info = {
         "specs": ["8B parameters", "Groq-powered", "Very fast", "Text-only"],
         "best_for": "Quick text queries, math steps, grammar, and concept explanations"
     },
-    "bloom-560m": {
-        "icon": "🌸",
-        "title": "microsoft/Phi-3-mini-4k-instruct",
-        "desc": "Compact multilingual model by BigScience via HuggingFace. Great for lightweight text generation and supporting 46+ languages.",
-        "specs": ["560M parameters", "HuggingFace", "Multilingual", "Lightweight"],
-        "best_for": "Multilingual queries, basic text generation, and lightweight tasks"
+    "phi-3-mini": {
+        "icon": "🔷",
+        "title": "Phi-3 Mini (4K Instruct)",
+        "desc": "Microsoft's compact and efficient model via HuggingFace. Optimized for instruction-following, reasoning tasks, and general-purpose text generation.",
+        "specs": ["3.8B parameters", "HuggingFace", "Efficient", "Instruction-tuned"],
+        "best_for": "Reasoning tasks, step-by-step explanations, and general text queries"
     },
     "hf-vision": {
         "icon": "🖼️",
@@ -511,7 +511,7 @@ index = model_options.index(default_model) if default_model in model_options els
 
 model_display_names = {
     "llama-3.1-8b-instant": "🦙 LLaMA 3.1 (8B) — Groq • Fast text responses",
-    "bloom-560m":"microsoft/Phi-3-mini-4k-instruct — HuggingFace • Multilingual & compact",
+    "phi-3-mini": "🔷 Phi-3 Mini — HuggingFace • Efficient reasoning",
     "hf-vision": "🖼️ Qwen2-VL Vision — HuggingFace • Image understanding"
 }
 
@@ -553,7 +553,7 @@ with col1:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--primary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">⚡ Speed</div>
         <strong>Fastest:</strong> LLaMA 3.1 (Groq)<br>
-        <strong>Fast:</strong> microsoft/Phi-3-mini-4k-instruct (HF)<br>
+        <strong>Fast:</strong> Phi-3 Mini (HF)<br>
         <strong>Moderate:</strong> Qwen2-VL (HF)
     </div>
     ''', unsafe_allow_html=True)
@@ -563,7 +563,7 @@ with col2:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--secondary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">🎯 Specialization</div>
         <strong>Quick Text:</strong> LLaMA 3.1<br>
-        <strong>Multilingual:</strong> microsoft/Phi-3-mini-4k-instruct<br>
+        <strong>Reasoning:</strong> Phi-3 Mini<br>
         <strong>Vision:</strong> Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
@@ -573,7 +573,7 @@ with col3:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--accent); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">💡 Platform</div>
         <strong>Groq:</strong> LLaMA 3.1<br>
-        <strong>HuggingFace:</strong> BLOOM, Qwen2-VL
+        <strong>HuggingFace:</strong> Phi-3, Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
 
