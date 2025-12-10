@@ -458,10 +458,10 @@ models_info = {
     },
     "phi-3-mini": {
         "icon": "🔷",
-        "title": "Phi-3 Mini (4K Instruct)",
-        "desc": "Microsoft's compact and efficient model via HuggingFace. Optimized for instruction-following, reasoning tasks, and general-purpose text generation.",
-        "specs": ["3.8B parameters", "HuggingFace", "Efficient", "Instruction-tuned"],
-        "best_for": "Reasoning tasks, step-by-step explanations, and general text queries"
+        "title": "LLaMA 3.1 (8B) — HuggingFace",
+        "desc": "Meta's powerful model via HuggingFace Cerebras provider. Fast and efficient for general-purpose text generation, reasoning, and instruction-following tasks.",
+        "specs": ["8B parameters", "HuggingFace+Cerebras", "Fast", "Instruction-tuned"],
+        "best_for": "General text queries, reasoning tasks, and step-by-step explanations"
     },
     "hf-vision": {
         "icon": "🖼️",
@@ -511,7 +511,7 @@ index = model_options.index(default_model) if default_model in model_options els
 
 model_display_names = {
     "llama-3.1-8b-instant": "🦙 LLaMA 3.1 (8B) — Groq • Fast text responses",
-    "phi-3-mini": "🔷 Phi-3 Mini — HuggingFace • Efficient reasoning",
+    "phi-3-mini": "🔷 LLaMA 3.1 (8B) — HuggingFace • General-purpose",
     "hf-vision": "🖼️ Qwen2-VL Vision — HuggingFace • Image understanding"
 }
 
@@ -553,7 +553,7 @@ with col1:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--primary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">⚡ Speed</div>
         <strong>Fastest:</strong> LLaMA 3.1 (Groq)<br>
-        <strong>Fast:</strong> Phi-3 Mini (HF)<br>
+        <strong>Fast:</strong> LLaMA 3.1 (HF+Cerebras)<br>
         <strong>Moderate:</strong> Qwen2-VL (HF)
     </div>
     ''', unsafe_allow_html=True)
@@ -562,8 +562,8 @@ with col2:
     st.markdown('''
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--secondary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">🎯 Specialization</div>
-        <strong>Quick Text:</strong> LLaMA 3.1<br>
-        <strong>Reasoning:</strong> Phi-3 Mini<br>
+        <strong>Quick Text:</strong> LLaMA 3.1 (Groq)<br>
+        <strong>General:</strong> LLaMA 3.1 (HF)<br>
         <strong>Vision:</strong> Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
@@ -573,7 +573,7 @@ with col3:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--accent); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">💡 Platform</div>
         <strong>Groq:</strong> LLaMA 3.1<br>
-        <strong>HuggingFace:</strong> Phi-3, Qwen2-VL
+        <strong>HuggingFace:</strong> LLaMA 3.1, Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
 
