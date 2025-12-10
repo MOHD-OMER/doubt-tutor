@@ -138,7 +138,7 @@ class AIManager:
             # UI → model resolver
             model_map = {
                 "llama-3.1-8b-instant": "llama-3.1-8b-instant",
-                "gpt-oss-20b": "gpt-oss-20b",
+                "gpt-oss-20b": "llama-3.3-70b-versatile",
                 "hf-vision": "hf-vision",  # Custom mode
             }
 
