@@ -458,7 +458,7 @@ models_info = {
     },
     "bloom-560m": {
         "icon": "🌸",
-        "title": "BLOOM 560M — HuggingFace",
+        "title": "microsoft/Phi-3-mini-4k-instruct",
         "desc": "Compact multilingual model by BigScience via HuggingFace. Great for lightweight text generation and supporting 46+ languages.",
         "specs": ["560M parameters", "HuggingFace", "Multilingual", "Lightweight"],
         "best_for": "Multilingual queries, basic text generation, and lightweight tasks"
@@ -511,7 +511,7 @@ index = model_options.index(default_model) if default_model in model_options els
 
 model_display_names = {
     "llama-3.1-8b-instant": "🦙 LLaMA 3.1 (8B) — Groq • Fast text responses",
-    "bloom-560m": "🌸 BLOOM 560M — HuggingFace • Multilingual & compact",
+    "bloom-560m":"microsoft/Phi-3-mini-4k-instruct — HuggingFace • Multilingual & compact",
     "hf-vision": "🖼️ Qwen2-VL Vision — HuggingFace • Image understanding"
 }
 
@@ -553,7 +553,7 @@ with col1:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--primary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">⚡ Speed</div>
         <strong>Fastest:</strong> LLaMA 3.1 (Groq)<br>
-        <strong>Fast:</strong> BLOOM 560M (HF)<br>
+        <strong>Fast:</strong> microsoft/Phi-3-mini-4k-instruct (HF)<br>
         <strong>Moderate:</strong> Qwen2-VL (HF)
     </div>
     ''', unsafe_allow_html=True)
@@ -563,7 +563,7 @@ with col2:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--secondary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">🎯 Specialization</div>
         <strong>Quick Text:</strong> LLaMA 3.1<br>
-        <strong>Multilingual:</strong> BLOOM 560M<br>
+        <strong>Multilingual:</strong> microsoft/Phi-3-mini-4k-instruct<br>
         <strong>Vision:</strong> Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
