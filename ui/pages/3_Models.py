@@ -451,23 +451,23 @@ st.markdown("""
 models_info = {
     "llama-3.1-8b-instant": {
         "icon": "🦙",
-        "title": "Llama 3.1 (8B) — Instant",
-        "desc": "Meta's fast, reliable lightweight model. Excellent for math, language, science, and quick explanations.",
-        "specs": ["8B parameters", "Very fast", "Text-only"],
+        "title": "LLaMA 3.1 (8B) — Instant",
+        "desc": "Meta's fast, reliable model powered by Groq. Excellent for math, language, science, and quick explanations with lightning-fast inference.",
+        "specs": ["8B parameters", "Groq-powered", "Very fast", "Text-only"],
         "best_for": "Quick text queries, math steps, grammar, and concept explanations"
     },
-    "llama-3.3-70b-versatile": {
-        "icon": "🚀",
-        "title": "Llama 3.3 (70B) — Versatile",
-        "desc": "Meta's powerful 70B parameter model with 128K context window. Optimized for complex reasoning, detailed explanations, and advanced problem-solving.",
-        "specs": ["70B parameters", "128K context", "Advanced reasoning"],
-        "best_for": "Detailed explanations, multi-step problems, research questions, and complex topics"
+    "bloom-560m": {
+        "icon": "🌸",
+        "title": "BLOOM 560M — HuggingFace",
+        "desc": "Compact multilingual model by BigScience via HuggingFace. Great for lightweight text generation and supporting 46+ languages.",
+        "specs": ["560M parameters", "HuggingFace", "Multilingual", "Lightweight"],
+        "best_for": "Multilingual queries, basic text generation, and lightweight tasks"
     },
     "hf-vision": {
         "icon": "🖼️",
         "title": "Qwen2-VL (Vision) — HuggingFace",
-        "desc": "A multimodal model capable of understanding images, charts, diagrams, and screenshots. Uses the free HuggingFace Inference API.",
-        "specs": ["Vision + Text", "Diagram analysis", "Screenshot understanding"],
+        "desc": "A multimodal model capable of understanding images, charts, diagrams, and screenshots via HuggingFace Inference API.",
+        "specs": ["Vision + Text", "HuggingFace", "Diagram analysis", "Screenshot understanding"],
         "best_for": "Image-based questions: diagrams, handwritten notes, screenshots"
     }
 }
@@ -510,9 +510,9 @@ default_model = st.session_state.get("model_select_professional", "llama-3.1-8b-
 index = model_options.index(default_model) if default_model in model_options else 0
 
 model_display_names = {
-    "llama-3.1-8b-instant": "🦙 Llama 3.1 (8B) — Fast text responses",
-    "llama-3.3-70b-versatile": "🚀 Llama 3.3 (70B) — Powerful & versatile",
-    "hf-vision": "🖼️ Qwen2-VL Vision — Image understanding"
+    "llama-3.1-8b-instant": "🦙 LLaMA 3.1 (8B) — Groq • Fast text responses",
+    "bloom-560m": "🌸 BLOOM 560M — HuggingFace • Multilingual & compact",
+    "hf-vision": "🖼️ Qwen2-VL Vision — HuggingFace • Image understanding"
 }
 
 selected_display = st.selectbox(
@@ -552,9 +552,9 @@ with col1:
     st.markdown('''
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--primary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">⚡ Speed</div>
-        <strong>Fastest:</strong> Llama 3.1 Instant<br>
-        <strong>Fast:</strong> Llama 3.3 (70B)<br>
-        <strong>Vision:</strong> Qwen2-VL (HF)
+        <strong>Fastest:</strong> LLaMA 3.1 (Groq)<br>
+        <strong>Fast:</strong> BLOOM 560M (HF)<br>
+        <strong>Moderate:</strong> Qwen2-VL (HF)
     </div>
     ''', unsafe_allow_html=True)
 
@@ -562,8 +562,8 @@ with col2:
     st.markdown('''
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--secondary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">🎯 Specialization</div>
-        <strong>Quick Answers:</strong> Llama 3.1<br>
-        <strong>Detailed Analysis:</strong> Llama 3.3<br>
+        <strong>Quick Text:</strong> LLaMA 3.1<br>
+        <strong>Multilingual:</strong> BLOOM 560M<br>
         <strong>Vision:</strong> Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
@@ -571,10 +571,9 @@ with col2:
 with col3:
     st.markdown('''
     <div style="color: var(--text-secondary); line-height: 1.8;">
-        <div style="color: var(--accent); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">💡 Use Case</div>
-        <strong>Quick Help:</strong> Llama 3.1<br>
-        <strong>Deep Learning:</strong> Llama 3.3<br>
-        <strong>Images:</strong> Qwen2-VL
+        <div style="color: var(--accent); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">💡 Platform</div>
+        <strong>Groq:</strong> LLaMA 3.1<br>
+        <strong>HuggingFace:</strong> BLOOM, Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
 
