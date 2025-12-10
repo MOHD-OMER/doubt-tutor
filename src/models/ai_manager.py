@@ -74,6 +74,39 @@ class AIManager:
             return f"❌ Groq Error: {str(e)}"
 
     # ------------------------------------------------------
+    # HuggingFace Text Model (BLOOM)
+    # ------------------------------------------------------
+    def _call_hf_text(self, prompt, temperature=0.7, max_tokens=1024):
+        try:
+            if not self.hf_token:
+                raise ValueError("HF_TOKEN missing in .env")
+
+            headers = {
+                "Authorization": f"Bearer {self.hf_token}",
+                "Content-Type": "application/json"
+            }
+
+            payload = {
+                "model": "bigscience/bloom-560m",
+                "messages": [
+                    {"role": "user", "content": prompt}
+                ],
+                "max_tokens": max_tokens,
+                "temperature": temperature
+            }
+
+            res = requests.post(self.hf_url, headers=headers, json=payload, timeout=60)
+            
+            if res.status_code != 200:
+                return f"❌ HF Response Error: {res.status_code} - {res.text}"
+
+            out = res.json()
+            return out["choices"][0]["message"]["content"]
+
+        except Exception as e:
+            return f"❌ HuggingFace Text Error: {str(e)}"
+
+    # ------------------------------------------------------
     # HuggingFace Vision (Qwen2.5-VL via Router API)
     # ------------------------------------------------------
     def _call_hf_vision(self, prompt, files, temperature=0.7, max_tokens=1024):
@@ -135,11 +168,11 @@ class AIManager:
             prompt = question.strip()
             files = files or []
 
-            # UI → model resolver - UPDATED MODEL NAMES
+            # UI → model resolver
             model_map = {
                 "llama-3.1-8b-instant": "llama-3.1-8b-instant",
-                "llama-3.3-70b-versatile": "llama-3.3-70b-versatile",  # Powerful 70B model
-                "hf-vision": "hf-vision",  # Custom mode
+                "bloom-560m": "bloom-560m",  # Custom mode for HF
+                "hf-vision": "hf-vision",  # Custom mode for HF Vision
             }
 
             # Validate keys
@@ -147,6 +180,19 @@ class AIManager:
                 return "❌ Missing GROQ_API_KEY in your .env"
 
             real_model = model_map.get(model)
+
+            # --------------------------
+            # BLOOM MODEL (HF)
+            # --------------------------
+            if model == "bloom-560m":
+                if files:
+                    prompt = (
+                        "⚠️ Note: This model cannot see uploaded files.\n"
+                        "Only answering based on text:\n\n" + prompt
+                    )
+
+                reply = self._call_hf_text(prompt, temperature, max_tokens)
+                return self._strip_all_html(reply)
 
             # --------------------------
             # VISION MODEL (HF)
