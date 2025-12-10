@@ -167,9 +167,15 @@ class AIManager:
         try:
             prompt = question.strip()
             files = files or []
+            
+            # Debug logging
+            self.logger.info(f"🔍 Model selected: {model}")
+            self.logger.info(f"📝 Prompt length: {len(prompt)} chars")
+            self.logger.info(f"📎 Files attached: {len(files)}")
 
             # ------------- BLOOM MODEL (HuggingFace) --------------
             if model == "bloom-560m":
+                self.logger.info("✅ Routing to HuggingFace BLOOM")
                 if not self.hf_token:
                     return "❌ Missing HF_TOKEN in your .env"
                 
@@ -184,6 +190,7 @@ class AIManager:
 
             # ------------- VISION MODEL (HuggingFace) --------------
             if model == "hf-vision":
+                self.logger.info("✅ Routing to HuggingFace Vision")
                 if not self.hf_token:
                     return "❌ Missing HF_TOKEN in your .env"
                 
@@ -200,6 +207,7 @@ class AIManager:
             }
             
             if model in groq_model_map:
+                self.logger.info(f"✅ Routing to Groq: {groq_model_map[model]}")
                 if not self.groq_key:
                     return "❌ Missing GROQ_API_KEY in your .env"
                 
@@ -215,6 +223,7 @@ class AIManager:
                 return self._strip_all_html(reply)
 
             # ------------- UNKNOWN MODEL --------------
+            self.logger.error(f"❌ Unknown model: {model}")
             return f"❌ Unknown model selected: {model}"
 
         except Exception as e:
