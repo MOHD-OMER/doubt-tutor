@@ -1,4 +1,4 @@
-# ui/pages/2_How_It_Works.py
+# ui/pages/3_Models.py
 import streamlit as st
 from pathlib import Path
 
@@ -14,8 +14,8 @@ sys.path.insert(0, str(ROOT_DIR))
 # Page Config
 # --------------------------------------------------
 st.set_page_config(
-    page_title="How It Works - Doubt Tutor",
-    page_icon="📖",
+    page_title="AI Models - Doubt Tutor",
+    page_icon="🤖",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -45,6 +45,7 @@ st.markdown("""
 :root {
     --primary: #6366f1;
     --primary-dark: #4f46e5;
+    --primary-light: #818cf8;
     --secondary: #8b5cf6;
     --accent: #ec4899;
     --success: #10b981;
@@ -78,11 +79,6 @@ st.markdown("""
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
 }
 
 .hero-section {
@@ -143,27 +139,25 @@ st.markdown("""
     gap: 0.5rem;
 }
 
-.step-card {
+.model-card {
     background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
     backdrop-filter: blur(20px);
     border-radius: var(--radius-2xl);
-    padding: 2rem 1.5rem;
+    padding: 2rem;
     border: 1px solid var(--border-default);
     transition: var(--transition);
-    text-align: center;
-    height: 100%;
+    margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
     animation: fadeInUp 0.6s ease-out both;
     opacity: 0;
 }
 
-.step-card:nth-child(1) { animation-delay: 0.1s; }
-.step-card:nth-child(3) { animation-delay: 0.2s; }
-.step-card:nth-child(5) { animation-delay: 0.3s; }
-.step-card:nth-child(7) { animation-delay: 0.4s; }
+.model-card:nth-child(1) { animation-delay: 0.1s; }
+.model-card:nth-child(2) { animation-delay: 0.2s; }
+.model-card:nth-child(3) { animation-delay: 0.3s; }
 
-.step-card::before {
+.model-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -175,70 +169,148 @@ st.markdown("""
     transition: var(--transition);
 }
 
-.step-card:hover {
-    transform: translateY(-8px);
+.model-card:hover {
+    transform: translateY(-4px);
     border-color: var(--border-strong);
     box-shadow: var(--shadow-xl);
 }
 
-.step-card:hover::before {
+.model-card:hover::before {
     opacity: 1;
 }
 
-.step-number {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: var(--text-primary);
-    font-size: 1.75rem;
-    font-weight: 800;
+.model-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.model-icon {
+    font-size: 3rem;
+    width: 72px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
-    box-shadow: var(--shadow-glow);
-    transition: var(--transition);
-    border: 2px solid var(--border-subtle);
-}
-
-.step-card:hover .step-number {
-    transform: scale(1.1) rotate(360deg);
-}
-
-.step-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+    border-radius: 16px;
+    border: 1px solid var(--border-subtle);
+    flex-shrink: 0;
     transition: var(--transition);
 }
 
-.step-card:hover .step-icon {
-    transform: scale(1.15);
+.model-card:hover .model-icon {
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
-.step-title {
-    font-size: 1.25rem;
+.model-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.model-description {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.model-specs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.spec-badge {
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 0.25rem 1rem;
+    font-size: 0.875rem;
+    color: var(--primary-light);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.model-card:hover .spec-badge {
+    background: rgba(99, 102, 241, 0.25);
+    transform: translateY(-2px);
+}
+
+.best-for {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    display: inline-block;
+    transition: var(--transition);
+}
+
+.model-card:hover .best-for {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.best-for-text {
+    color: var(--success);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.selection-card {
+    background: linear-gradient(135deg, var(--border-subtle), rgba(168, 85, 247, 0.05));
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-2xl);
+    padding: 2rem;
+    border: 1px solid var(--border-strong);
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.selection-title {
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 1rem;
-    line-height: 1.3;
-}
-
-.step-description {
-    font-size: 0.9375rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-}
-
-.step-arrow {
-    font-size: 2.5rem;
-    color: var(--primary);
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 100%;
-    animation: pulse 2s infinite;
+    gap: 0.5rem;
+}
+
+.stSelectbox div[data-baseweb="select"] {
+    background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)) !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--border-default) !important;
+    transition: var(--transition) !important;
+}
+
+.stSelectbox div[data-baseweb="select"]:hover {
+    border-color: var(--border-strong) !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
+}
+
+.stSelectbox div[data-baseweb="select"] > div {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    padding: 1rem 1.5rem !important;
+}
+
+.comparison-section {
+    background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    border: 1px solid var(--border-subtle);
+    margin: 1.5rem 0;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
 .detail-card {
@@ -248,31 +320,6 @@ st.markdown("""
     padding: 2rem;
     border: 1px solid var(--border-subtle);
     margin: 1.5rem 0;
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-    animation: fadeInUp 0.6s ease-out;
-}
-
-.detail-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, var(--primary), var(--secondary));
-    opacity: 0;
-    transition: var(--transition);
-}
-
-.detail-card:hover {
-    border-color: var(--border-default);
-    transform: translateX(4px);
-}
-
-.detail-card:hover::before {
-    opacity: 1;
 }
 
 .detail-title {
@@ -280,9 +327,6 @@ st.markdown("""
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .detail-content {
@@ -292,36 +336,7 @@ st.markdown("""
 }
 
 .detail-content strong {
-    color: var(--primary);
-}
-
-.pro-tip {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
-    backdrop-filter: blur(20px);
-    border-radius: var(--radius-xl);
-    padding: 2rem;
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    margin: 2rem 0;
-    animation: fadeInUp 0.6s ease-out 0.2s both;
-}
-
-.pro-tip-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    color: var(--success);
-}
-
-.pro-tip-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--success);
-    margin-bottom: 1rem;
-}
-
-.pro-tip-content {
-    font-size: 0.9375rem;
-    color: var(--text-secondary);
-    line-height: 1.7;
+    color: var(--primary-light);
 }
 
 .cta-section {
@@ -384,6 +399,14 @@ st.markdown("""
     background: linear-gradient(135deg, var(--primary), var(--secondary));
 }
 
+.stAlert {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)) !important;
+    border-radius: var(--radius-xl) !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    padding: 1.5rem !important;
+    margin: 1.5rem 0 !important;
+}
+
 hr {
     margin: 3rem 0;
     border: none;
@@ -393,8 +416,15 @@ hr {
 
 @media (max-width: 768px) {
     .hero-title { font-size: 2rem; }
-    .step-arrow { display: none !important; }
-    .step-card { margin-bottom: 1.5rem; }
+    .model-header { 
+        flex-direction: column;
+        text-align: center;
+    }
+    .model-icon { 
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -408,169 +438,153 @@ render_header()
 # Hero Section
 st.markdown("""
 <div class="hero-section">
-    <div class="hero-title">How It Works</div>
+    <div class="hero-title">AI Models</div>
     <div class="hero-subtitle">
-        Doubt Tutor simplifies learning with a seamless, 4-step workflow powered by 
-        cutting-edge AI technology. Get instant answers to your questions in seconds.
+        Explore our curated collection of AI models powered by Groq and HuggingFace, each optimized for different types 
+        of learning challenges. Choose the perfect model for your doubt—whether it's 
+        text-heavy, visual, or requires advanced reasoning.
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Workflow Steps
-st.markdown('<div class="section-heading">🔄 Simple 4-Step Process</div>', unsafe_allow_html=True)
+# Models Information
+models_info = {
+    "llama-3.1-8b-instant": {
+        "icon": "🦙",
+        "title": "LLaMA 3.1 (8B) — Instant",
+        "desc": "Meta's fast, reliable model powered by Groq. Excellent for math, language, science, and quick explanations with lightning-fast inference.",
+        "specs": ["8B parameters", "Groq-powered", "Very fast", "Text-only"],
+        "best_for": "Quick text queries, math steps, grammar, and concept explanations"
+    },
+    "phi-3-mini": {
+        "icon": "🔷",
+        "title": "Phi-3 Mini (4K Instruct)",
+        "desc": "Microsoft's compact and efficient model via HuggingFace. Optimized for instruction-following, reasoning tasks, and general-purpose text generation.",
+        "specs": ["3.8B parameters", "HuggingFace", "Efficient", "Instruction-tuned"],
+        "best_for": "Reasoning tasks, step-by-step explanations, and general text queries"
+    },
+    "hf-vision": {
+        "icon": "🖼️",
+        "title": "Qwen2-VL (Vision) — HuggingFace",
+        "desc": "A multimodal model capable of understanding images, charts, diagrams, and screenshots via HuggingFace Inference API.",
+        "specs": ["Vision + Text", "HuggingFace", "Diagram analysis", "Screenshot understanding"],
+        "best_for": "Image-based questions: diagrams, handwritten notes, screenshots"
+    }
+}
 
-cols = st.columns([3, 0.5, 3, 0.5, 3, 0.5, 3])
+# Display model cards
+st.markdown('<div class="section-heading">🤖 Available Models</div>', unsafe_allow_html=True)
 
-with cols[0]:
-    st.markdown("""
-    <div class="step-card">
-        <div class="step-number">1</div>
-        <div class="step-icon">🧠</div>
-        <div class="step-title">Select Your Model</div>
-        <div class="step-description">
-            Choose from our curated AI models. Each is optimized for different 
-            doubt types—text, images, or code.
+for model_key, info in models_info.items():
+    st.markdown(f"""
+    <div class="model-card">
+        <div class="model-header">
+            <div class="model-icon">{info['icon']}</div>
+            <div class="model-title">{info['title']}</div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with cols[1]:
-    st.markdown('<div class="step-arrow">→</div>', unsafe_allow_html=True)
-
-with cols[2]:
-    st.markdown("""
-    <div class="step-card">
-        <div class="step-number">2</div>
-        <div class="step-icon">💬</div>
-        <div class="step-title">Ask Your Question</div>
-        <div class="step-description">
-            Type your question in the chat interface. Be specific for best results, 
-            and upload files if needed.
+        <div class="model-description">
+            {info['desc']}
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with cols[3]:
-    st.markdown('<div class="step-arrow">→</div>', unsafe_allow_html=True)
-
-with cols[4]:
-    st.markdown("""
-    <div class="step-card">
-        <div class="step-number">3</div>
-        <div class="step-icon">✨</div>
-        <div class="step-title">Get Instant Response</div>
-        <div class="step-description">
-            Our AI generates a clear, structured answer with explanations, 
-            examples, and follow-ups.
+        <div class="model-specs">
+            {''.join([f'<span class="spec-badge">{spec}</span>' for spec in info['specs']])}
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with cols[5]:
-    st.markdown('<div class="step-arrow">→</div>', unsafe_allow_html=True)
-
-with cols[6]:
-    st.markdown("""
-    <div class="step-card">
-        <div class="step-number">4</div>
-        <div class="step-icon">💾</div>
-        <div class="step-title">Export & Continue</div>
-        <div class="step-description">
-            Download your chat history or dive deeper with related resources. 
-            Repeat as needed.
+        <div class="best-for">
+            <span class="best-for-text">✨ Best for: {info['best_for']}</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# Detailed Breakdown
-st.markdown('<div class="section-heading">🔍 Detailed Breakdown</div>', unsafe_allow_html=True)
-
+# Model Selection
 st.markdown("""
-<div class="detail-card">
-    <div class="detail-title">🎯 Step 1: Choose Your AI Model</div>
-    <div class="detail-content">
-        Start by selecting the right AI model for your needs. We offer multiple models, 
-        each with unique capabilities:
-        <br><br>
-        • <strong>LLaMA 3.1 (8B)</strong>: Fast, efficient text-based responses via Groq for quick questions<br>
-        • <strong>microsoft/Phi-3-mini-4k-instruct</strong>: Compact multilingual model via HuggingFace for lightweight text tasks<br>
-        • <strong>Qwen2-VL Vision</strong>: Advanced vision capabilities via HuggingFace for analyzing images and diagrams<br>
-        <br>
-        Navigate to the Models page to learn more about each option and their use cases.
-    </div>
+<div class="selection-card">
+    <div class="selection-title">🎯 Select Your Model</div>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<div class="detail-card">
-    <div class="detail-title">💭 Step 2: Ask Your Doubt</div>
-    <div class="detail-content">
-        Type your question clearly in the chat interface. For best results:
-        <br><br>
-        • Be specific: "Explain photosynthesis with a diagram" instead of "what is photosynthesis"<br>
-        • Upload supporting materials: PDFs, images, or text files<br>
-        • Provide context: Include relevant details about what you're learning<br>
-        • Ask follow-ups: Dive deeper into concepts that need clarification<br>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+st.markdown("Choose your preferred model below. The selection will be saved and the badge in the header will update instantly.")
 
-st.markdown("""
-<div class="detail-card">
-    <div class="detail-title">⚡ Step 3: Receive Your Answer</div>
-    <div class="detail-content">
-        Within seconds, our AI analyzes your question and generates a comprehensive response:
-        <br><br>
-        • <strong>Clear explanations</strong>: Step-by-step breakdowns of complex concepts<br>
-        • <strong>Visual analysis</strong>: For image-based questions, get detailed interpretations<br>
-        • <strong>Examples</strong>: Real-world applications and practice problems<br>
-        • <strong>Related concepts</strong>: Suggestions for deeper learning<br>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+model_options = list(models_info.keys())
+default_model = st.session_state.get("model_select_professional", "llama-3.1-8b-instant")
+index = model_options.index(default_model) if default_model in model_options else 0
 
-st.markdown("""
+model_display_names = {
+    "llama-3.1-8b-instant": "🦙 LLaMA 3.1 (8B) — Groq • Fast text responses",
+    "phi-3-mini": "🔷 Phi-3 Mini — HuggingFace • Efficient reasoning",
+    "hf-vision": "🖼️ Qwen2-VL Vision — HuggingFace • Image understanding"
+}
+
+selected_display = st.selectbox(
+    "Choose your AI model",
+    options=model_options,
+    format_func=lambda x: model_display_names[x],
+    index=index,
+    help="Select a model based on your learning needs"
+)
+
+if selected_display != st.session_state.get("model_select_professional", "llama-3.1-8b-instant"):
+    st.session_state["model_select_professional"] = selected_display
+    st.success(f"✅ Successfully switched to **{models_info[selected_display]['title']}**!")
+    st.balloons()
+    st.rerun()
+
+# Show current model info
+st.markdown(f"""
 <div class="detail-card">
-    <div class="detail-title">📤 Step 4: Export & Learn More</div>
+    <div class="detail-title">📋 Current Model: {models_info[default_model]['title']}</div>
     <div class="detail-content">
-        Save your learning session for future reference:
+        <strong>Best for:</strong> {models_info[default_model]['best_for']}  
         <br><br>
-        • <strong>Export chat history</strong>: Download conversations as JSON files<br>
-        • <strong>Review anytime</strong>: Access your saved sessions whenever needed<br>
-        • <strong>Continue learning</strong>: Ask follow-up questions or explore new topics<br>
-        • <strong>Share knowledge</strong>: Help others by sharing your learning journey<br>
+        Ready to start learning! Head back to the home page to begin chatting with your selected model.
     </div>
 </div>
 """, unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# Pro Tips
-st.markdown('<div class="section-heading">💡 Pro Tips for Best Results</div>', unsafe_allow_html=True)
+# Quick Comparison
+st.markdown('<div class="section-heading">📊 Quick Comparison</div>', unsafe_allow_html=True)
 
-st.markdown("""
-<div class="pro-tip">
-    <div class="pro-tip-icon">💡</div>
-    <div class="pro-tip-title">Model Selection Guide</div>
-    <div class="pro-tip-content">
-        <strong>For Quick Questions:</strong> Start with LLaMA 3.1 (Groq) for fast, accurate answers to conceptual questions, definitions, and problem-solving.<br><br>
-        <strong>For Multilingual & Compact:</strong> Use microsoft/Phi-3-mini-4k-instruct (HuggingFace) for lightweight text generation and multilingual support.<br><br>
-        <strong>For Visual Content:</strong> Use Qwen2-VL Vision (HuggingFace) when you need to analyze diagrams, charts, handwritten notes, or any image-based content.<br><br>
-        <strong>Upload Context:</strong> Attach relevant PDFs, textbook pages, or assignment sheets to get more accurate, tailored responses.
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown('''
+    <div style="color: var(--text-secondary); line-height: 1.8;">
+        <div style="color: var(--primary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">⚡ Speed</div>
+        <strong>Fastest:</strong> LLaMA 3.1 (Groq)<br>
+        <strong>Fast:</strong> Phi-3 Mini (HF)<br>
+        <strong>Moderate:</strong> Qwen2-VL (HF)
     </div>
-</div>
-""", unsafe_allow_html=True)
+    ''', unsafe_allow_html=True)
+
+with col2:
+    st.markdown('''
+    <div style="color: var(--text-secondary); line-height: 1.8;">
+        <div style="color: var(--secondary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">🎯 Specialization</div>
+        <strong>Quick Text:</strong> LLaMA 3.1<br>
+        <strong>Reasoning:</strong> Phi-3 Mini<br>
+        <strong>Vision:</strong> Qwen2-VL
+    </div>
+    ''', unsafe_allow_html=True)
+
+with col3:
+    st.markdown('''
+    <div style="color: var(--text-secondary); line-height: 1.8;">
+        <div style="color: var(--accent); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">💡 Platform</div>
+        <strong>Groq:</strong> LLaMA 3.1<br>
+        <strong>HuggingFace:</strong> Phi-3, Qwen2-VL
+    </div>
+    ''', unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # CTA Section
 st.markdown("""
 <div class="cta-section">
-    <div class="cta-title">🚀 Ready to Start Learning?</div>
+    <div class="cta-title">🚀 Ready to Start?</div>
     <div class="cta-description">
-        Try Doubt Tutor now and experience the future of AI-powered education.
+        Your model is selected. Let's tackle those doubts together!
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -582,8 +596,8 @@ with col1:
         st.switch_page("app.py")
 
 with col2:
-    if st.button("🤖 Explore Models", use_container_width=True):
-        st.switch_page("pages/3_Models.py")
+    if st.button("📖 How It Works", use_container_width=True):
+        st.switch_page("pages/2_How_It_Works.py")
 
 with col3:
     if st.button("ℹ️ About Us", use_container_width=True):
