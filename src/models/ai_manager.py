@@ -74,7 +74,7 @@ class AIManager:
             return f"❌ Groq Error: {str(e)}"
 
     # ------------------------------------------------------
-    # HuggingFace Text Model (BLOOM)
+    # HuggingFace Text Model (Using chat-compatible models)
     # ------------------------------------------------------
     def _call_hf_text(self, prompt, temperature=0.7, max_tokens=1024):
         try:
@@ -86,8 +86,10 @@ class AIManager:
                 "Content-Type": "application/json"
             }
 
+            # Use a chat-compatible model from HuggingFace Router
+            # Options: microsoft/Phi-3-mini-4k-instruct, meta-llama/Llama-3.2-3B-Instruct
             payload = {
-                "model": "bigscience/bloom-560m",
+                "model": "microsoft/Phi-3-mini-4k-instruct",
                 "messages": [
                     {"role": "user", "content": prompt}
                 ],
