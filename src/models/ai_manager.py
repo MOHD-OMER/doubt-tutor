@@ -138,8 +138,7 @@ class AIManager:
             # UI → model resolver
             model_map = {
                 "llama-3.1-8b-instant": "llama-3.1-8b-instant",
-                "mistral": "mistral-7b-instruct",
-                "deepseek-r1": "deepseek-r1-distill-qwen-32b",
+                "gpt-oss-20b": "gpt-oss-20b",
                 "hf-vision": "hf-vision",  # Custom mode
             }
 
