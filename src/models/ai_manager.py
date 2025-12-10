@@ -74,7 +74,7 @@ class AIManager:
             return f"❌ Groq Error: {str(e)}"
 
     # ------------------------------------------------------
-    # HuggingFace Text Model (Phi-3-mini-4k-instruct)
+    # HuggingFace Text Model (Llama-3.1-8B via multiple providers)
     # ------------------------------------------------------
     def _call_hf_text(self, prompt, temperature=0.7, max_tokens=1024):
         try:
@@ -86,9 +86,10 @@ class AIManager:
                 "Content-Type": "application/json"
             }
 
-            # Use Phi-3 Mini model from HuggingFace Router
+            # Use Llama-3.1-8B-Instruct via Cerebras (fastest provider)
+            # Format: model-name:provider is required for HF Router API
             payload = {
-                "model": "microsoft/Phi-3-mini-4k-instruct",
+                "model": "meta-llama/Llama-3.1-8B-Instruct:cerebras",
                 "messages": [
                     {"role": "user", "content": prompt}
                 ],
@@ -176,7 +177,7 @@ class AIManager:
 
             # ------------- PHI-3 MINI MODEL (HuggingFace) --------------
             if model == "phi-3-mini":
-                self.logger.info("✅ Routing to HuggingFace Phi-3 Mini")
+                self.logger.info("✅ Routing to HuggingFace Llama-3.1-8B (Cerebras)")
                 if not self.hf_token:
                     return "❌ Missing HF_TOKEN in your .env"
                 
