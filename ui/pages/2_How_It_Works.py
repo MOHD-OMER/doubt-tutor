@@ -495,7 +495,7 @@ st.markdown("""
         each with unique capabilities:
         <br><br>
         • <strong>LLaMA 3.1</strong>: Fast, efficient text-based responses for quick questions<br>
-        • <strong>GPT OSS 20B</strong>: Powerful open-source model for comprehensive explanations<br>
+        • <strong>Llama 3.3 (70B) — Versatile</strong>: Powerful open-source model for comprehensive explanations<br>
         • <strong>Qwen2-VL Vision</strong>: Advanced vision capabilities for analyzing images and diagrams<br>
         <br>
         Navigate to the Models page to learn more about each option and their use cases.
@@ -556,7 +556,7 @@ st.markdown("""
     <div class="pro-tip-title">Model Selection Guide</div>
     <div class="pro-tip-content">
         <strong>For Quick Questions:</strong> Start with LLaMA 3.1 for fast, accurate answers to conceptual questions, definitions, and problem-solving.<br><br>
-        <strong>For Comprehensive Answers:</strong> Use GPT OSS 20B when you need detailed, in-depth explanations and multi-step reasoning.<br><br>
+        <strong>For Comprehensive Answers:</strong> Use Llama 3.3 — Versatile when you need detailed, in-depth explanations and multi-step reasoning.<br><br>
         <strong>For Visual Content:</strong> Use Qwen2-VL Vision when you need to analyze diagrams, charts, handwritten notes, or any image-based content.<br><br>
         <strong>Upload Context:</strong> Attach relevant PDFs, textbook pages, or assignment sheets to get more accurate, tailored responses.
     </div>
