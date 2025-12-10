@@ -456,11 +456,11 @@ models_info = {
         "specs": ["8B parameters", "Very fast", "Text-only"],
         "best_for": "Quick text queries, math steps, grammar, and concept explanations"
     },
-    "gpt-oss-20b": {
-        "icon": "🚀",
-        "title": "GPT OSS 20B",
-        "desc": "Powerful open-source GPT model with 20B parameters. Ideal for comprehensive explanations, complex reasoning, and in-depth analysis.",
-        "specs": ["20B parameters", "Comprehensive", "Advanced reasoning"],
+    "gemma2-9b-it": {
+        "icon": "💎",
+        "title": "Gemma 2 (9B) — Instruct",
+        "desc": "Google's powerful instruction-tuned model with 9B parameters. Optimized for detailed explanations, complex reasoning, and educational content.",
+        "specs": ["9B parameters", "Instruction-tuned", "Advanced reasoning"],
         "best_for": "Detailed explanations, multi-step problems, research questions, and complex topics"
     },
     "hf-vision": {
@@ -511,7 +511,7 @@ index = model_options.index(default_model) if default_model in model_options els
 
 model_display_names = {
     "llama-3.1-8b-instant": "🦙 Llama 3.1 (8B) — Fast text responses",
-    "gpt-oss-20b": "🚀 GPT OSS 20B — Comprehensive & powerful",
+    "gemma2-9b-it": "💎 Gemma 2 (9B) — Instruction-tuned & powerful",
     "hf-vision": "🖼️ Qwen2-VL Vision — Image understanding"
 }
 
@@ -553,7 +553,7 @@ with col1:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--primary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">⚡ Speed</div>
         <strong>Fastest:</strong> Llama 3.1 Instant<br>
-        <strong>Fast:</strong> GPT OSS 20B<br>
+        <strong>Fast:</strong> Gemma 2 (9B)<br>
         <strong>Vision:</strong> Qwen2-VL (HF)
     </div>
     ''', unsafe_allow_html=True)
@@ -563,7 +563,7 @@ with col2:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--secondary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">🎯 Specialization</div>
         <strong>Quick Answers:</strong> Llama 3.1<br>
-        <strong>Detailed Analysis:</strong> GPT OSS 20B<br>
+        <strong>Detailed Analysis:</strong> Gemma 2<br>
         <strong>Vision:</strong> Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
@@ -573,7 +573,7 @@ with col3:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--accent); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">💡 Use Case</div>
         <strong>Quick Help:</strong> Llama 3.1<br>
-        <strong>Deep Learning:</strong> GPT OSS 20B<br>
+        <strong>Deep Learning:</strong> Gemma 2<br>
         <strong>Images:</strong> Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
