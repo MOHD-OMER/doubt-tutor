@@ -156,7 +156,6 @@ st.markdown("""
 .model-card:nth-child(1) { animation-delay: 0.1s; }
 .model-card:nth-child(2) { animation-delay: 0.2s; }
 .model-card:nth-child(3) { animation-delay: 0.3s; }
-.model-card:nth-child(4) { animation-delay: 0.4s; }
 
 .model-card::before {
     content: '';
@@ -457,19 +456,12 @@ models_info = {
         "specs": ["8B parameters", "Very fast", "Text-only"],
         "best_for": "Quick text queries, math steps, grammar, and concept explanations"
     },
-    "mistral": {
-        "icon": "🌬️",
-        "title": "Mistral 7B",
-        "desc": "Balanced open-source model. Great for creative writing, summaries, and interdisciplinary topics.",
-        "specs": ["7B parameters", "Balanced output", "Stable reasoning"],
-        "best_for": "Creative writing, history, essays, and brainstorming"
-    },
-    "deepseek-r1": {
-        "icon": "🔬",
-        "title": "DeepSeek R1 — Reasoning",
-        "desc": "Advanced reasoning model designed for logic, code explanations, and step-by-step STEM problems.",
-        "specs": ["Deep reasoning", "STEM-focused", "Chain-of-thought"],
-        "best_for": "Coding help, algorithm debugging, complex math & physics"
+    "gpt-oss-20b": {
+        "icon": "🚀",
+        "title": "GPT OSS 20B",
+        "desc": "Powerful open-source GPT model with 20B parameters. Ideal for comprehensive explanations, complex reasoning, and in-depth analysis.",
+        "specs": ["20B parameters", "Comprehensive", "Advanced reasoning"],
+        "best_for": "Detailed explanations, multi-step problems, research questions, and complex topics"
     },
     "hf-vision": {
         "icon": "🖼️",
@@ -519,8 +511,7 @@ index = model_options.index(default_model) if default_model in model_options els
 
 model_display_names = {
     "llama-3.1-8b-instant": "🦙 Llama 3.1 (8B) — Fast text responses",
-    "mistral": "🌬️ Mistral — Creative & balanced",
-    "deepseek-r1": "🔬 DeepSeek R1 — Advanced reasoning",
+    "gpt-oss-20b": "🚀 GPT OSS 20B — Comprehensive & powerful",
     "hf-vision": "🖼️ Qwen2-VL Vision — Image understanding"
 }
 
@@ -562,8 +553,7 @@ with col1:
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--primary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">⚡ Speed</div>
         <strong>Fastest:</strong> Llama 3.1 Instant<br>
-        <strong>Moderate:</strong> Mistral<br>
-        <strong>Thoughtful:</strong> DeepSeek R1<br>
+        <strong>Fast:</strong> GPT OSS 20B<br>
         <strong>Vision:</strong> Qwen2-VL (HF)
     </div>
     ''', unsafe_allow_html=True)
@@ -572,9 +562,9 @@ with col2:
     st.markdown('''
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--secondary); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">🎯 Specialization</div>
-        <strong>Text:</strong> Llama 3.1, Mistral<br>
-        <strong>Vision:</strong> HF Qwen2-VL<br>
-        <strong>Code/Logic:</strong> DeepSeek R1
+        <strong>Quick Answers:</strong> Llama 3.1<br>
+        <strong>Detailed Analysis:</strong> GPT OSS 20B<br>
+        <strong>Vision:</strong> Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
 
@@ -582,9 +572,9 @@ with col3:
     st.markdown('''
     <div style="color: var(--text-secondary); line-height: 1.8;">
         <div style="color: var(--accent); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem;">💡 Use Case</div>
-        <strong>Quick Answers:</strong> Llama 3.1<br>
-        <strong>Deep Learning:</strong> DeepSeek R1<br>
-        <strong>Creative:</strong> Mistral
+        <strong>Quick Help:</strong> Llama 3.1<br>
+        <strong>Deep Learning:</strong> GPT OSS 20B<br>
+        <strong>Images:</strong> Qwen2-VL
     </div>
     ''', unsafe_allow_html=True)
 
