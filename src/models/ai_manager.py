@@ -135,10 +135,10 @@ class AIManager:
             prompt = question.strip()
             files = files or []
 
-            # UI → model resolver - FIXED MODEL NAMES
+            # UI → model resolver - UPDATED MODEL NAMES
             model_map = {
                 "llama-3.1-8b-instant": "llama-3.1-8b-instant",
-                "gemma2-9b-it": "gemma2-9b-it",  # Gemma2 model
+                "llama-3.3-70b-versatile": "llama-3.3-70b-versatile",  # Powerful 70B model
                 "hf-vision": "hf-vision",  # Custom mode
             }
 
