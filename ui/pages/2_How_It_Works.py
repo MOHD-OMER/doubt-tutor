@@ -494,9 +494,9 @@ st.markdown("""
         Start by selecting the right AI model for your needs. We offer multiple models, 
         each with unique capabilities:
         <br><br>
-        • <strong>LLaMA 3.1</strong>: Fast, efficient text-based responses for quick questions<br>
-        • <strong>Llama 3.3 (70B) — Versatile</strong>: Powerful open-source model for comprehensive explanations<br>
-        • <strong>Qwen2-VL Vision</strong>: Advanced vision capabilities for analyzing images and diagrams<br>
+        • <strong>LLaMA 3.1 (8B)</strong>: Fast, efficient text-based responses via Groq for quick questions<br>
+        • <strong>BLOOM 560M</strong>: Compact multilingual model via HuggingFace for lightweight text tasks<br>
+        • <strong>Qwen2-VL Vision</strong>: Advanced vision capabilities via HuggingFace for analyzing images and diagrams<br>
         <br>
         Navigate to the Models page to learn more about each option and their use cases.
     </div>
@@ -555,9 +555,9 @@ st.markdown("""
     <div class="pro-tip-icon">💡</div>
     <div class="pro-tip-title">Model Selection Guide</div>
     <div class="pro-tip-content">
-        <strong>For Quick Questions:</strong> Start with LLaMA 3.1 for fast, accurate answers to conceptual questions, definitions, and problem-solving.<br><br>
-        <strong>For Comprehensive Answers:</strong> Use Llama 3.3 — Versatile when you need detailed, in-depth explanations and multi-step reasoning.<br><br>
-        <strong>For Visual Content:</strong> Use Qwen2-VL Vision when you need to analyze diagrams, charts, handwritten notes, or any image-based content.<br><br>
+        <strong>For Quick Questions:</strong> Start with LLaMA 3.1 (Groq) for fast, accurate answers to conceptual questions, definitions, and problem-solving.<br><br>
+        <strong>For Multilingual & Compact:</strong> Use BLOOM 560M (HuggingFace) for lightweight text generation and multilingual support.<br><br>
+        <strong>For Visual Content:</strong> Use Qwen2-VL Vision (HuggingFace) when you need to analyze diagrams, charts, handwritten notes, or any image-based content.<br><br>
         <strong>Upload Context:</strong> Attach relevant PDFs, textbook pages, or assignment sheets to get more accurate, tailored responses.
     </div>
 </div>
