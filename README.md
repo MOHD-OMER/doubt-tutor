@@ -6,7 +6,7 @@
 [![Groq](https://img.shields.io/badge/Powered%20by-Groq-orange.svg)](https://groq.com)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-🤗-yellow.svg)](https://huggingface.co)
 
-An innovative AI-driven educational platform that provides instant, personalized academic support through cutting-edge language models. Built with Streamlit and powered by Groq's lightning-fast AI infrastructure.
+An innovative AI-driven educational platform that provides instant, personalized academic support through cutting-edge language models. Built with Streamlit and powered by Groq's lightning-fast AI infrastructure and HuggingFace's versatile model ecosystem.
 
 <div align="center">
   <img src="https://img.shields.io/badge/Status-Active-success" alt="Status">
@@ -21,14 +21,14 @@ An innovative AI-driven educational platform that provides instant, personalized
 ### 🤖 Multi-Model AI Support
 Choose from multiple specialized AI models, each optimized for different learning scenarios:
 
-- **LLaMA 3.1 (8B Instant)** - Lightning-fast responses for quick questions, math problems, and concept explanations
-- **GPT OSS 20B** - Powerful open-source model for comprehensive, in-depth analysis and complex reasoning
-- **Qwen2-VL Vision** - Advanced multimodal capabilities for analyzing images, diagrams, charts, and handwritten notes
+- **🦙 LLaMA 3.1 (8B Instant) - Groq** - Lightning-fast responses for quick questions, math problems, and concept explanations
+- **🌸 BLOOM 560M - HuggingFace** - Compact multilingual model supporting 46+ languages for lightweight text generation
+- **🖼️ Qwen2-VL Vision - HuggingFace** - Advanced multimodal capabilities for analyzing images, diagrams, charts, and handwritten notes
 
 ### 📁 Multi-Format File Support
 Seamlessly upload and analyze:
 - **PDFs** - Extract and understand textbook pages, research papers, and assignments
-- **Images** (PNG, JPG, JPEG) - Analyze diagrams, screenshots, and handwritten notes
+- **Images** (PNG, JPG, JPEG) - Analyze diagrams, screenshots, and handwritten notes (Vision model only)
 - **Text Files** - Process code, essays, and plain text documents
 
 ### 💬 Professional Chat Interface
@@ -58,7 +58,8 @@ Seamlessly upload and analyze:
 - Encrypted communication channels
 
 ### ⚡ Lightning-Fast Performance
-- Powered by Groq's optimized inference engine
+- Powered by Groq's optimized inference engine for LLaMA models
+- HuggingFace's efficient API for BLOOM and Vision models
 - Average response time under 2 seconds
 - Concurrent user support (100+)
 - Efficient file processing pipeline
@@ -217,7 +218,7 @@ doubt-tutor/
 
 2. **Select Your AI Model**
    - Navigate to the **Models** page
-   - Choose from LLaMA 3.1, GPT OSS 20B, or Qwen2-VL Vision
+   - Choose from LLaMA 3.1 (Groq), BLOOM 560M (HuggingFace), or Qwen2-VL Vision (HuggingFace)
    - Your selection is saved automatically
 
 3. **Ask Your Question**
@@ -237,39 +238,39 @@ doubt-tutor/
 
 ### Model Selection Guide
 
-| Model | Best For | Speed | Capabilities | File Support |
-|-------|----------|-------|--------------|--------------|
-| **LLaMA 3.1 (8B)** | Quick answers, math, definitions | ⚡⚡⚡ Very Fast | Text generation, reasoning | Text only (files ignored) |
-| **GPT OSS 20B** | Detailed explanations, analysis | ⚡⚡ Fast | Advanced reasoning, creative tasks | Text only (files ignored) |
-| **Qwen2-VL Vision** | Images, diagrams, screenshots | ⚡⚡ Fast | Text + Vision, multimodal | **Images (PNG, JPG, JPEG)** |
+| Model | Platform | Best For | Speed | Capabilities | File Support |
+|-------|----------|----------|-------|--------------|--------------|
+| **🦙 LLaMA 3.1 (8B)** | Groq | Quick answers, math, definitions | ⚡⚡⚡ Very Fast | Text generation, reasoning | Text only (files ignored) |
+| **🌸 BLOOM 560M** | HuggingFace | Multilingual tasks, lightweight text | ⚡⚡ Fast | 46+ languages, compact | Text only (files ignored) |
+| **🖼️ Qwen2-VL Vision** | HuggingFace | Images, diagrams, screenshots | ⚡⚡ Fast | Text + Vision, multimodal | **Images (PNG, JPG, JPEG)** |
 
 ### Example Use Cases
 
 #### Mathematics
 ```
 Question: Explain the quadratic formula step-by-step
-Model: LLaMA 3.1 (8B Instant)
+Model: LLaMA 3.1 (8B Instant) - Groq
 Expected Response: Detailed derivation with examples
 ```
 
-#### Essay Writing
+#### Multilingual Translation
 ```
-Question: Help me structure an essay about climate change
-Model: GPT OSS 20B
-Expected Response: Outline with key points and arguments
+Question: Translate this paragraph to French and Spanish
+Model: BLOOM 560M - HuggingFace
+Expected Response: Accurate translations in multiple languages
 ```
 
 #### Diagram Analysis
 ```
 Question: [Upload biology diagram] Explain this cell structure
-Model: Qwen2-VL Vision
+Model: Qwen2-VL Vision - HuggingFace
 Expected Response: Detailed analysis of diagram components
 ```
 
-#### Code Debugging
+#### Code Review
 ```
-Question: Why isn't this Python code working? [paste code]
-Model: GPT OSS 20B or LLaMA 3.1
+Question: Review this Python code for errors [paste code]
+Model: LLaMA 3.1 (8B Instant) - Groq
 Expected Response: Error identification and corrected code
 ```
 
@@ -320,16 +321,16 @@ models:
     max_tokens: 2048
     description: "Fast, efficient responses"
     
-  gpt-oss-20b:
-    provider: groq
+  bloom-560m:
+    provider: huggingface
     temperature: 0.7
-    max_tokens: 4096
-    description: "Comprehensive explanations"
+    max_tokens: 1024
+    description: "Multilingual text generation"
     
   hf-vision:
     provider: huggingface
     temperature: 0.7
-    max_tokens: 2048
+    max_tokens: 1024
     description: "Image understanding"
 ```
 
@@ -478,16 +479,16 @@ LOG_LEVEL=DEBUG streamlit run ui/app.py
        │                                     │
 ┌──────▼────────────┐              ┌────────▼──────────┐
 │   Groq API        │              │  HuggingFace API  │
-│ (Text Models)     │              │  (Vision Model)   │
-│ • LLaMA 3.1       │              │ • Qwen2-VL        │
-│ • GPT OSS 20B     │              │                   │
+│ (Text Models)     │              │  (Text + Vision)  │
+│ • LLaMA 3.1 8B    │              │ • BLOOM 560M      │
+│                   │              │ • Qwen2-VL Vision │
 └───────────────────┘              └───────────────────┘
 ```
 
 ### Key Components
 
 1. **UI Layer**: Streamlit-based responsive interface
-2. **AI Manager**: Orchestrates API calls to different models
+2. **AI Manager**: Orchestrates API calls to different models (Groq & HuggingFace)
 3. **File Processor**: Handles PDF, image, and text file parsing
 4. **Config Manager**: Manages environment variables and settings
 5. **Logger**: Centralized logging with rotation and levels
@@ -578,15 +579,16 @@ furnished to do so, subject to the following conditions:
 
 ### Powered By
 
-- **[Groq](https://groq.com)** - Lightning-fast AI inference infrastructure
-- **[HuggingFace](https://huggingface.co)** - Vision model hosting and inference API
+- **[Groq](https://groq.com)** - Lightning-fast AI inference infrastructure for LLaMA models
+- **[HuggingFace](https://huggingface.co)** - Model hosting and inference API for BLOOM and Vision models
 - **[Streamlit](https://streamlit.io)** - Rapid web app framework for Python
 
 ### AI Models
 
 - **[Meta AI](https://ai.meta.com)** - LLaMA 3.1 language models
+- **[BigScience](https://bigscience.huggingface.co)** - BLOOM multilingual language model
 - **[Alibaba Cloud](https://www.alibabacloud.com)** - Qwen2-VL vision-language model
-- **Open Source Community** - GPT OSS 20B contributors
+- **Open Source Community** - All model contributors
 
 ### Special Thanks
 
@@ -617,8 +619,10 @@ furnished to do so, subject to the following conditions:
 ## 🗺️ Roadmap
 
 ### Version 1.x (Current) ✅
-- [x] Multi-model AI support (LLaMA, GPT OSS, Qwen2-VL)
+- [x] Multi-model AI support (LLaMA 3.1, BLOOM, Qwen2-VL)
+- [x] Dual-platform integration (Groq + HuggingFace)
 - [x] File upload capabilities (PDF, images, text)
+- [x] Multilingual support via BLOOM (46+ languages)
 - [x] Dark/light theme with professional design
 - [x] Export conversations as JSON
 - [x] Professional UI/UX with animations
@@ -632,6 +636,7 @@ furnished to do so, subject to the following conditions:
 - [ ] Advanced analytics dashboard
 - [ ] Study session tracking
 - [ ] Collaborative learning features
+- [ ] Additional model integrations (GPT-4, Claude)
 
 ### Version 3.0 (Q3 2025) 📋
 - [ ] Mobile apps (iOS & Android)
@@ -643,7 +648,7 @@ furnished to do so, subject to the following conditions:
 ### Future Enhancements 🔮
 - [ ] API for third-party integrations
 - [ ] Offline mode with local models
-- [ ] Multi-language support (i18n)
+- [ ] Enhanced multi-language support (100+ languages)
 - [ ] Advanced search and filtering
 - [ ] Flashcard and quiz generation
 - [ ] Progress tracking and gamification
@@ -674,6 +679,11 @@ AI models may occasionally:
 - Generate plausible-sounding but inaccurate responses
 
 **Always verify important information from reliable sources.**
+
+### Platform-Specific Notes
+- **Groq Models**: Optimized for speed and efficiency (LLaMA 3.1)
+- **HuggingFace Models**: Versatile ecosystem with multilingual (BLOOM) and vision (Qwen2-VL) capabilities
+- **API Rate Limits**: Subject to provider rate limits and quotas
 
 ### Security
 - API keys are **never logged or stored** in the application
@@ -720,6 +730,7 @@ To report security vulnerabilities: **security@doubttutor.com**
 - **File Upload Limit**: 10 MB per file
 - **Max Conversation Length**: Unlimited (subject to token limits)
 - **Uptime**: 99.5% target availability
+- **Supported Languages**: 46+ (via BLOOM model)
 
 ---
 
@@ -729,7 +740,9 @@ See [CHANGELOG.md](docs/CHANGELOG.md) for detailed version history.
 
 ### Latest Version: 1.0.0 (December 2025)
 - Initial public release
-- Core features: Multi-model AI, file uploads, export
+- Core features: Multi-model AI (Groq + HuggingFace), file uploads, export
+- Three specialized models: LLaMA 3.1, BLOOM 560M, Qwen2-VL Vision
+- Multilingual support (46+ languages)
 - Professional UI with dark/light themes
 - Mobile-responsive design
 - Comprehensive documentation
@@ -749,6 +762,7 @@ See [CHANGELOG.md](docs/CHANGELOG.md) for detailed version history.
 - [Advanced Features Guide](docs/ADVANCED.md)
 - [Model Selection Best Practices](docs/MODEL_GUIDE.md)
 - [Troubleshooting Common Issues](docs/TROUBLESHOOTING.md)
+- [Multilingual Usage Guide](docs/MULTILINGUAL.md)
 
 ---
 
@@ -765,5 +779,5 @@ See [CHANGELOG.md](docs/CHANGELOG.md) for detailed version history.
   
   <br><br>
   
-  <sub>Made with Streamlit, Groq, and HuggingFace</sub>
+  <sub>Made with Streamlit, Groq, and HuggingFace • Powered by LLaMA 3.1, BLOOM, and Qwen2-VL</sub>
 </div>
