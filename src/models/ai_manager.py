@@ -74,7 +74,7 @@ class AIManager:
             return f"❌ Groq Error: {str(e)}"
 
     # ------------------------------------------------------
-    # HuggingFace Text Model (Using chat-compatible models)
+    # HuggingFace Text Model (Phi-3-mini-4k-instruct)
     # ------------------------------------------------------
     def _call_hf_text(self, prompt, temperature=0.7, max_tokens=1024):
         try:
@@ -86,8 +86,7 @@ class AIManager:
                 "Content-Type": "application/json"
             }
 
-            # Use a chat-compatible model from HuggingFace Router
-            # Options: microsoft/Phi-3-mini-4k-instruct, meta-llama/Llama-3.2-3B-Instruct
+            # Use Phi-3 Mini model from HuggingFace Router
             payload = {
                 "model": "microsoft/Phi-3-mini-4k-instruct",
                 "messages": [
@@ -175,9 +174,9 @@ class AIManager:
             self.logger.info(f"📝 Prompt length: {len(prompt)} chars")
             self.logger.info(f"📎 Files attached: {len(files)}")
 
-            # ------------- BLOOM MODEL (HuggingFace) --------------
-            if model == "bloom-560m":
-                self.logger.info("✅ Routing to HuggingFace BLOOM")
+            # ------------- PHI-3 MINI MODEL (HuggingFace) --------------
+            if model == "phi-3-mini":
+                self.logger.info("✅ Routing to HuggingFace Phi-3 Mini")
                 if not self.hf_token:
                     return "❌ Missing HF_TOKEN in your .env"
                 
