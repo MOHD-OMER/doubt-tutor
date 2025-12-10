@@ -168,53 +168,54 @@ class AIManager:
             prompt = question.strip()
             files = files or []
 
-            # UI → model resolver
-            model_map = {
-                "llama-3.1-8b-instant": "llama-3.1-8b-instant",
-                "bloom-560m": "bloom-560m",  # Custom mode for HF
-                "hf-vision": "hf-vision",  # Custom mode for HF Vision
-            }
-
-            # Validate keys
-            if not self.groq_key:
-                return "❌ Missing GROQ_API_KEY in your .env"
-
-            real_model = model_map.get(model)
-
-            # --------------------------
-            # BLOOM MODEL (HF)
-            # --------------------------
+            # ------------- BLOOM MODEL (HuggingFace) --------------
             if model == "bloom-560m":
+                if not self.hf_token:
+                    return "❌ Missing HF_TOKEN in your .env"
+                
                 if files:
                     prompt = (
                         "⚠️ Note: This model cannot see uploaded files.\n"
                         "Only answering based on text:\n\n" + prompt
                     )
-
+                
                 reply = self._call_hf_text(prompt, temperature, max_tokens)
                 return self._strip_all_html(reply)
 
-            # --------------------------
-            # VISION MODEL (HF)
-            # --------------------------
+            # ------------- VISION MODEL (HuggingFace) --------------
             if model == "hf-vision":
+                if not self.hf_token:
+                    return "❌ Missing HF_TOKEN in your .env"
+                
                 if not files:
                     return "⚠️ Please upload an image for the vision model."
-
+                
                 reply = self._call_hf_vision(prompt, files, temperature, max_tokens)
                 return self._strip_all_html(reply)
 
-            # --------------------------
-            # TEXT MODELS (GROQ)
-            # --------------------------
-            if files:
-                prompt = (
-                    "⚠️ Note: This model cannot see uploaded files.\n"
-                    "Only answering based on text:\n\n" + prompt
-                )
+            # ------------- GROQ MODELS --------------
+            # Only Groq-supported models go in this map
+            groq_model_map = {
+                "llama-3.1-8b-instant": "llama-3.1-8b-instant",
+            }
+            
+            if model in groq_model_map:
+                if not self.groq_key:
+                    return "❌ Missing GROQ_API_KEY in your .env"
+                
+                real_model = groq_model_map[model]
+                
+                if files:
+                    prompt = (
+                        "⚠️ Note: This model cannot see uploaded files.\n"
+                        "Only answering based on text:\n\n" + prompt
+                    )
+                
+                reply = self._call_groq_text(prompt, real_model, temperature, max_tokens)
+                return self._strip_all_html(reply)
 
-            reply = self._call_groq_text(prompt, real_model, temperature, max_tokens)
-            return self._strip_all_html(reply)
+            # ------------- UNKNOWN MODEL --------------
+            return f"❌ Unknown model selected: {model}"
 
         except Exception as e:
             return f"❌ AI Error: {str(e)}"
