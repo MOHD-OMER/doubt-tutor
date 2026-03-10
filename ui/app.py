@@ -34,10 +34,9 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Immediately hide sidebar to prevent flash - inject CSS as early as possible
+# Immediately hide sidebar to prevent flash
 hide_sidebar_css = """
 <style>
-/* Aggressively hide sidebar from the start */
 section[data-testid="stSidebar"] {
     display: none !important;
     visibility: hidden !important;
@@ -46,9 +45,8 @@ section[data-testid="stSidebar"] {
     max-width: 0 !important;
     opacity: 0 !important;
     transform: translateX(-100%) !important;
-    transition: all 0s !important; /* No transition to avoid flash */
+    transition: all 0s !important;
 }
-/* Hide any sidebar-related elements */
 [role="complementary"], .css-1d391kg, .css-1v3f6k1 {
     display: none !important;
 }
@@ -57,11 +55,10 @@ section[data-testid="stSidebar"] {
 st.markdown(hide_sidebar_css, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# Global Styles - Enhanced Modern UI with Responsive Design
+# Global Styles
 # --------------------------------------------------
 global_css = """
 <style>
-/* Root variables for consistent theming */
 :root {
     --primary-color: #6366f1;
     --primary-hover: #5856eb;
@@ -96,56 +93,28 @@ global_css = """
     --input-height: 56px;
 }
 
-/* App-wide background gradient */
 .stApp {
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
     color: var(--text-primary);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Enhanced scrollbars */
-::-webkit-scrollbar {
-    width: 6px;
-}
-::-webkit-scrollbar-track {
-    background: var(--bg-secondary);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-hover);
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-hover); }
 
-/* Container enhancements - MATCH OTHER PAGES */
 .block-container {
     padding: 2rem 1rem 3rem;
     max-width: 1400px;
     margin: 0 auto;
 }
 
-.stMarkdown {
-    font-size: 1rem;
-    line-height: 1.6;
-}
+.stMarkdown { font-size: 1rem; line-height: 1.6; }
+.element-container:first-child { padding-top: 0 !important; }
+.element-container { padding-top: 0 !important; }
+.content { padding: 0 !important; margin: 0 !important; }
 
-/* CRITICAL FIX: Remove extra padding from first element */
-.element-container:first-child {
-    padding-top: 0 !important;
-}
-
-.element-container {
-    padding-top: 0 !important;
-}
-
-/* Remove padding from content wrapper */
-.content {
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-/* Button enhancements */
 .stButton > button {
     border-radius: var(--border-radius);
     border: none;
@@ -155,17 +124,9 @@ global_css = """
     min-height: var(--input-height);
     padding: 0.75rem 1rem;
 }
-.stButton > button:hover {
-    box-shadow: var(--shadow-medium);
-    transform: translateY(-1px);
-}
-.stButton > button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
+.stButton > button:hover { box-shadow: var(--shadow-medium); transform: translateY(-1px); }
+.stButton > button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-/* Input enhancements */
 .stTextInput > div > div > input {
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
@@ -174,96 +135,29 @@ global_css = """
     padding: 0.75rem 1rem;
     transition: var(--transition);
     min-height: var(--input-height);
-    font-size: 16px; /* Prevent zoom on iOS */
+    font-size: 16px;
 }
 .stTextInput > div > div > input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-/* Toast enhancements */
-.stAlert, .stToast {
-    border-radius: var(--border-radius);
-    border: none;
-    box-shadow: var(--shadow-heavy);
-}
+.stAlert, .stToast { border-radius: var(--border-radius); border: none; box-shadow: var(--shadow-heavy); }
 
-/* ================= RESPONSIVE DESIGN ================= */
-/* Desktop: Wider layout, more space */
-@media (min-width: 1441px) {
-    .stApp {
-        max-width: 1600px;
-        margin: 0 auto;
-    }
-}
+@media (min-width: 1441px) { .stApp { max-width: 1600px; margin: 0 auto; } }
 
-/* Tablet/Desktop */
 @media (max-width: 1024px) {
-    .stApp {
-        padding: 0 var(--spacing-md);
-    }
-    
-    .welcome h1 {
-        font-size: var(--font-size-2xl);
-    }
-    
-    .features {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: var(--spacing-md);
-    }
+    .stApp { padding: 0 var(--spacing-md); }
+    .features { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--spacing-md); }
 }
 
-/* Mobile Enhancements: Stacked layouts, larger touch targets */
 @media (max-width: 768px) {
-    :root {
-        --header-height: 120px;
-        --input-height: 52px;
-        --spacing-md: 0.75rem;
-        --spacing-lg: 1rem;
-    }
-    
-    .stApp {
-        padding: 0 var(--spacing-sm);
-    }
-    
-    .welcome {
-        padding: 2rem 1rem;
-    }
-    
-    .welcome h1 {
-        font-size: var(--font-size-xl);
-        line-height: 1.2;
-    }
-    
-    .welcome p {
-        font-size: var(--font-size-base);
-        padding: 0 var(--spacing-sm);
-    }
-    
-    .features {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-sm);
-    }
-    
-    .card {
-        padding: var(--spacing-md);
-        min-height: 120px;
-    }
-    
-    /* Stack input row vertically */
-    div[data-testid="stHorizontalBlock"] {
-        flex-direction: column !important;
-        gap: var(--spacing-sm) !important;
-    }
-    
+    :root { --header-height: 120px; --input-height: 52px; --spacing-md: 0.75rem; --spacing-lg: 1rem; }
+    .stApp { padding: 0 var(--spacing-sm); }
+    div[data-testid="stHorizontalBlock"] { flex-direction: column !important; gap: var(--spacing-sm) !important; }
     div[data-testid="column"]:nth-child(1),
     div[data-testid="column"]:nth-child(2),
-    div[data-testid="column"]:nth-child(3) {
-        width: 100% !important;
-        flex: 1 !important;
-    }
-    
-    /* Buttons full width on mobile */
+    div[data-testid="column"]:nth-child(3) { width: 100% !important; flex: 1 !important; }
     div[data-testid="stFileUploader"],
     .stButton > button[kind="primary"],
     .stButton > button {
@@ -271,63 +165,21 @@ global_css = """
         height: var(--input-height) !important;
         min-height: var(--input-height) !important;
         padding: 0.75rem 1rem !important;
-        font-size: 16px !important; /* Prevent zoom */
+        font-size: 16px !important;
     }
-    
-    .input-container {
-        padding: var(--spacing-md) !important;
-        margin: 0 !important;
-    }
-    
-    .file-preview-container {
-        padding: var(--spacing-sm);
-    }
-    
-    .file-item {
-        padding: var(--spacing-sm);
-        flex-direction: column;
-        text-align: center;
-        gap: var(--spacing-xs);
-    }
-    
-    .file-info {
-        text-align: left;
-        width: 100%;
-    }
-    
-    .file-name {
-        white-space: normal;
-        word-break: break-word;
-    }
+    .input-container { padding: var(--spacing-md) !important; margin: 0 !important; }
+    .file-item { padding: var(--spacing-sm); flex-direction: column; text-align: center; gap: var(--spacing-xs); }
+    .file-info { text-align: left; width: 100%; }
+    .file-name { white-space: normal; word-break: break-word; }
 }
 
 @media (max-width: 480px) {
-    .welcome h1 {
-        font-size: var(--font-size-lg);
-    }
-    
-    .card {
-        padding: var(--spacing-sm);
-    }
-    
-    /* Extra small: Prevent zoom and ensure touch-friendly */
-    input[type="text"] {
-        font-size: 16px !important;
-    }
-    
-    .stButton > button {
-        min-height: 44px !important;
-    }
+    input[type="text"] { font-size: 16px !important; }
+    .stButton > button { min-height: 44px !important; }
 }
 
-/* ================= ACCESSIBILITY ================= */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-    }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 </style>
 """
@@ -338,10 +190,9 @@ css_path = Path("ui/styles/style.css")
 if css_path.exists():
     st.markdown(f"<style>{css_path.read_text(encoding='utf-8')}</style>", unsafe_allow_html=True)
 
-# Additional inline CSS for file upload (enhanced with theme vars)
+# File uploader CSS
 file_uploader_css = """
 <style>
-/* File uploader paperclip - Enhanced and Responsive */
 div[data-testid="stFileUploader"] {
     width: 42px !important;
     height: 42px !important;
@@ -355,13 +206,11 @@ div[data-testid="stFileUploader"] {
     transition: var(--transition);
     box-shadow: var(--shadow-light);
 }
-
 div[data-testid="stFileUploader"]:hover {
     background: rgba(99,102,241,.25) !important;
     box-shadow: var(--shadow-medium);
     transform: translateY(-1px);
 }
-
 div[data-testid="stFileUploader"]::after {
     content: "📎" !important;
     position: absolute !important;
@@ -373,65 +222,33 @@ div[data-testid="stFileUploader"]::after {
     z-index: 1 !important;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
 }
-
 div[data-testid="stFileUploader"] label div,
 div[data-testid="stFileUploader"] button,
 div[data-testid="stFileUploader"] small,
 div[data-testid="stFileUploader"] span,
 div[data-testid="stFileUploader"] p,
-div[data-testid="stFileUploader"] section > div {
-    display: none !important;
-}
-
-div[data-testid="stFileUploader"] * {
-    font-size: 0 !important;
-    color: transparent !important;
-}
-
+div[data-testid="stFileUploader"] section > div { display: none !important; }
+div[data-testid="stFileUploader"] * { font-size: 0 !important; color: transparent !important; }
 div[data-testid="stFileUploader"] label {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    cursor: pointer !important;
-    z-index: 2 !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    position: absolute !important; top: 0 !important; left: 0 !important;
+    width: 100% !important; height: 100% !important;
+    cursor: pointer !important; z-index: 2 !important; margin: 0 !important; padding: 0 !important;
 }
-
 div[data-testid="stFileUploader"] section {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: transparent !important;
-    border: none !important;
+    position: absolute !important; top: 0 !important; left: 0 !important;
+    width: 100% !important; height: 100% !important;
+    background: transparent !important; border: none !important;
 }
-
 div[data-testid="stFileUploader"] input[type="file"] {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    opacity: 0 !important;
-    cursor: pointer !important;
-    z-index: 10 !important;
+    position: absolute !important; top: 0 !important; left: 0 !important;
+    width: 100% !important; height: 100% !important;
+    opacity: 0 !important; cursor: pointer !important; z-index: 10 !important;
 }
-
-/* Mobile: Larger touch target */
 @media (max-width: 768px) {
     div[data-testid="stFileUploader"] {
-        width: 100% !important;
-        height: var(--input-height) !important;
-        min-width: auto !important;
+        width: 100% !important; height: var(--input-height) !important; min-width: auto !important;
     }
-    
-    div[data-testid="stFileUploader"]::after {
-        font-size: 24px !important;
-    }
+    div[data-testid="stFileUploader"]::after { font-size: 24px !important; }
 }
 </style>
 """
@@ -441,55 +258,36 @@ st.markdown(file_uploader_css, unsafe_allow_html=True)
 # Helper Functions
 # --------------------------------------------------
 def encode_file(file):
-    """Encode file to base64"""
     file.seek(0)
     return base64.b64encode(file.read()).decode("utf-8")
 
 def sanitize_content(text):
-    """Sanitize content while preserving valid formatting"""
     if not text:
         return ""
-    
     text = str(text)
-    
-    # Remove script tags and their content
     text = re.sub(r'<script[^>]*>.*?</script>', '', text, flags=re.DOTALL | re.IGNORECASE)
-    
-    # Remove dangerous HTML tags (but allow safe markdown/formatting)
     dangerous_tags = ['script', 'iframe', 'object', 'embed', 'style']
     for tag in dangerous_tags:
         text = re.sub(f'<{tag}[^>]*>.*?</{tag}>', '', text, flags=re.DOTALL | re.IGNORECASE)
         text = re.sub(f'<{tag}[^>]*>', '', text, flags=re.IGNORECASE)
-    
-    # Remove class and style attributes that could inject UI elements
     text = re.sub(r'\s+(class|style)\s*=\s*["\'][^"\']*["\']', '', text)
-    
-    # Remove known UI injection class names
     ui_classes = ['bubble', 'message', 'timestamp', 'meta', 'wrapper']
     for cls in ui_classes:
         text = re.sub(f'class=["\'][^"\']*{cls}[^"\']*["\']', '', text, flags=re.IGNORECASE)
-    
-    # Clean excessive whitespace
     text = re.sub(r'\n\s*\n\s*\n+', '\n\n', text)
     text = re.sub(r' +', ' ', text)
-    
     return text.strip()
 
 # --------------------------------------------------
-# Constants
+# Constants & Instances
 # --------------------------------------------------
 MAX_FILE_MB = 10
-
-# --------------------------------------------------
-# Instances
-# --------------------------------------------------
 ai = AIManager()
 
 # --------------------------------------------------
 # Session State Initialization
 # --------------------------------------------------
 def init_session_state():
-    """Initialize all session state variables"""
     defaults = {
         "messages": [],
         "current_model": "llama-3.1-8b-instant",
@@ -499,18 +297,15 @@ def init_session_state():
         "input_key": 0,
         "uploader_key": 0,
         "processing_response": False,
-        "files_processed": set()  # Track processed files to avoid duplicates
+        "files_processed": set()
     }
-    
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
 
 init_session_state()
 
-# --------------------------------------------------
 # Clean existing messages on first run
-# --------------------------------------------------
 if "messages_cleaned" not in st.session_state:
     if st.session_state.messages:
         cleaned = []
@@ -522,15 +317,11 @@ if "messages_cleaned" not in st.session_state:
         st.session_state.messages = cleaned
     st.session_state.messages_cleaned = True
 
-# --------------------------------------------------
 # Sync Model from Header
-# --------------------------------------------------
 if "model_select_professional" in st.session_state:
     st.session_state.current_model = st.session_state.model_select_professional
 
-# --------------------------------------------------
 # Export Handler
-# --------------------------------------------------
 if st.session_state.get("export_chat"):
     if st.session_state.messages:
         file = json.dumps({
@@ -538,21 +329,12 @@ if st.session_state.get("export_chat"):
             "model": st.session_state.current_model,
             "messages": st.session_state.messages
         }, indent=2)
-
-        st.download_button(
-            "Download Chat Export",
-            file,
-            "chat_export.json",
-            "application/json"
-        )
-
+        st.download_button("Download Chat Export", file, "chat_export.json", "application/json")
     st.session_state.export_chat = False
 
-# --------------------------------------------------
-# Theme Application (Enhanced for light mode)
-# --------------------------------------------------
+# Theme Application
 if st.session_state.theme == "light":
-    light_theme_css = """
+    st.markdown("""
     <style>
     :root {
         --bg-primary: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 50%, #f1f5f9 100%);
@@ -562,20 +344,10 @@ if st.session_state.theme == "light":
         --text-secondary: #475569;
         --text-muted: #64748b;
         --border-color: rgba(99, 102, 241, 0.15);
-        --primary-color: #6366f1;
-        --primary-hover: #5856eb;
     }
-    .stApp {
-        background: var(--bg-primary) !important;
-        color: var(--text-primary) !important;
-    }
-    /* Invert shadows for light mode if needed */
-    .bubble, .card, .chat {
-        filter: none;
-    }
+    .stApp { background: var(--bg-primary) !important; color: var(--text-primary) !important; }
     </style>
-    """
-    st.markdown(light_theme_css, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 # --------------------------------------------------
 # Header
@@ -583,124 +355,323 @@ if st.session_state.theme == "light":
 render_header()
 
 # --------------------------------------------------
-# Welcome Section (Enhanced with better layout and animations)
+# ✨ UPGRADED Welcome / Landing Screen
 # --------------------------------------------------
-welcome_css = """
-<style>
-.welcome {
-    text-align: center;
-    padding: var(--spacing-xl) var(--spacing-lg);
-    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1));
-    border-radius: var(--border-radius);
-    margin-bottom: var(--spacing-xl);
-    box-shadow: var(--shadow-medium);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border-color);
-    animation: fadeInUp 0.6s ease-out;
-}
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.welcome h1 {
-    font-size: var(--font-size-3xl);
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: var(--spacing-sm);
-    letter-spacing: -0.025em;
-}
-.welcome p {
-    font-size: var(--font-size-lg);
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-xl);
-}
-.card {
-    background: var(--bg-secondary);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    text-align: center;
-    border: 1px solid var(--border-color);
-    transition: var(--transition);
-    box-shadow: var(--shadow-light);
-    position: relative;
-    overflow: hidden;
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    opacity: 0;
-    transition: var(--transition);
-}
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-heavy);
-    background: var(--bg-tertiary);
-}
-.card:hover::before {
-    opacity: 1;
-}
-.card-title {
-    font-size: var(--font-size-lg);
-    font-weight: 700;
-    margin-bottom: var(--spacing-sm);
-    color: var(--text-primary);
-}
-.card-desc {
-    color: var(--text-muted);
-    font-size: var(--font-size-base);
-    line-height: 1.5;
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-    .welcome {
-        padding: var(--spacing-lg) var(--spacing-md);
-    }
-    
-    .features {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-md);
-    }
-    
-    .card {
-        padding: var(--spacing-md);
-        min-height: 140px;
-    }
-}
-</style>
-"""
-st.markdown(welcome_css, unsafe_allow_html=True)
-
 if not st.session_state.messages:
     st.markdown("""
-    <div class="welcome">
-        <h1>🤔 Welcome to Doubt Tutor</h1>
-        <p>Upload your documents, ask any question, and receive instant AI-powered explanations tailored to your needs.</p>
-    </div>
-    <div class="features">
-        <div class="card"><div class="card-title">🤖 Smart AI</div><div class="card-desc">Advanced multi-model support for precise answers</div></div>
-        <div class="card"><div class="card-title">📎 Multi-Upload</div><div class="card-desc">Seamlessly handle PDFs, images, and text files</div></div>
-        <div class="card"><div class="card-title">⚡ Instant Help</div><div class="card-desc">Context-aware explanations that clarify doubts</div></div>
-        <div class="card"><div class="card-title">💾 Export History</div><div class="card-desc">Export and revisit your learning conversations</div></div>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+    .welcome-canvas {
+        position: relative;
+        padding: 56px 40px 48px;
+        margin: 0 0 40px;
+        border-radius: 28px;
+        overflow: hidden;
+        background:
+            radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,127,247,0.18) 0%, transparent 65%),
+            radial-gradient(ellipse 50% 40% at 90% 80%,  rgba(244,114,182,0.10) 0%, transparent 60%),
+            radial-gradient(ellipse 40% 40% at 10% 90%,  rgba(167,139,250,0.10) 0%, transparent 60%),
+            linear-gradient(160deg, rgba(14,14,35,0.97) 0%, rgba(10,10,26,0.99) 100%);
+        border: 1px solid rgba(255,255,255,0.065);
+        box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.08) inset;
+    }
+
+    /* animated mesh grid */
+    .welcome-canvas::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(124,127,247,0.045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(124,127,247,0.045) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
+        animation: wc-grid-breathe 6s ease-in-out infinite;
+        pointer-events: none;
+    }
+    @keyframes wc-grid-breathe {
+        0%, 100% { opacity: 0.45; }
+        50%       { opacity: 1.0; }
+    }
+
+    /* floating orb */
+    .welcome-canvas::after {
+        content: '';
+        position: absolute;
+        top: -80px; left: -80px;
+        width: 300px; height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(124,127,247,0.14) 0%, transparent 70%);
+        animation: wc-orb-drift 9s ease-in-out infinite alternate;
+        pointer-events: none;
+    }
+    @keyframes wc-orb-drift {
+        0%   { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(50px, 35px) scale(1.2); }
+    }
+
+    /* ── BADGE ── */
+    .wc-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 14px 5px 8px;
+        background: rgba(124,127,247,0.12);
+        border: 1px solid rgba(124,127,247,0.3);
+        border-radius: 30px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: #c4c4f5;
+        letter-spacing: 0.03em;
+        margin-bottom: 22px;
+        position: relative;
+        z-index: 1;
+        animation: wc-badge-in 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes wc-badge-in {
+        from { opacity: 0; transform: translateY(-10px) scale(0.9); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .wc-badge-dot {
+        width: 7px; height: 7px;
+        border-radius: 50%;
+        background: #818cf8;
+        box-shadow: 0 0 8px #818cf8;
+        animation: wc-dot-pulse 2s ease-in-out infinite;
+    }
+    @keyframes wc-dot-pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50%       { opacity: 0.5; transform: scale(0.75); }
+    }
+
+    /* ── HEADLINE ── */
+    .wc-headline {
+        font-family: 'Syne', sans-serif;
+        font-weight: 900;
+        font-size: clamp(2.2rem, 5vw, 3.4rem);
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        color: #f0f0ff;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+        animation: wc-headline-in 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+    }
+    @keyframes wc-headline-in {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .wc-headline-grad {
+        background: linear-gradient(135deg, #a5b4fc 0%, #f0abfc 55%, #fb7185 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* ── SUBTITLE ── */
+    .wc-sub {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        color: #6868a0;
+        line-height: 1.75;
+        max-width: 540px;
+        margin: 0 0 38px;
+        position: relative;
+        z-index: 1;
+        animation: wc-sub-in 0.6s ease 0.2s both;
+    }
+    @keyframes wc-sub-in {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── STATS ROW ── */
+    .wc-stats {
+        display: flex;
+        gap: 28px;
+        margin-bottom: 44px;
+        position: relative;
+        z-index: 1;
+        animation: wc-stats-in 0.6s ease 0.28s both;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    @keyframes wc-stats-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .wc-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+    .wc-stat-val {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.55rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #e0e0ff, #a5b4fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+    }
+    .wc-stat-lbl {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.7rem;
+        color: #3e3e62;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+    .wc-stat-div {
+        width: 1px;
+        height: 36px;
+        background: rgba(255,255,255,0.07);
+        align-self: center;
+    }
+
+    /* ── FEATURE CARDS ── */
+    .wc-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        position: relative;
+        z-index: 1;
+        animation: wc-cards-in 0.7s ease 0.36s both;
+    }
+    @keyframes wc-cards-in {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .wc-card {
+        background: rgba(255,255,255,0.025);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+        padding: 20px 16px;
+        transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        position: relative;
+        overflow: hidden;
+        cursor: default;
+    }
+    .wc-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: var(--card-accent, linear-gradient(90deg,#7c7ff7,#a78bfa));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .wc-card:hover {
+        background: rgba(124,127,247,0.07);
+        border-color: rgba(124,127,247,0.22);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 44px rgba(0,0,0,0.35);
+    }
+    .wc-card:hover::before { opacity: 1; }
+    .wc-card-icon {
+        font-size: 1.65rem;
+        margin-bottom: 11px;
+        display: block;
+        transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+    }
+    .wc-card:hover .wc-card-icon { transform: scale(1.18) rotate(-6deg); }
+    .wc-card-title {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #d0d0f0;
+        margin-bottom: 6px;
+        letter-spacing: -0.01em;
+    }
+    .wc-card-desc {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.775rem;
+        color: #484862;
+        line-height: 1.55;
+        font-weight: 300;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+        .wc-grid { grid-template-columns: repeat(2, 1fr); }
+        .wc-headline { font-size: 2rem; }
+    }
+    @media (max-width: 560px) {
+        .welcome-canvas { padding: 36px 20px 32px; border-radius: 18px; }
+        .wc-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+        .wc-stats { gap: 16px; }
+        .wc-stat-div { display: none; }
+        .wc-headline { font-size: 1.75rem; }
+    }
+    </style>
+
+    <div class="welcome-canvas">
+
+      <div class="wc-badge">
+        <span class="wc-badge-dot"></span>
+        AI-Powered Learning Assistant
+      </div>
+
+      <div class="wc-headline">
+        Clear every doubt.<br>
+        <span class="wc-headline-grad">Instantly.</span>
+      </div>
+
+      <p class="wc-sub">
+        Upload documents, paste questions, or describe what's confusing you —
+        and get step-by-step explanations powered by the world's fastest AI models.
+      </p>
+
+      <div class="wc-stats">
+        <div class="wc-stat">
+          <span class="wc-stat-val">3</span>
+          <span class="wc-stat-lbl">AI Models</span>
+        </div>
+        <div class="wc-stat-div"></div>
+        <div class="wc-stat">
+          <span class="wc-stat-val">&lt;2s</span>
+          <span class="wc-stat-lbl">Avg Response</span>
+        </div>
+        <div class="wc-stat-div"></div>
+        <div class="wc-stat">
+          <span class="wc-stat-val">46+</span>
+          <span class="wc-stat-lbl">Languages</span>
+        </div>
+        <div class="wc-stat-div"></div>
+        <div class="wc-stat">
+          <span class="wc-stat-val">&#8734;</span>
+          <span class="wc-stat-lbl">Questions</span>
+        </div>
+      </div>
+
+      <div class="wc-grid">
+        <div class="wc-card" style="--card-accent:linear-gradient(90deg,#7c7ff7,#a78bfa);">
+          <span class="wc-card-icon">🤖</span>
+          <div class="wc-card-title">Multi-Model AI</div>
+          <div class="wc-card-desc">LLaMA, Qwen Vision &amp; more — pick the best tool for your question.</div>
+        </div>
+        <div class="wc-card" style="--card-accent:linear-gradient(90deg,#f472b6,#fb7185);">
+          <span class="wc-card-icon">📎</span>
+          <div class="wc-card-title">File Upload</div>
+          <div class="wc-card-desc">PDFs, images, and text files processed in seconds.</div>
+        </div>
+        <div class="wc-card" style="--card-accent:linear-gradient(90deg,#34d399,#06b6d4);">
+          <span class="wc-card-icon">⚡</span>
+          <div class="wc-card-title">Groq-Powered</div>
+          <div class="wc-card-desc">Lightning-fast inference — answers before you finish reading.</div>
+        </div>
+        <div class="wc-card" style="--card-accent:linear-gradient(90deg,#fbbf24,#f97316);">
+          <span class="wc-card-icon">💾</span>
+          <div class="wc-card-title">Export History</div>
+          <div class="wc-card-desc">Download and revisit every learning session as JSON.</div>
+        </div>
+      </div>
+
     </div>
     """, unsafe_allow_html=True)
 
@@ -712,7 +683,7 @@ render_chat(st.session_state.messages)
 # --------------------------------------------------
 # Input Bar Container
 # --------------------------------------------------
-input_container_css = """
+st.markdown("""
 <style>
 .input-container {
     background: var(--bg-secondary);
@@ -722,37 +693,27 @@ input_container_css = """
     margin: 0 -1rem -1rem;
     box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
 }
-
-/* Mobile: Full width, no margins */
 @media (max-width: 768px) {
-    .input-container {
-        padding: var(--spacing-md) !important;
-        margin: 0 !important;
-        border-radius: 0 !important;
-    }
+    .input-container { padding: var(--spacing-md) !important; margin: 0 !important; border-radius: 0 !important; }
 }
 </style>
-"""
-st.markdown(input_container_css, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 st.markdown('<div class="input-container">', unsafe_allow_html=True)
 
 # --------------------------------------------------
-# Model Compatibility Check (Updated for HF Vision Model)
+# Model Compatibility Check
 # --------------------------------------------------
 if st.session_state.files_buffer:
     contains_image = any(f.type.startswith("image") for f in st.session_state.files_buffer)
     contains_pdf = any(f.type == "application/pdf" for f in st.session_state.files_buffer)
-
-    # Only Qwen2-VL Vision supports file reading
     if (contains_image or contains_pdf) and st.session_state.current_model != "hf-vision":
         st.warning("⚠️ This model cannot process files. Please switch to **Qwen2-VL (Vision)**.")
 
 # --------------------------------------------------
-# Enhanced File Preview (Further polished and Responsive)
+# File Preview
 # --------------------------------------------------
 if st.session_state.files_buffer:
-    # Enhanced CSS for file preview with vars
-    file_preview_css = """
+    st.markdown("""
     <style>
     .file-preview-container {
         background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
@@ -769,191 +730,65 @@ if st.session_state.files_buffer:
     }
     @keyframes slideInRight {
         from { opacity: 0; transform: translateX(-20px); }
-        to { opacity: 1; transform: translateX(0); }
+        to   { opacity: 1; transform: translateX(0); }
     }
-    
     .file-preview-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: var(--spacing-sm);
-        padding-bottom: var(--spacing-xs);
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: var(--spacing-sm); padding-bottom: var(--spacing-xs);
         border-bottom: 1px solid var(--border-color);
     }
-    
     .file-preview-title {
-        font-size: var(--font-size-sm);
-        font-weight: 600;
-        color: var(--primary-color);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
+        font-size: var(--font-size-sm); font-weight: 600; color: var(--primary-color);
+        text-transform: uppercase; letter-spacing: 0.05em;
+        display: flex; align-items: center; gap: var(--spacing-sm);
     }
-    
     .file-count-badge {
-        background: rgba(99, 102, 241, 0.2);
-        color: var(--text-secondary);
-        padding: var(--spacing-xs) var(--spacing-sm);
-        border-radius: var(--radius-sm);
-        font-size: var(--font-size-xs);
-        font-weight: 700;
-        border: 1px solid var(--primary-color);
+        background: rgba(99,102,241,0.2); color: var(--text-secondary);
+        padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm);
+        font-size: var(--font-size-xs); font-weight: 700; border: 1px solid var(--primary-color);
     }
-    
     .file-item {
-        background: rgba(255,255,255,0.05);
-        border-radius: var(--border-radius);
-        padding: var(--spacing-sm);
-        margin-bottom: var(--spacing-xs);
-        border: 1px solid var(--border-color);
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-        position: relative;
-        overflow: hidden;
+        background: rgba(255,255,255,0.05); border-radius: var(--border-radius);
+        padding: var(--spacing-sm); margin-bottom: var(--spacing-xs);
+        border: 1px solid var(--border-color); transition: var(--transition);
+        display: flex; align-items: center; gap: var(--spacing-sm);
+        position: relative; overflow: hidden; animation: slideIn 0.3s ease-out;
     }
-    
     .file-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 3px;
-        height: 100%;
+        content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
         background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
-        opacity: 0;
-        transition: var(--transition);
+        opacity: 0; transition: var(--transition);
     }
-    
     .file-item:hover {
-        background: rgba(255,255,255,0.08);
-        border-color: var(--primary-color);
-        transform: translateX(4px);
-        box-shadow: var(--shadow-medium);
+        background: rgba(255,255,255,0.08); border-color: var(--primary-color);
+        transform: translateX(4px); box-shadow: var(--shadow-medium);
     }
-    
-    .file-item:hover::before {
-        opacity: 1;
-    }
-    
-    .file-icon {
-        font-size: 1.75rem;
-        min-width: 2.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-    }
-    
-    .file-info {
-        flex: 1;
-        min-width: 0;
-    }
-    
-    .file-name {
-        color: var(--text-primary);
-        font-size: var(--font-size-base);
-        font-weight: 600;
-        margin-bottom: var(--spacing-xs);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    .file-meta {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-        font-size: var(--font-size-sm);
-        color: var(--text-muted);
-    }
-    
-    .file-size {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-xs);
-    }
-    
+    .file-item:hover::before { opacity: 1; }
+    .file-icon { font-size: 1.75rem; min-width: 2.5rem; display: flex; align-items: center; justify-content: center; }
+    .file-info { flex: 1; min-width: 0; }
+    .file-name { color: var(--text-primary); font-size: var(--font-size-base); font-weight: 600;
+        margin-bottom: var(--spacing-xs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-meta { display: flex; align-items: center; gap: var(--spacing-sm);
+        font-size: var(--font-size-sm); color: var(--text-muted); }
     .file-type-badge {
-        background: rgba(99, 102, 241, 0.15);
-        color: var(--primary-color);
-        padding: var(--spacing-xs) var(--spacing-sm);
-        border-radius: var(--radius-sm);
-        text-transform: uppercase;
-        font-weight: 600;
-        font-size: var(--font-size-xs);
-        letter-spacing: 0.05em;
-        border: 1px solid var(--primary-color);
+        background: rgba(99,102,241,0.15); color: var(--primary-color);
+        padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm);
+        text-transform: uppercase; font-weight: 600; font-size: var(--font-size-xs);
+        letter-spacing: 0.05em; border: 1px solid var(--primary-color);
     }
-    
-    .clear-all-section {
-        margin-top: var(--spacing-sm);
-        padding-top: var(--spacing-sm);
-        border-top: 1px solid var(--border-color);
-    }
-    
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .file-item {
-        animation: slideIn 0.3s ease-out;
-    }
-    
-    /* Mobile: Stacked file items */
+    .clear-all-section { margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px solid var(--border-color); }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     @media (max-width: 768px) {
-        .file-preview-container {
-            padding: var(--spacing-sm);
-            margin: 0;
-        }
-        
-        .file-preview-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: var(--spacing-xs);
-        }
-        
-        .file-item {
-            flex-direction: column;
-            text-align: center;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-md);
-        }
-        
-        .file-info {
-            width: 100%;
-            text-align: center;
-        }
-        
-        .file-name {
-            white-space: normal;
-            word-break: break-word;
-            text-align: center;
-        }
-        
-        .file-meta {
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+        .file-preview-container { padding: var(--spacing-sm); margin: 0; }
+        .file-item { flex-direction: column; text-align: center; gap: var(--spacing-sm); padding: var(--spacing-md); }
+        .file-info { width: 100%; text-align: center; }
+        .file-name { white-space: normal; word-break: break-word; text-align: center; }
+        .file-meta { justify-content: center; flex-wrap: wrap; }
     }
     </style>
-    """
-    st.markdown(file_preview_css, unsafe_allow_html=True)
-    
-    # Container start
+    """, unsafe_allow_html=True)
+
     st.markdown("<div class='file-preview-container'>", unsafe_allow_html=True)
-    
-    # Header with file count
     st.markdown(f"""
     <div class='file-preview-header'>
         <div class='file-preview-title'>
@@ -963,68 +798,48 @@ if st.session_state.files_buffer:
     </div>
     """, unsafe_allow_html=True)
 
-    # File items
     for i, f in enumerate(st.session_state.files_buffer):
         file_type = f.type.lower()
-        
-        # Enhanced icon selection
-        icon = "📎"
-        type_label = "FILE"
+        icon, type_label = "📎", "FILE"
         if "pdf" in file_type:
-            icon = "📄"
-            type_label = "PDF"
+            icon, type_label = "📄", "PDF"
         elif "image" in file_type or "png" in file_type or "jpg" in file_type or "jpeg" in file_type:
-            icon = "🖼️"
-            type_label = "IMAGE"
+            icon, type_label = "🖼️", "IMAGE"
         elif "text" in file_type or "txt" in file_type:
-            icon = "📝"
-            type_label = "TEXT"
-        
-        # Calculate file size with better formatting
+            icon, type_label = "📝", "TEXT"
+
         size_mb = f.size / (1024 * 1024)
-        if size_mb < 0.1:
-            size_display = f"{round(f.size / 1024, 1)} KB"
-        else:
-            size_display = f"{round(size_mb, 2)} MB"
+        size_display = f"{round(f.size / 1024, 1)} KB" if size_mb < 0.1 else f"{round(size_mb, 2)} MB"
 
-        # Create columns for layout (responsive via CSS)
         cols_file = st.columns([0.08, 0.75, 0.17])
-
         with cols_file[0]:
             st.markdown(f"<div class='file-icon'>{icon}</div>", unsafe_allow_html=True)
-
         with cols_file[1]:
             st.markdown(f"""
             <div class='file-info'>
                 <div class='file-name' title='{f.name}'>{f.name}</div>
                 <div class='file-meta'>
-                    <span class='file-size'>💾 {size_display}</span>
+                    <span>💾 {size_display}</span>
                     <span class='file-type-badge'>{type_label}</span>
                 </div>
             </div>
             """, unsafe_allow_html=True)
-
         with cols_file[2]:
             if st.button("🗑️", key=f"rm-file-{i}", help=f"Remove {f.name}", use_container_width=True):
                 st.session_state.files_buffer.pop(i)
                 st.session_state.files_processed.discard((f.name, f.size))
                 st.rerun()
 
-    # Clear all button section
     st.markdown("<div class='clear-all-section'>", unsafe_allow_html=True)
     if st.button("🗑️ Clear All Files", type="secondary", use_container_width=True, key="clear_all_files"):
         st.session_state.files_buffer = []
         st.session_state.files_processed = set()
         st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Container end
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
 # --------------------------------------------------
-# Input Row (Enhanced spacing and Responsive Columns)
+# Input Row
 # --------------------------------------------------
-# Use responsive columns: Adjust ratios for mobile stacking via CSS
 cols = st.columns([0.6, 8.5, 0.9])
 
 with cols[0]:
@@ -1049,29 +864,21 @@ with cols[2]:
     send = st.button("➤", use_container_width=True, type="primary", disabled=send_disabled)
 
 # --------------------------------------------------
-# Process uploaded files (only new ones)
+# Process Uploaded Files
 # --------------------------------------------------
 if uploaded_files:
     new_files_added = False
-    
     for file in uploaded_files:
         size_mb = file.size / (1024 * 1024)
         file_id = (file.name, file.size)
-
-        # Skip if already processed
         if file_id in st.session_state.files_processed:
             continue
-
         if size_mb > MAX_FILE_MB:
             st.toast(f"❌ {file.name} is larger than {MAX_FILE_MB}MB", icon="⚠️")
             continue
-
-        # Add to buffer and mark as processed
         st.session_state.files_buffer.append(file)
         st.session_state.files_processed.add(file_id)
         new_files_added = True
-    
-    # Only rerun if new files were actually added
     if new_files_added:
         st.rerun()
 
@@ -1080,37 +887,22 @@ if uploaded_files:
 # --------------------------------------------------
 if send and not st.session_state.processing_response:
     user_text = question.strip()
-    
     if user_text or st.session_state.files_buffer:
-        # Mark as processing to prevent double-send
         st.session_state.processing_response = True
-        
-        # Prepare files
         prepared_files = []
         for file in st.session_state.files_buffer:
-            prepared_files.append({
-                "name": file.name,
-                "type": file.type, 
-                "data": encode_file(file)
-            })
-
-        # Sanitize user input
+            prepared_files.append({"name": file.name, "type": file.type, "data": encode_file(file)})
         safe_question = sanitize_content(user_text) if user_text else "[Files uploaded]"
-
-        # Save user message
         st.session_state.messages.append({
             "role": "user",
             "content": safe_question,
             "files": prepared_files,
             "timestamp": datetime.now().isoformat()
         })
-
-        # Clear inputs
         st.session_state.files_buffer = []
         st.session_state.files_processed = set()
         st.session_state.input_key += 1
         st.session_state.uploader_key += 1
-
         st.rerun()
 
 # --------------------------------------------------
@@ -1118,38 +910,31 @@ if send and not st.session_state.processing_response:
 # --------------------------------------------------
 if st.session_state.messages and st.session_state.processing_response:
     last = st.session_state.messages[-1]
-
     if last["role"] == "user":
         with st.spinner("🤔 Thinking..."):
             try:
-                # Get AI response
                 ai_reply = ai.generate_response(
                     question=last["content"],
                     model=st.session_state.current_model,
                     temperature=0.7,
                     files=last.get("files", [])
                 )
-                
-                # Sanitize response
                 ai_reply = sanitize_content(ai_reply)
-                
             except Exception as e:
                 ai_reply = f"❌ AI Error: {str(e)}"
-
             if ai_reply:
-                # Save AI message
                 st.session_state.messages.append({
                     "role": "assistant",
                     "content": ai_reply,
                     "model": st.session_state.current_model,
                     "timestamp": datetime.now().isoformat()
                 })
-
-        # Done processing
         st.session_state.processing_response = False
         st.rerun()
 
-# Clear Chat button (moved from sidebar to input area for accessibility)
+# --------------------------------------------------
+# Clear Chat Button
+# --------------------------------------------------
 if st.button("🧹 Clear Chat", type="secondary", use_container_width=True):
     st.session_state.messages = []
     st.session_state.files_buffer = []
