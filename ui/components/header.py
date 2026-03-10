@@ -2,11 +2,10 @@
 import streamlit as st
 
 def render_header():
-    # Initialize model
     model_key = "model_select_professional"
     if model_key not in st.session_state:
         st.session_state[model_key] = "llama-3.1-8b-instant"
-    
+
     selected_model = st.session_state.get(model_key, "llama-3.1-8b-instant")
 
     # Hide default sidebar
@@ -24,339 +23,359 @@ def render_header():
     </style>
     """, unsafe_allow_html=True)
 
-    # Enhanced header CSS
     st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
     :root {
-        --primary: #6366f1;
-        --primary-dark: #4f46e5;
-        --primary-light: #818cf8;
-        --secondary: #8b5cf6;
-        --accent: #ec4899;
-        --success: #10b981;
-        --bg-primary: #0a0a1a;
-        --bg-secondary: #0f0f1e;
-        --bg-elevated: rgba(30, 30, 60, 0.95);
-        --text-primary: #ffffff;
-        --text-secondary: #e2e8f0;
-        --text-muted: #94a3b8;
-        --border-subtle: rgba(99, 102, 241, 0.1);
-        --border-default: rgba(99, 102, 241, 0.2);
-        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15);
-        --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
-        --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.25);
-        --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
-        --radius-lg: 16px;
-        --radius-xl: 20px;
-        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        --header-height: 72px;
+        --glass-bg: rgba(10, 10, 30, 0.55);
+        --glass-border: rgba(255, 255, 255, 0.07);
+        --glass-shine: rgba(255, 255, 255, 0.12);
+        --primary: #7c7ff7;
+        --primary-soft: rgba(124, 127, 247, 0.18);
+        --secondary: #a78bfa;
+        --accent: #f472b6;
+        --text-bright: #f0f0ff;
+        --text-dim: #8888aa;
+        --nav-height: 68px;
+        --blur-amount: 24px;
     }
-    
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    @keyframes shimmer {
-        0% { background-position: -1000px 0; }
-        100% { background-position: 1000px 0; }
-    }
-    
-    .header-container { 
-        padding: 1rem 0; 
-        margin-bottom: 1.5rem;
-        background: linear-gradient(180deg, rgba(15, 15, 30, 0.95) 0%, rgba(10, 10, 25, 0.92) 100%);
-        backdrop-filter: blur(20px) saturate(180%);
-        border-bottom: 1px solid var(--border-default);
+
+    /* ── OUTER WRAPPER ── */
+    .glass-nav-wrapper {
         position: sticky;
         top: 0;
-        z-index: 1000;
-        box-shadow: var(--shadow-md);
-        animation: slideDown 0.4s ease-out;
+        z-index: 9999;
+        padding: 10px 24px 0;
+        background: linear-gradient(
+            180deg,
+            rgba(6, 6, 18, 0.98) 0%,
+            rgba(6, 6, 18, 0.0) 100%
+        );
     }
-    
-    .nav-button {
-        background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-secondary) 100%) !important;
-        border: 1px solid var(--border-subtle) !important;
-        border-radius: var(--radius-lg) !important;
-        color: var(--text-secondary) !important;
-        font-weight: 600 !important;
-        padding: 0.5rem 1rem !important;
-        margin: 0 0.25rem !important;
-        transition: var(--transition) !important;
-        height: 44px !important;
-        min-height: 44px !important;
-        line-height: 1 !important;
-        position: relative !important;
-        overflow: hidden !important;
-        font-size: 0.875rem !important;
-    }
-    
-    .nav-button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        transition: left 0.5s;
-    }
-    
-    .nav-button:hover::before {
-        left: 100%;
-    }
-    
-    .nav-button:hover {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%) !important;
-        border-color: var(--primary) !important;
-        color: var(--text-primary) !important;
-        transform: translateY(-2px) !important;
-        box-shadow: var(--shadow-lg) !important;
-    }
-    
-    .nav-button:active {
-        transform: translateY(0) !important;
-    }
-    
-    .model-badge {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
-        border: 1px solid var(--border-subtle);
-        border-radius: 12px;
-        padding: 0.65rem 1rem;
-        font-weight: 600;
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-        backdrop-filter: blur(10px);
-        box-shadow: var(--shadow-sm);
-        display: inline-flex;
+
+    /* ── MAIN NAV PILL ── */
+    .glass-nav {
+        display: flex;
         align-items: center;
-        gap: 0.5rem;
-        white-space: nowrap;
-        line-height: 1.2;
-        transition: var(--transition);
-        cursor: help;
+        justify-content: space-between;
+        height: var(--nav-height);
+        padding: 0 20px 0 16px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(var(--blur-amount)) saturate(160%);
+        -webkit-backdrop-filter: blur(var(--blur-amount)) saturate(160%);
+        border-radius: 20px;
+        border: 1px solid var(--glass-border);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            0 1px 0 var(--glass-shine) inset,
+            0 -1px 0 rgba(0,0,0,0.3) inset;
         position: relative;
+        overflow: hidden;
     }
-    
-    .model-badge::after {
+
+    /* top shimmer line */
+    .glass-nav::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
+        top: 0; left: 10%; right: 10%;
         height: 1px;
-        background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
-        opacity: 0;
-        transition: var(--transition);
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(124, 127, 247, 0.6) 30%,
+            rgba(167, 139, 250, 0.8) 50%,
+            rgba(124, 127, 247, 0.6) 70%,
+            transparent
+        );
+        animation: shimmer-slide 4s ease-in-out infinite;
     }
-    
-    .model-badge:hover {
-        border-color: var(--primary);
-        box-shadow: var(--shadow-glow);
-        transform: translateY(-2px);
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
+
+    @keyframes shimmer-slide {
+        0%   { opacity: 0.3; transform: scaleX(0.7); }
+        50%  { opacity: 1;   transform: scaleX(1);   }
+        100% { opacity: 0.3; transform: scaleX(0.7); }
     }
-    
-    .model-badge:hover::after {
-        opacity: 1;
+
+    /* ambient glow blob */
+    .glass-nav::after {
+        content: '';
+        position: absolute;
+        top: -60px; left: 50%;
+        transform: translateX(-50%);
+        width: 420px; height: 120px;
+        background: radial-gradient(ellipse, rgba(124,127,247,0.12) 0%, transparent 70%);
+        pointer-events: none;
     }
-    
-    .model-icon {
-        font-size: 1.125rem;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-        transition: var(--transition);
+
+    /* ── BRAND ── */
+    .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        flex-shrink: 0;
     }
-    
-    .model-badge:hover .model-icon {
-        transform: scale(1.1) rotate(5deg);
+
+    .nav-brand-icon {
+        width: 36px; height: 36px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px;
+        box-shadow: 0 4px 14px rgba(124, 127, 247, 0.45);
+        flex-shrink: 0;
+        transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+                    box-shadow 0.3s ease;
     }
-    
-    .export-button {
-        background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.1)) !important;
-        border: 1px solid rgba(34, 197, 94, 0.3) !important;
-        color: var(--text-secondary) !important;
+
+    .nav-brand-icon:hover {
+        transform: rotate(-8deg) scale(1.1);
+        box-shadow: 0 6px 20px rgba(124, 127, 247, 0.6);
     }
-    
-    .export-button:hover {
-        background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(16, 185, 129, 0.15)) !important;
-        border-color: rgba(34, 197, 94, 0.5) !important;
-        color: var(--text-primary) !important;
-        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3) !important;
-    }
-    
-    .export-button:disabled {
-        opacity: 0.4 !important;
-        cursor: not-allowed !important;
-        transform: none !important;
-    }
-    
-    .brand-title {
-        font-size: 2rem;
+
+    .nav-brand-text {
+        font-family: 'Syne', sans-serif;
         font-weight: 800;
-        background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-light) 60%, var(--secondary) 100%);
+        font-size: 1.2rem;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, #e0e0ff 0%, var(--primary) 60%, var(--secondary) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        margin: 0;
-        padding: 0;
-        letter-spacing: -0.025em;
         line-height: 1;
-        transition: var(--transition);
+    }
+
+    /* ── MODEL BADGE ── */
+    .nav-model-badge {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-        position: relative;
+        gap: 7px;
+        padding: 6px 14px;
+        background: rgba(124, 127, 247, 0.1);
+        border: 1px solid rgba(124, 127, 247, 0.22);
+        border-radius: 30px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #c4c4f0;
+        white-space: nowrap;
+        transition: all 0.25s ease;
+        cursor: default;
+        flex-shrink: 0;
     }
-    
-    .brand-title::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, var(--primary), var(--secondary));
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
+
+    .nav-model-badge:hover {
+        background: rgba(124, 127, 247, 0.18);
+        border-color: rgba(124, 127, 247, 0.4);
+        color: var(--text-bright);
+        box-shadow: 0 0 16px rgba(124,127,247,0.2);
     }
-    
-    .brand-title:hover::after {
-        transform: scaleX(1);
-    }
-    
-    .brand-title:hover {
-        transform: translateY(-1px);
-        filter: brightness(1.1);
-    }
-    
-    .brand-icon {
-        font-size: 1.5rem;
-        filter: drop-shadow(0 2px 6px rgba(99, 102, 241, 0.4));
-        transition: var(--transition);
-    }
-    
-    .brand-title:hover .brand-icon {
-        transform: rotate(10deg) scale(1.1);
-    }
-    
-    .header-divider {
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--border-default), transparent);
-        margin: 1.5rem 0 1rem;
-        position: relative;
-    }
-    
-    .header-divider::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 40px;
-        height: 40px;
-        background: radial-gradient(circle, var(--primary) 10%, transparent 70%);
-        opacity: 0.2;
+
+    .nav-model-dot {
+        width: 6px; height: 6px;
         border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 6px #4ade80;
+        animation: pulse-dot 2.5s ease-in-out infinite;
+        flex-shrink: 0;
     }
-    
-    /* Button container alignment */
-    [data-testid="column"] > div {
+
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50%       { opacity: 0.6; transform: scale(0.75); }
+    }
+
+    /* ── NAV LINKS GROUP ── */
+    .nav-links-group {
         display: flex;
         align-items: center;
-        height: 100%;
+        gap: 2px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 14px;
+        padding: 4px;
     }
-    
-    /* Responsive adjustments */
-    @media (max-width: 1024px) {
-        .brand-title {
-            font-size: 1.5rem;
-        }
-        .brand-icon {
-            font-size: 1.25rem;
-        }
-        .model-badge {
-            font-size: 0.75rem;
-            padding: 0.5rem 0.75rem;
-        }
-        .nav-button {
-            font-size: 0.75rem !important;
-            padding: 0.375rem 0.75rem !important;
-        }
+
+    /* ── EXPORT BUTTON ── */
+    .nav-export-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 16px;
+        background: rgba(74, 222, 128, 0.08);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        border-radius: 10px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #86efac;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        flex-shrink: 0;
     }
-    
+
+    .nav-export-btn:hover {
+        background: rgba(74, 222, 128, 0.15);
+        border-color: rgba(74, 222, 128, 0.4);
+        box-shadow: 0 0 18px rgba(74,222,128,0.2);
+        transform: translateY(-1px);
+    }
+
+    /* ── BOTTOM FADE SEPARATOR ── */
+    .glass-nav-fade {
+        height: 18px;
+        background: linear-gradient(180deg, rgba(6,6,18,0.3) 0%, transparent 100%);
+        margin-bottom: 6px;
+    }
+
+    /* ── STREAMLIT BUTTON OVERRIDES inside nav columns ── */
+    div[data-testid="column"] .stButton > button {
+        font-family: 'DM Sans', sans-serif !important;
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
+        color: var(--text-dim) !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 7px 14px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        transition: all 0.2s ease !important;
+        letter-spacing: 0.01em !important;
+        position: relative !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        white-space: nowrap !important;
+    }
+
+    div[data-testid="column"] .stButton > button:hover {
+        color: var(--text-bright) !important;
+        background: rgba(124, 127, 247, 0.12) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(124,127,247,0.15) !important;
+    }
+
+    div[data-testid="column"] .stButton > button:active {
+        transform: translateY(0) !important;
+    }
+
+    /* Export button green tint */
+    div[data-testid="column"]:last-child .stButton > button {
+        color: #86efac !important;
+        background: rgba(74, 222, 128, 0.07) !important;
+        border: 1px solid rgba(74, 222, 128, 0.18) !important;
+    }
+
+    div[data-testid="column"]:last-child .stButton > button:hover {
+        background: rgba(74, 222, 128, 0.14) !important;
+        border-color: rgba(74, 222, 128, 0.35) !important;
+        box-shadow: 0 0 16px rgba(74,222,128,0.15) !important;
+        color: #bbf7d0 !important;
+    }
+
+    div[data-testid="column"]:last-child .stButton > button:disabled {
+        opacity: 0.35 !important;
+        cursor: not-allowed !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-        .brand-title {
-            font-size: 1.25rem;
-        }
+        .glass-nav-wrapper { padding: 8px 12px 0; }
+        .nav-brand-text { display: none; }
+        .nav-model-badge span:not(.nav-model-dot) { display: none; }
+        .glass-nav { padding: 0 10px; gap: 6px; }
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Header Row
-    col1, col2 = st.columns([1.2, 4])
-    
-    with col1:
-        st.markdown("""
-        <div class="brand-title">
-            <span class="brand-icon">🤔</span>
-            Doubt Tutor
+    # ── BRAND HTML ──
+    st.markdown("""
+    <div class="glass-nav-wrapper">
+      <div class="glass-nav">
+    """, unsafe_allow_html=True)
+
+    # ── STREAMLIT LAYOUT inside nav ──
+    model_display_names = {
+        "llama-3.1-8b-instant": "🦙 LLaMA 3.1 · Groq",
+        "phi-3-mini":           "🔷 LLaMA 3.1 · HF",
+        "hf-vision":            "🖼️ Qwen2-VL · Vision",
+        "mistral":              "🌬️ Mistral 7B",
+        "deepseek-r1":          "🔬 DeepSeek R1",
+    }
+    model_label = model_display_names.get(selected_model, selected_model)
+
+    # Brand + model badge (left side)
+    st.markdown(f"""
+        <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;">
+          <a class="nav-brand" href="#">
+            <div class="nav-brand-icon">🤔</div>
+            <span class="nav-brand-text">Doubt Tutor</span>
+          </a>
+          <div class="nav-model-badge" title="Active model">
+            <span class="nav-model-dot"></span>
+            {model_label}
+          </div>
         </div>
-        """, unsafe_allow_html=True)
+        <!-- spacer -->
+        <div style="flex:1;"></div>
+        <!-- nav links + export rendered via Streamlit below -->
+      </div><!-- .glass-nav -->
+    </div><!-- .glass-nav-wrapper -->
+    <div class="glass-nav-fade"></div>
+    """, unsafe_allow_html=True)
 
-    with col2:
-        # Create perfectly aligned horizontal navigation bar
-        nav_container = st.container()
-        with nav_container:
-            cols = st.columns([2.5, 0.8, 0.8, 1.5, 0.8, 0.8])
-            
-            # Model Badge with icon
-            model_display_names = {
-                "llama-3.1-8b-instant": "🦙 LLaMA 3.1 • 8B Instant",
-                "mistral": "🌬️ Mistral 7B Instruct",
-                "deepseek-r1": "🔬 DeepSeek R1 • Reasoning",
-                "hf-vision": "🖼️ Qwen2-VL • Vision"
-            }
+    # ── STREAMLIT BUTTONS ROW (rendered below the HTML nav for functionality) ──
+    nav_css = """
+    <style>
+    .nav-btn-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 4px;
+        background: rgba(10,10,30,0.5);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 14px;
+        padding: 4px 6px;
+        margin: -62px 24px 0 auto;
+        width: fit-content;
+        position: relative;
+        z-index: 9998;
+    }
+    </style>
+    """
+    st.markdown(nav_css, unsafe_allow_html=True)
 
-            model_display = model_display_names.get(selected_model, selected_model)
+    cols = st.columns([1, 1, 1, 1, 1])
 
-            with cols[0]:
-                st.markdown(f"""
-                <div class="model-badge" title="Current AI Model: {selected_model}&#10;Change model on the Models page">
-                    {model_display}
-                </div>
-                """, unsafe_allow_html=True)
+    with cols[0]:
+        if st.button("🏠 Home", key="nav_Home", use_container_width=False):
+            st.switch_page("app.py")
+    with cols[1]:
+        if st.button("ℹ️ About", key="nav_About", use_container_width=False):
+            st.switch_page("pages/1_About.py")
+    with cols[2]:
+        if st.button("📖 How It Works", key="nav_How", use_container_width=False):
+            st.switch_page("pages/2_How_It_Works.py")
+    with cols[3]:
+        if st.button("🤖 Models", key="nav_Models", use_container_width=False):
+            st.switch_page("pages/3_Models.py")
+    with cols[4]:
+        has_messages = bool(st.session_state.get("messages"))
+        if has_messages:
+            if st.button("💾 Export", key="export_btn", use_container_width=False):
+                st.session_state["export_chat"] = True
+                st.rerun()
+        else:
+            st.button("💾 Export", key="export_btn_disabled", disabled=True, use_container_width=False)
 
-            # Navigation Buttons
-            nav_items = [
-                ("Home", "app.py"),
-                ("About", "pages/1_About.py"),
-                ("How It Works", "pages/2_How_It_Works.py"),
-                ("Models", "pages/3_Models.py")
-            ]
-
-            for i, (label, path) in enumerate(nav_items, 1):
-                with cols[i]:
-                    if st.button(label, key=f"nav_{label}", use_container_width=True, help=f"Navigate to {label}"):
-                        st.switch_page(path)
-            
-            # Export button with conditional styling
-            with cols[5]:
-                has_messages = "messages" in st.session_state and st.session_state.messages
-                
-                if has_messages:
-                    if st.button("💾 Export", key="export_btn", use_container_width=True, help="Export chat history as JSON"):
-                        st.session_state["export_chat"] = True
-                        st.rerun()
-                else:
-                    st.button("💾 Export", key="export_btn_disabled", disabled=True, use_container_width=True, help="No chat history to export yet")
-
-    # Elegant divider
-    st.markdown('<div class="header-divider"></div>', unsafe_allow_html=True)
+    # Divider
+    st.markdown("""
+    <div style="height:1px;
+                background:linear-gradient(90deg,transparent,rgba(124,127,247,0.25),transparent);
+                margin: 8px 0 18px;">
+    </div>
+    """, unsafe_allow_html=True)
