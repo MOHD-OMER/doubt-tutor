@@ -38,20 +38,70 @@ st.set_page_config(
 # Immediately hide sidebar + header to prevent flash
 hide_sidebar_css = """
 <style>
-/* Nuke sidebar collapse arrow — this is what creates the top gap */
+/* ============================================================
+   NUCLEAR HEADER REMOVAL — Streamlit 1.35 on Streamlit Cloud
+   ============================================================ */
+
+/* 1. The header bar itself */
+header[data-testid="stHeader"] {
+    display: none !important;
+    height: 0 !important; min-height: 0 !important; max-height: 0 !important;
+    padding: 0 !important; margin: 0 !important;
+    overflow: hidden !important; visibility: hidden !important;
+    position: fixed !important; top: -9999px !important;
+}
+
+/* 2. Sidebar collapse arrow (creates the reserved gap) */
 [data-testid="collapsedControl"] {
     display: none !important;
+    height: 0 !important; visibility: hidden !important;
+    position: fixed !important; top: -9999px !important;
 }
-/* Nuke the header bar itself */
-header, header[data-testid="stHeader"] {
-    display: none !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-}
-/* Kill the padding Streamlit reserves for the header */
-.stApp > div:first-child {
+
+/* 3. The stAppViewContainer and its direct children that hold the top padding */
+[data-testid="stAppViewContainer"] {
+    padding-top: 0 !important;
     margin-top: 0 !important;
+}
+
+/* 4. The main section inside stAppViewContainer */
+[data-testid="stAppViewContainer"] > section.main {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* 5. The block container inside main */
+[data-testid="stAppViewContainer"] > section.main > div[data-testid="stAppViewBlockContainer"],
+[data-testid="stAppViewContainer"] > section.main > div.block-container,
+.main .block-container,
+.main > div.block-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* 6. stApp itself — remove any inherited margin/padding */
+.stApp {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* 7. Any element directly inside stApp that Streamlit uses as a top spacer */
+.stApp > div:first-child,
+.stApp > section:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* 8. Toolbar, decoration, footer */
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stStatusWidget"],
+#MainMenu, footer {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: fixed !important; top: -9999px !important;
 }
 section[data-testid="stSidebar"] {
     display: none !important;
