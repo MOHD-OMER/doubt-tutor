@@ -31,12 +31,28 @@ st.set_page_config(
     page_title="💡 Doubt Tutor",
     page_icon="🤔",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
+    menu_items={}
 )
 
-# Immediately hide sidebar to prevent flash
+# Immediately hide sidebar + header to prevent flash
 hide_sidebar_css = """
 <style>
+/* Nuke sidebar collapse arrow — this is what creates the top gap */
+[data-testid="collapsedControl"] {
+    display: none !important;
+}
+/* Nuke the header bar itself */
+header, header[data-testid="stHeader"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+/* Kill the padding Streamlit reserves for the header */
+.stApp > div:first-child {
+    margin-top: 0 !important;
+}
 section[data-testid="stSidebar"] {
     display: none !important;
     visibility: hidden !important;
