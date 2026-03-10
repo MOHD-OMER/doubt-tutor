@@ -19,57 +19,49 @@ def render_header():
         height: 0 !important; overflow: hidden !important; opacity: 0 !important;
     }
 
-    /* 2. Top header bar — send it off screen entirely */
-    header,
-    header[data-testid="stHeader"],
-    .stApp > header,
-    [data-testid="stHeader"] {
+    /* 2. Header bar */
+    header[data-testid="stHeader"] {
         display: none !important;
         visibility: hidden !important;
-        height: 0px !important;
-        min-height: 0px !important;
-        max-height: 0px !important;
-        padding: 0px !important;
-        margin: 0px !important;
+        height: 0 !important; min-height: 0 !important; max-height: 0 !important;
+        padding: 0 !important; margin: 0 !important;
         overflow: hidden !important;
-        position: absolute !important;
-        top: -9999px !important;
+        position: fixed !important; top: -9999px !important;
     }
 
-    /* 3. Toolbar / MainMenu / Footer / Decoration / collapse arrow */
-    #MainMenu,
-    footer,
-    footer[data-testid="stFooter"],
-    div[data-testid="stToolbar"],
-    div[data-testid="stDecoration"],
-    div[data-testid="stStatusWidget"],
-    [data-testid="collapsedControl"],
-    button[kind="header"],
-    .viewerBadge_container__r5tak {
+    /* 3. Sidebar collapse arrow */
+    [data-testid="collapsedControl"] {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-        top: -9999px !important;
+        position: fixed !important; top: -9999px !important;
     }
 
-    /* 4. Remove ALL top spacing injected by Streamlit for its header */
-    .stApp {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
+    /* 4. Toolbar / MainMenu / Footer */
+    [data-testid="stToolbar"], [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"], #MainMenu, footer,
+    button[kind="header"], .viewerBadge_container__r5tak {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        position: fixed !important; top: -9999px !important;
+    }
+
+    /* 5. Remove top padding — target every known container */
+    .stApp { margin-top: 0 !important; padding-top: 0 !important; }
+    .stApp > div:first-child, .stApp > section:first-child {
+        margin-top: 0 !important; padding-top: 0 !important;
+    }
+    [data-testid="stAppViewContainer"] {
+        padding-top: 0 !important; margin-top: 0 !important;
+    }
+    [data-testid="stAppViewContainer"] > section.main {
+        padding-top: 0 !important; margin-top: 0 !important;
     }
     .main .block-container,
-    div[data-testid="stAppViewBlockContainer"],
-    div[data-testid="stAppViewContainer"] > section.main {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
-    }
-    /* Streamlit 1.35 injects ~3.5rem padding via these generated classes */
-    .css-z5fcl4, .css-1y4p8pa, .css-uf99v8,
-    .css-k1vhr4, .css-18e3th9 {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
+    [data-testid="stAppViewBlockContainer"],
+    [data-testid="stAppViewContainer"] > section.main > div {
+        padding-top: 0 !important; margin-top: 0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
