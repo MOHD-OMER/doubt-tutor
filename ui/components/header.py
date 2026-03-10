@@ -8,62 +8,68 @@ def render_header():
 
     selected_model = st.session_state.get(model_key, "llama-3.1-8b-instant")
 
-    # Hide all Streamlit default UI elements aggressively
+    # Hide all Streamlit default UI — comprehensive fix for v1.35
     st.markdown("""
     <style>
-    /* Hide sidebar */
-    section[data-testid="stSidebar"] {
+    /* 1. Sidebar */
+    section[data-testid="stSidebar"],
+    section[data-testid="stSidebar"] > * {
         display: none !important;
-        visibility: hidden !important;
-        width: 0 !important;
-        min-width: 0 !important;
-        max-width: 0 !important;
-        opacity: 0 !important;
-        transform: translateX(-100%) !important;
+        width: 0 !important; min-width: 0 !important; max-width: 0 !important;
+        height: 0 !important; overflow: hidden !important; opacity: 0 !important;
     }
 
-    /* Hide Streamlit top header bar + all its children */
+    /* 2. Top header bar — send it off screen entirely */
+    header,
     header[data-testid="stHeader"],
-    header[data-testid="stHeader"] * {
+    .stApp > header,
+    [data-testid="stHeader"] {
         display: none !important;
         visibility: hidden !important;
-        height: 0 !important;
-        min-height: 0 !important;
-        max-height: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
+        height: 0px !important;
+        min-height: 0px !important;
+        max-height: 0px !important;
+        padding: 0px !important;
+        margin: 0px !important;
         overflow: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
     }
 
-    /* Hide MainMenu, toolbar, footer, decoration */
+    /* 3. Toolbar / MainMenu / Footer / Decoration / collapse arrow */
     #MainMenu,
     footer,
+    footer[data-testid="stFooter"],
     div[data-testid="stToolbar"],
     div[data-testid="stDecoration"],
-    div[data-testid="stStatusWidget"] {
+    div[data-testid="stStatusWidget"],
+    [data-testid="collapsedControl"],
+    button[kind="header"],
+    .viewerBadge_container__r5tak {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
         overflow: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
     }
 
-    /* Remove ALL top padding Streamlit injects for its header */
-    .block-container {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
-    }
-
+    /* 4. Remove ALL top spacing injected by Streamlit for its header */
     .stApp {
         margin-top: 0 !important;
+        padding-top: 0 !important;
     }
-
-    div[data-testid="stAppViewContainer"] {
+    .main .block-container,
+    div[data-testid="stAppViewBlockContainer"],
+    div[data-testid="stAppViewContainer"] > section.main {
         padding-top: 0 !important;
         margin-top: 0 !important;
     }
-
-    div[data-testid="stAppViewContainer"] > section {
+    /* Streamlit 1.35 injects ~3.5rem padding via these generated classes */
+    .css-z5fcl4, .css-1y4p8pa, .css-uf99v8,
+    .css-k1vhr4, .css-18e3th9 {
         padding-top: 0 !important;
+        margin-top: 0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -353,6 +359,42 @@ def render_header():
     model_label = model_display_names.get(selected_model, selected_model)
 
     # Brand + model badge (left side)
+
+    # JS MutationObserver — removes Streamlit chrome reliably after render
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+    (function() {
+        const SELECTORS = [
+            'header[data-testid="stHeader"]',
+            '[data-testid="collapsedControl"]',
+            '[data-testid="stToolbar"]',
+            '[data-testid="stDecoration"]',
+            '[data-testid="stStatusWidget"]',
+            '#MainMenu', 'footer'
+        ];
+        function nuke() {
+            SELECTORS.forEach(s => {
+                document.querySelectorAll(s).forEach(el => {
+                    el.style.cssText = 'display:none!important;height:0!important;overflow:hidden!important;';
+                });
+            });
+            var app = parent.document.querySelector('.stApp');
+            if (app) app.style.marginTop = '0';
+            var blk = parent.document.querySelector('.main .block-container');
+            if (blk) blk.style.paddingTop = '0';
+            SELECTORS.forEach(s => {
+                parent.document.querySelectorAll(s).forEach(el => {
+                    el.style.cssText = 'display:none!important;height:0!important;overflow:hidden!important;';
+                });
+            });
+        }
+        nuke();
+        new MutationObserver(nuke).observe(parent.document.body, {childList:true, subtree:true});
+    })();
+    </script>
+    """, height=0, scrolling=False)
+
     st.markdown(f"""
         <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;">
           <a class="nav-brand" href="#">
