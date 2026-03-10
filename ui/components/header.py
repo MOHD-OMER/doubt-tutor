@@ -8,7 +8,7 @@ def render_header():
 
     selected_model = st.session_state.get(model_key, "llama-3.1-8b-instant")
 
-    # Hide default sidebar AND Streamlit's top toolbar
+    # Hide all Streamlit default UI elements aggressively
     st.markdown("""
     <style>
     /* Hide sidebar */
@@ -22,38 +22,48 @@ def render_header():
         transform: translateX(-100%) !important;
     }
 
-    /* Hide Streamlit default top toolbar / header bar */
-    header[data-testid="stHeader"] {
+    /* Hide Streamlit top header bar + all its children */
+    header[data-testid="stHeader"],
+    header[data-testid="stHeader"] * {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
         min-height: 0 !important;
-        opacity: 0 !important;
+        max-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
     }
 
-    /* Hide the deploy button & hamburger menu */
-    #MainMenu {
-        display: none !important;
-        visibility: hidden !important;
-    }
-
-    /* Hide footer */
-    footer {
-        display: none !important;
-        visibility: hidden !important;
-    }
-
-    /* Remove top padding Streamlit adds to account for its header */
-    .block-container {
-        padding-top: 1rem !important;
-    }
-
-    /* Hide toolbar items (Run, Share, etc.) */
+    /* Hide MainMenu, toolbar, footer, decoration */
+    #MainMenu,
+    footer,
     div[data-testid="stToolbar"],
     div[data-testid="stDecoration"],
     div[data-testid="stStatusWidget"] {
         display: none !important;
         visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    /* Remove ALL top padding Streamlit injects for its header */
+    .block-container {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    .stApp {
+        margin-top: 0 !important;
+    }
+
+    div[data-testid="stAppViewContainer"] {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    div[data-testid="stAppViewContainer"] > section {
+        padding-top: 0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
