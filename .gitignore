@@ -28,9 +28,6 @@ conda/
 logs/
 *.log
 
-# ---- Streamlit ----
-.streamlit/
-
 # ---- Build / Dist ----
 build/
 dist/
@@ -49,3 +46,5 @@ data/exports/
 # ---- Cache ----
 .cache/
 *.cache
+
+# NOTE: .streamlit/ is intentionally NOT ignored so config.toml is deployed
