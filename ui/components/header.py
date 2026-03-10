@@ -8,9 +8,10 @@ def render_header():
 
     selected_model = st.session_state.get(model_key, "llama-3.1-8b-instant")
 
-    # Hide default sidebar
+    # Hide default sidebar AND Streamlit's top toolbar
     st.markdown("""
     <style>
+    /* Hide sidebar */
     section[data-testid="stSidebar"] {
         display: none !important;
         visibility: hidden !important;
@@ -19,6 +20,40 @@ def render_header():
         max-width: 0 !important;
         opacity: 0 !important;
         transform: translateX(-100%) !important;
+    }
+
+    /* Hide Streamlit default top toolbar / header bar */
+    header[data-testid="stHeader"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        opacity: 0 !important;
+    }
+
+    /* Hide the deploy button & hamburger menu */
+    #MainMenu {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* Hide footer */
+    footer {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* Remove top padding Streamlit adds to account for its header */
+    .block-container {
+        padding-top: 1rem !important;
+    }
+
+    /* Hide toolbar items (Run, Share, etc.) */
+    div[data-testid="stToolbar"],
+    div[data-testid="stDecoration"],
+    div[data-testid="stStatusWidget"] {
+        display: none !important;
+        visibility: hidden !important;
     }
     </style>
     """, unsafe_allow_html=True)
