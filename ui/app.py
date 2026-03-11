@@ -227,19 +227,6 @@ global_css = """
 @media (max-width: 768px) {
     :root { --header-height: 120px; --input-height: 52px; --spacing-md: 0.75rem; --spacing-lg: 1rem; }
     .stApp { padding: 0 var(--spacing-sm); }
-    div[data-testid="stHorizontalBlock"] { flex-direction: column !important; gap: var(--spacing-sm) !important; }
-    div[data-testid="column"]:nth-child(1),
-    div[data-testid="column"]:nth-child(2),
-    div[data-testid="column"]:nth-child(3) { width: 100% !important; flex: 1 !important; }
-    div[data-testid="stFileUploader"],
-    .stButton > button[kind="primary"],
-    .stButton > button {
-        width: 100% !important;
-        height: var(--input-height) !important;
-        min-height: var(--input-height) !important;
-        padding: 0.75rem 1rem !important;
-        font-size: 16px !important;
-    }
     .input-container { padding: var(--spacing-md) !important; margin: 0 !important; }
     .file-item { padding: var(--spacing-sm); flex-direction: column; text-align: center; gap: var(--spacing-xs); }
     .file-info { text-align: left; width: 100%; }
@@ -763,7 +750,7 @@ st.markdown("""
     border-top: 1px solid var(--border-color);
     padding: var(--spacing-lg);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
-    margin: 0 -1rem -1rem;
+    margin: 0;
     box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
 }
 @media (max-width: 768px) {
@@ -913,7 +900,7 @@ if st.session_state.files_buffer:
 # --------------------------------------------------
 # Input Row
 # --------------------------------------------------
-cols = st.columns([0.6, 8.5, 0.9])
+cols = st.columns([1, 10, 1])
 
 with cols[0]:
     uploaded_files = st.file_uploader(
