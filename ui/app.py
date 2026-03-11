@@ -753,8 +753,35 @@ st.markdown("""
     margin: 0;
     box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
 }
+/* Force input row to correct proportions — upload icon small, text wide, send button small */
+.input-container [data-testid="stHorizontalBlock"] {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+.input-container [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(1) {
+    flex: 0 0 56px !important;
+    min-width: 56px !important;
+    max-width: 56px !important;
+    width: 56px !important;
+    justify-content: center !important;
+}
+.input-container [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(2) {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+.input-container [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(3) {
+    flex: 0 0 56px !important;
+    min-width: 56px !important;
+    max-width: 56px !important;
+    width: 56px !important;
+    justify-content: center !important;
+}
 @media (max-width: 768px) {
-    .input-container { padding: var(--spacing-md) !important; margin: 0 !important; border-radius: 0 !important; }
+    .input-container { padding: var(--spacing-md) !important; border-radius: 0 !important; }
 }
 </style>
 """, unsafe_allow_html=True)
