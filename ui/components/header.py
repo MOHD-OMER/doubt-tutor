@@ -255,10 +255,12 @@ def render_header():
 
     # ── Nav buttons rendered as Streamlit columns (appear right after nav) ──
     # Wrap in a styled container that sits flush under the nav
+    # Scoped CSS — only targets the first stHorizontalBlock (nav buttons)
     st.markdown("""
     <style>
-    /* Pull the button row up and style it like part of the nav */
-    [data-testid="stHorizontalBlock"] {
+    /* Scope nav-bar styling to only the nav button row via nth-of-type */
+    [data-testid="stAppViewBlockContainer"] > div > div:first-child
+        [data-testid="stHorizontalBlock"] {
         background: rgba(8,8,22,0.92) !important;
         backdrop-filter: blur(20px) !important;
         border-bottom: 1px solid rgba(124,127,247,0.12) !important;
@@ -266,7 +268,8 @@ def render_header():
         margin: 0 !important;
         gap: 0 !important;
     }
-    [data-testid="stHorizontalBlock"] [data-testid="column"] {
+    [data-testid="stAppViewBlockContainer"] > div > div:first-child
+        [data-testid="stHorizontalBlock"] [data-testid="column"] {
         padding: 0 2px !important;
         display: flex !important;
         align-items: center !important;
