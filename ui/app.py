@@ -178,15 +178,9 @@ global_css = """
 ::-webkit-scrollbar-thumb:hover { background: var(--primary-hover); }
 
 .block-container {
-    padding: 0 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-}
-/* Restore content padding via a wrapper — nav handles its own width */
-.main .block-container > div {
-    padding: 0 2rem 3rem !important;
-    max-width: 1400px;
-    margin: 0 auto;
+    padding: 1rem 1rem 3rem !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
 }
 
 .stMarkdown { font-size: 1rem; line-height: 1.6; }
