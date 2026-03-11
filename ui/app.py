@@ -38,85 +38,92 @@ st.set_page_config(
 # Immediately hide sidebar + header to prevent flash
 hide_sidebar_css = """
 <style>
-/* ============================================================
-   NUCLEAR HEADER REMOVAL — Streamlit 1.35 on Streamlit Cloud
-   ============================================================ */
-
-/* 1. The header bar itself */
 header[data-testid="stHeader"] {
     display: none !important;
+    visibility: hidden !important;
     height: 0 !important; min-height: 0 !important; max-height: 0 !important;
     padding: 0 !important; margin: 0 !important;
-    overflow: hidden !important; visibility: hidden !important;
+    overflow: hidden !important;
     position: fixed !important; top: -9999px !important;
+    pointer-events: none !important;
 }
-
-/* 2. Sidebar collapse arrow (creates the reserved gap) */
 [data-testid="collapsedControl"] {
-    display: none !important;
-    height: 0 !important; visibility: hidden !important;
-    position: fixed !important; top: -9999px !important;
-}
-
-/* 3. The stAppViewContainer and its direct children that hold the top padding */
-[data-testid="stAppViewContainer"] {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-}
-
-/* 4. The main section inside stAppViewContainer */
-[data-testid="stAppViewContainer"] > section.main {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-}
-
-/* 5. The block container inside main */
-[data-testid="stAppViewContainer"] > section.main > div[data-testid="stAppViewBlockContainer"],
-[data-testid="stAppViewContainer"] > section.main > div.block-container,
-.main .block-container,
-.main > div.block-container {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-}
-
-/* 6. stApp itself — remove any inherited margin/padding */
-.stApp {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}
-
-/* 7. Any element directly inside stApp that Streamlit uses as a top spacer */
-.stApp > div:first-child,
-.stApp > section:first-child {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}
-
-/* 8. Toolbar, decoration, footer */
-[data-testid="stToolbar"],
-[data-testid="stDecoration"],
-[data-testid="stStatusWidget"],
-#MainMenu, footer {
     display: none !important;
     visibility: hidden !important;
     height: 0 !important;
-    overflow: hidden !important;
     position: fixed !important; top: -9999px !important;
+    pointer-events: none !important;
 }
-section[data-testid="stSidebar"] {
+[data-testid="stToolbar"],[data-testid="stDecoration"],
+[data-testid="stStatusWidget"],#MainMenu,footer {
     display: none !important;
     visibility: hidden !important;
-    width: 0 !important;
-    min-width: 0 !important;
-    max-width: 0 !important;
-    opacity: 0 !important;
-    transform: translateX(-100%) !important;
-    transition: all 0s !important;
+    height: 0 !important;
+    position: fixed !important; top: -9999px !important;
+    pointer-events: none !important;
 }
-[role="complementary"], .css-1d391kg, .css-1v3f6k1 {
+section[data-testid="stSidebar"],section[data-testid="stSidebar"] > * {
     display: none !important;
+    width: 0 !important; min-width: 0 !important; max-width: 0 !important;
+    height: 0 !important; overflow: hidden !important;
+    opacity: 0 !important; pointer-events: none !important;
+}
+.stApp { margin-top: 0 !important; padding-top: 0 !important; }
+[data-testid="stAppViewContainer"] { padding-top: 0 !important; margin-top: 0 !important; }
+[data-testid="stAppViewContainer"] > section.main,
+[data-testid="stAppViewContainer"] > .main { padding-top: 0 !important; margin-top: 0 !important; }
+[data-testid="stAppViewContainer"] > section.main > div,
+[data-testid="stAppViewBlockContainer"],
+.main > div.block-container,
+.main .block-container { padding-top: 0 !important; margin-top: 0 !important; }
+.css-z5fcl4,.css-1y4p8pa,.css-uf99v8,.css-k1vhr4,.css-18e3th9,
+.css-ffhzg2,.css-1avcm0n,.css-14xtw13,.css-fg4pbf {
+    padding-top: 0 !important; margin-top: 0 !important;
+}
+iframe[height="0"],iframe[height="0px"] {
+    display: none !important;
+    height: 0 !important;
+    position: absolute !important; top: -9999px !important;
 }
 </style>
+<script>
+(function nukeST() {
+    function hide() {
+        var sels = [
+            'header[data-testid="stHeader"]',
+            '[data-testid="collapsedControl"]',
+            '[data-testid="stToolbar"]',
+            '[data-testid="stDecoration"]',
+            '[data-testid="stStatusWidget"]',
+            '#MainMenu','footer'
+        ];
+        sels.forEach(function(s) {
+            document.querySelectorAll(s).forEach(function(el) {
+                el.style.cssText = 'display:none!important;height:0!important;min-height:0!important;overflow:hidden!important;visibility:hidden!important;position:fixed!important;top:-9999px!important;';
+            });
+        });
+        var targets = [
+            '[data-testid="stAppViewContainer"]',
+            '[data-testid="stAppViewContainer"] > section.main',
+            '[data-testid="stAppViewBlockContainer"]',
+            '.main .block-container','.stApp'
+        ];
+        targets.forEach(function(s) {
+            document.querySelectorAll(s).forEach(function(el) {
+                el.style.paddingTop = '0';
+                el.style.marginTop = '0';
+            });
+        });
+        document.querySelectorAll('iframe').forEach(function(f) {
+            if (parseInt(f.height) === 0 || f.style.height === '0px') {
+                f.style.cssText = 'display:none!important;height:0!important;position:absolute!important;top:-9999px!important;';
+            }
+        });
+    }
+    hide();
+    new MutationObserver(hide).observe(document.body, {childList:true, subtree:true});
+})();
+</script>
 """
 st.markdown(hide_sidebar_css, unsafe_allow_html=True)
 
