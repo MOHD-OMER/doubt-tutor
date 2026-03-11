@@ -57,14 +57,6 @@ def render_header():
         margin-top: 0 !important;
     }}
 
-    /* ── Make block-container full width so nav can escape ── */
-    .main .block-container {{
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        max-width: 100% !important;
-        width: 100% !important;
-    }}
-
     /* ── Full-width sticky nav bar ── */
     .dt-nav {{
         position: sticky;
@@ -241,12 +233,7 @@ def render_header():
                     el.style.marginTop='0';
                 }});
             }});
-            // Full width block container
-            document.querySelectorAll('.main .block-container').forEach(function(el) {{
-                el.style.maxWidth='100%';
-                el.style.paddingLeft='0';
-                el.style.paddingRight='0';
-            }});
+
         }}
         nukeChrome();
         new MutationObserver(nukeChrome).observe(document.body,{{childList:true,subtree:true}});
